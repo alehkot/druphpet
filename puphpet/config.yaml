@@ -1,0 +1,134 @@
+---
+vagrantfile-local:
+    vm:
+        box: ubuntu-precise12042-x64-vbox43
+        box_url: 'http://box.puphpet.com/ubuntu-precise12042-x64-vbox43.box'
+        hostname: null
+        network:
+            private_network: 192.168.9.10
+            forwarded_port:
+                5tryP4ZFTBV9:
+                    host: '8080'
+                    guest: '80'
+        provider:
+            virtualbox:
+                modifyvm:
+                    natdnshostresolver1: on
+                    memory: '1024'
+                setextradata:
+                    VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
+        provision:
+            puppet:
+                manifests_path: puphpet/puppet/manifests
+                options:
+                    - '--verbose'
+                    - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
+                    - '--parser future'
+        synced_folder:
+            svLXV9ln5L9l:
+                id: webroot
+                source: ./www
+                target: /var/www
+                nfs: 'false'
+        usable_port_range: 2200..2250
+    ssh:
+        host: null
+        port: null
+        private_key_path: null
+        username: vagrant
+        guest_port: null
+        keep_alive: true
+        forward_agent: false
+        forward_x11: false
+        shell: 'bash -l'
+    vagrant:
+        host: ':detect'
+server:
+    packages:
+        - build-essential
+        - vim
+        - curl
+        - git-core
+        - php-console-table
+    dot_files:
+        -
+            bash_aliases: null
+    _prevent_empty: ''
+apache:
+    modules:
+        - php
+        - rewrite
+        - vhost_alias
+    vhosts:
+        drupal:
+            servername: drupal.dev
+            serveraliases:
+                - www.drupal.dev
+            docroot: /var/www/drupal.dev
+            port: '80'
+            override:
+                - All
+    user: vagrant
+    group: vagrant
+    default_vhost: true    
+    mpm_module: prefork
+    apache_version: 2.4
+    mod_pagespeed: 0
+    mod_spdy: 0
+php:
+    version: '55'
+    composer: '0'
+    modules:
+        php:
+            - cli
+            - curl
+            - gd
+            - intl
+            - mcrypt
+            - xcache            
+        pear: {  }
+        pecl:
+            - APC
+            - pecl_http
+    ini:
+        display_errors: On
+        error_reporting: '-1'
+        memory_limit: 512M
+        short_open_tag: Off
+    timezone: Europe/Minsk
+xdebug:
+    install: '1'
+    settings:
+        xdebug.default_enable: '1'
+        xdebug.remote_autostart: '0'
+        xdebug.remote_connect_back: '1'
+        xdebug.remote_enable: '1'
+        xdebug.remote_handler: dbgp
+        xdebug.remote_port: '9000'
+        xdebug.max_nesting_level: 250
+drush:
+    install: '1'
+    settings:
+        drush.tag_branch: master
+mysql:
+    root_password: drupal
+    phpmyadmin: 1
+    adminer: 0
+    databases:
+        drupal:
+            grant:
+                - ALL
+            name: drupal
+            host: %
+            user: drupal
+            password: drupal
+            sql_file: ''
+beanstalkd:
+    install: 0
+    listenaddress: 0.0.0.0
+    listenport: '13000'
+    maxjobsize: '65535'
+    maxconnections: '1024'
+    binlogdir: /var/lib/beanstalkd/binlog
+    binlogfsync: null
+    binlogsize: '10485760'
