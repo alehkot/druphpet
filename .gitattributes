@@ -1,0 +1,3 @@
+# Set line endings for shell scripts, to ensure windows users don't
+# convert to CRLF (breaking the scripts from running on the VM).
+*.sh text eol=lf
