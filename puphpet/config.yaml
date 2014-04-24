@@ -95,6 +95,7 @@ php:
         error_reporting: '-1'
         memory_limit: 512M
         short_open_tag: Off
+        session.save_path: /var/lib/php/session
     timezone: Europe/Minsk
 xdebug:
     install: '1'

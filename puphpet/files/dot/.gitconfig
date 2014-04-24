@@ -1,0 +1,12 @@
+[user]
+	name = Ivan Ivanov
+	email = Ivan_Ivanov@epam.com
+[core]
+	autocrlf = false
+	safecrlf = false
+	ignorecase = false
+	filemode = false
+[color]
+	ui = true
+[diff]
+  renames = copies
