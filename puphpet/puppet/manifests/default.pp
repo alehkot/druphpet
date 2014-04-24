@@ -676,3 +676,9 @@ composer::exec { 'composer-install-drush':
   user => 'root'
 }
 
+
+# Apache Solr
+
+class { 'solr' :
+
+}

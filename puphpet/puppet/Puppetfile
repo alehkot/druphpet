@@ -14,5 +14,4 @@ mod 'drush', :git => 'https://github.com/puphpet/puppet-drush.git', :ref => 'new
 mod 'mysql', :git => 'https://github.com/puphpet/puppetlabs-mysql.git'
 mod 'beanstalkd', :git => 'https://github.com/puphpet/puppet-beanstalkd.git'
 mod 'git', :git => 'https://github.com/puphpet/puppetlabs-git.git'
-mod 'mailcatcher', :git => 'https://github.com/puphpet/puppet-mailcatcher.git'
-mod 'drupal', :git => 'https://github.com/alehkot/puppet-drupal.git'
+mod 'solr', :git => 'https://github.com/alehkot/puppet-solr.git'
