@@ -59,6 +59,7 @@ apache:
         - php
         - rewrite
         - vhost_alias
+        - access_compat
     vhosts:
         drupal:
             servername: drupal.dev
