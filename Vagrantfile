@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
   
   config.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true  
   
-  config.vm.synced_folder "./www", "/var/www", id: "webroot", type: "smb" 
+  config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant"
 
   config.vm.usable_port_range = (2200..2250)
   config.vm.provider :virtualbox do |virtualbox|
@@ -37,6 +37,5 @@ Vagrant.configure("2") do |config|
 
   config.ssh.keep_alive = true
   config.ssh.forward_agent = true
-  config.ssh.forward_x11 = false
-  config.vagrant.host = :detect
+  config.ssh.forward_x11 = false  
 end
