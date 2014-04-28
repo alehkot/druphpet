@@ -5,6 +5,8 @@ Based on [https://drupal.org/project/vm](https://drupal.org/project/vm "Virtual 
 
 [Puphpet](https://github.com/puphpet/puphpet "Puphpet") compatible.
 
+Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
+
 ## Included ##
 - Ubuntu 64-bit Precise
 - Drush 7.x
