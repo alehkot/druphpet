@@ -57,7 +57,7 @@ Based on [https://drupal.org/project/vm](https://drupal.org/project/vm "Virtual 
 > "Failed to mount folders in Linux guest. This is usually because the "vboxsf" file system is not available. Please verify that the guest additions are properly installed in the guest and can work properly." 
 
 - execute the following statements:
-	- `vagrant ssh
+	- `vagrant ssh`
 	- `sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions` 
 	- `sudo apt-get install make gcc`
 	- `sudo apt-get install dkms`
