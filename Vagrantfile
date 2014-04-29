@@ -8,7 +8,9 @@ Vagrant.configure("2") do |config|
   
   config.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true  
   
-  config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant"
+  config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant", type: "smb"  
+  # To enable Samba (Windows-only) comment the previous and remove comments from the next lines.
+  # config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant", type: "smb"
 
   config.vm.usable_port_range = (2200..2250)
   config.vm.provider :virtualbox do |virtualbox|
