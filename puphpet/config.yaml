@@ -86,13 +86,15 @@ php:
             - gd
             - intl
             - mcrypt
-            # Uncomment next line for PHP < 5.5
+            # Uncomment the next line for PHP < 5.5, if you want to use XCache
             # - xcache
         pear: {  }
         pecl:
-            # Use APC instead of APCu for PHP < 5.5            
-            - APCu
+            # Uncomment the next line for PHP < 5.5, if you want to use APC
+            # - apc
+            - xhprof
             - pecl_http
+            - uploadprogress
     ini:
         display_errors: On
         error_reporting: '-1'
