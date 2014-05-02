@@ -86,10 +86,12 @@ php:
             - gd
             - intl
             - mcrypt
-            - xcache            
+            # Uncomment next line for PHP < 5.5
+            # - xcache
         pear: {  }
         pecl:
-            - APC
+            # Use APC instead of APCu for PHP < 5.5            
+            - APCu
             - pecl_http
     ini:
         display_errors: On
