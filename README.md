@@ -12,11 +12,13 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - Drush 7.x
 - Apache 2.4
 - PHP 5.5 with steroids:
-	- XDebug
-	- APC
+	- XDebug	
 	- XHProf
     - Soap
-    - XCache    
+    - Uploadprogress
+- Optionally, old versions of PHP are also available with the following extensions:
+	- APC
+	- XCache
 - Apache Solr 4.7.2
 - MySQL 5.5.37
 - phpMyAdmin
@@ -55,9 +57,10 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 
 **Notes**
 
-- Windows-only, to enable Samba, follow the instuctions in Vagrantfile. If then you receive the following error:
-> "Failed to mount folders in Linux guest. This is usually because the "vboxsf" file system is not available. Please verify that the guest additions are properly installed in the guest and can work properly." 
+- Windows-only, to enable Samba, follow the instuctions in Vagrantfile. 
 
+- Windows-only, if during `vagrant up` you receive the following error:
+> "Failed to mount folders in Linux guest. This is usually because the "vboxsf" file system is not available. Please verify that the guest additions are properly installed in the guest and can work properly." 
 - execute the following statements:
 	- `vagrant ssh`
 	- `sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions` 
