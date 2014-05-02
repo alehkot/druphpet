@@ -423,13 +423,14 @@ define php_mod {
 define php_pear_mod {
   php::pear::module { $name:
     use_package         => false,
-    service_autorestart => $php_webserver_restart,
+    service_autorestart => $php_webserver_restart,    
   }
 }
 define php_pecl_mod {
   php::pecl::module { $name:
     use_package         => false,
     service_autorestart => $php_webserver_restart,
+    preferred_state     => 'beta',
   }
 }
 
