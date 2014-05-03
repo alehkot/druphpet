@@ -55,7 +55,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 	- `192.168.9.10 xhprof.drupal.dev`
 - Execute `vagrant up`
 
-**Notes**
+**Known issues**
 
 - Windows-only, to enable Samba, follow the instuctions in Vagrantfile. 
 
@@ -64,8 +64,11 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - execute the following statements:
 	- `vagrant ssh`
 	- `sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions` 
-	- `sudo apt-get install make gcc`
-	- `sudo apt-get install dkms`
-	- `sudo /etc/init.d/vboxadd setup`
 	- `exit`
 	- `vagrant reload`
+
+- Windows-only, to enable "rsync", install the latest version of [Cygwin](http://www.cygwin.com) and in setup wizard pick "rsync" package to be installed (it's not included by default). Because Vagrant on Windows uses Cygdrive for rsync, you should `vagrant up` under Cygwin shell (an example location is 'c:\cygwin64\Cygwin.bat'). 
+
+- Windows only, if during `vagrant up` using Cygwin you receive an error about "nio4r" 
+- execute the following statements:
+	- export NIO4R_PURE="yes"
