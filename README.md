@@ -71,4 +71,4 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 
 - Windows only, if during `vagrant up` using Cygwin you receive an error about "nio4r" 
 - execute the following statements:
-	- export NIO4R_PURE="yes"
+	- `export NIO4R_PURE="yes"`
