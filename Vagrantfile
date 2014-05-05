@@ -8,9 +8,11 @@ Vagrant.configure("2") do |config|
   
   config.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true  
   
-  config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant"
-  # To enable Samba (Windows-only) comment the previous and remove comments from the next lines.
-  # config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant", type: "smb"
+  config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant"  
+  # To enable Samba (Windows-only) comment the previous and remove comment from the next line.
+  # config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant", type: "smb"    
+  # To enable Rsync (On Windows, under Cygwin shell only) comment the previous and remove comment from the next line.
+  # config.vm.synced_folder "./www", "/var/www", type: "rsync", rsync__auto: true, rsync__args: ["--verbose", "--archive", "-z"] 
 
   config.vm.usable_port_range = (2200..2250)
   config.vm.provider :virtualbox do |virtualbox|

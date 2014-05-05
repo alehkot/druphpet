@@ -101,6 +101,8 @@ php:
         memory_limit: 512M
         short_open_tag: Off
         session.save_path: /var/lib/php/session
+        post_max_size: 2048M
+        upload_max_filesize: 2048M
     timezone: Europe/Minsk
 xdebug:
     install: '1'
