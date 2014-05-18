@@ -568,67 +568,38 @@ define mysql_db (
   }
 }
 
-if has_key($mysql_values, 'phpmyadmin') and $mysql_values['phpmyadmin'] == 1 and is_hash($php_values) {
-  if $::osfamily == 'debian' {
-    if $::operatingsystem == 'ubuntu' {
-      apt::key { '80E7349A06ED541C': }
-      apt::ppa { 'ppa:nijel/phpmyadmin': require => Apt::Key['80E7349A06ED541C'] }
-    }
-
-    $phpMyAdmin_package = 'phpmyadmin'
-    $phpMyAdmin_folder = 'phpmyadmin'
-  } elsif $::osfamily == 'redhat' {
-    $phpMyAdmin_package = 'phpMyAdmin.noarch'
-    $phpMyAdmin_folder = 'phpMyAdmin'
-  }
-
-  if ! defined(Package[$phpMyAdmin_package]) {
-    package { $phpMyAdmin_package:
-      require => Class['mysql::server']
-    }
-  }
-
-  include puphpet::params
-
-  if is_hash($apache_values) {
+if hash_key_equals($mysql_values, 'phpmyadmin', 1) and $mysql_php_installed {
+  if hash_key_equals($apache_values, 'install', 1) {
     $mysql_pma_webroot_location = $puphpet::params::apache_webroot_location
-  } elsif is_hash($nginx_values) {
+  } elsif hash_key_equals($nginx_values, 'install', 1) {
     $mysql_pma_webroot_location = $puphpet::params::nginx_webroot_location
 
     mysql_nginx_default_conf { 'override_default_conf':
       webroot => $mysql_pma_webroot_location
     }
+  } else {
+    $mysql_pma_webroot_location = '/var/www'
   }
 
-  exec { 'move phpmyadmin to webroot':
-    command => "cp -R /usr/share/${phpMyAdmin_folder} ${mysql_pma_webroot_location}/phpmyadmin",
-    onlyif  => "test ! -d ${mysql_pma_webroot_location}/phpmyadmin",
-    require => [
-      Package[$phpMyAdmin_package],
-      File[$mysql_pma_webroot_location]
-    ]
-  }
-
-  file { "/usr/share/${phpMyAdmin_folder}":
-    target  => "${mysql_pma_webroot_location}/phpmyadmin",
-    ensure  => link,
-    replace => 'no',
-    require => Exec['move phpmyadmin to webroot']
+  class { 'puphpet::phpmyadmin':
+    dbms             => 'mysql::server',
+    webroot_location => $mysql_pma_webroot_location,
   }
 }
 
-if has_key($mysql_values, 'adminer') and $mysql_values['adminer'] == 1 and is_hash($php_values) {
-  if is_hash($apache_values) {
+if hash_key_equals($mysql_values, 'adminer', 1) and $mysql_php_installed {
+  if hash_key_equals($apache_values, 'install', 1) {
     $mysql_adminer_webroot_location = $puphpet::params::apache_webroot_location
-  } elsif is_hash($nginx_values) {
+  } elsif hash_key_equals($nginx_values, 'install', 1) {
     $mysql_adminer_webroot_location = $puphpet::params::nginx_webroot_location
   } else {
     $mysql_adminer_webroot_location = $puphpet::params::apache_webroot_location
   }
 
   class { 'puphpet::adminer':
-    location => "${mysql_adminer_webroot_location}/adminer",
-    owner    => 'www-data'
+    location    => "${mysql_adminer_webroot_location}/adminer",
+    owner       => 'www-data',
+    php_package => $mysql_php_package
   }
 }
 
