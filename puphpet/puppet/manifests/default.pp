@@ -529,6 +529,11 @@ if is_hash($apache_values) or is_hash($nginx_values) {
 if $mysql_values['root_password'] {
   class { 'mysql::server':
     root_password => $mysql_values['root_password'],
+    override_options => {
+      'mysqld' => {
+        'bind-address' => '0.0.0.0',
+      }
+    }
   }
 
   if is_hash($mysql_values['databases']) and count($mysql_values['databases']) > 0 {
@@ -568,7 +573,7 @@ define mysql_db (
   }
 }
 
-if hash_key_equals($mysql_values, 'phpmyadmin', 1) and $mysql_php_installed {
+if hash_key_equals($mysql_values, 'phpmyadmin', 1) {  
   if hash_key_equals($apache_values, 'install', 1) {
     $mysql_pma_webroot_location = $puphpet::params::apache_webroot_location
   } elsif hash_key_equals($nginx_values, 'install', 1) {
@@ -587,7 +592,7 @@ if hash_key_equals($mysql_values, 'phpmyadmin', 1) and $mysql_php_installed {
   }
 }
 
-if hash_key_equals($mysql_values, 'adminer', 1) and $mysql_php_installed {
+if hash_key_equals($mysql_values, 'adminer', 1) {
   if hash_key_equals($apache_values, 'install', 1) {
     $mysql_adminer_webroot_location = $puphpet::params::apache_webroot_location
   } elsif hash_key_equals($nginx_values, 'install', 1) {
