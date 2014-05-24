@@ -231,7 +231,7 @@ if ! defined(File[$webroot_location]) {
   file { $webroot_location:
     ensure  => directory,
     group   => 'www-data',
-    mode    => 0775,
+    mode    => 0777,
     require => [
       Exec["exec mkdir -p ${webroot_location}"],
       Group['www-data']
@@ -402,7 +402,7 @@ if count($php_values['ini']) > 0 {
     file { $php_values['ini']['session.save_path']:
       ensure  => directory,
       group   => 'www-data',
-      mode    => 0775,
+      mode    => 0777,
       require => Exec["mkdir -p ${php_values['ini']['session.save_path']}"]
     }
   }
@@ -423,7 +423,7 @@ define php_mod {
 define php_pear_mod {
   php::pear::module { $name:
     use_package         => false,
-    service_autorestart => $php_webserver_restart,    
+    service_autorestart => $php_webserver_restart,
   }
 }
 define php_pecl_mod {
@@ -573,7 +573,7 @@ define mysql_db (
   }
 }
 
-if hash_key_equals($mysql_values, 'phpmyadmin', 1) {  
+if hash_key_equals($mysql_values, 'phpmyadmin', 1) {
   if hash_key_equals($apache_values, 'install', 1) {
     $mysql_pma_webroot_location = $puphpet::params::apache_webroot_location
   } elsif hash_key_equals($nginx_values, 'install', 1) {
@@ -639,8 +639,6 @@ if has_key($beanstalkd_values, 'install') and $beanstalkd_values['install'] == 1
   beanstalkd::config { $beanstalkd_values: }
 }
 
-# Clone drupal 8 core
-
 exec { 'public_html':
   path    => '/bin',
   command => 'ln -s /var/www/ /home/vagrant/public_html',
@@ -664,4 +662,16 @@ class { 'solr':
 
 class { 'xhprof':
   version => '0.9.4'
+}
+
+# PimpMyLog
+
+class { 'pimpmylog':
+
+}
+
+# MailCatcher
+
+class { 'mailcatcher':
+  
 }

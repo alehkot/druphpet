@@ -50,6 +50,8 @@ server:
         - curl
         - git-core
         - php-console-table
+        - imagemagick
+        - sendmail
     dot_files:
         -
             bash_aliases: null
@@ -71,7 +73,7 @@ apache:
                 - All
     user: vagrant
     group: vagrant
-    default_vhost: true    
+    default_vhost: true
     mpm_module: prefork
     apache_version: 2.4
     mod_pagespeed: 0
@@ -103,6 +105,7 @@ php:
         session.save_path: /var/lib/php/session
         post_max_size: 2048M
         upload_max_filesize: 2048M
+        error_log: /tmp/php_errors.log
     timezone: Europe/Minsk
 xdebug:
     install: '1'
@@ -120,8 +123,8 @@ drush:
         drush.tag_branch: master
 mysql:
     root_password: drupal
-    phpmyadmin: 1
-    adminer: 0
+    phpmyadmin: 0
+    adminer: 1
     databases:
         drupal:
             grant:

@@ -19,9 +19,12 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - Optionally, old versions of PHP are also available with the following extensions:
 	- APC
 	- XCache
-- Apache Solr 4.7.2
+- Apache Solr 4.6.0
 - MySQL 5.5.37
-- phpMyAdmin
+- [Adminer](http://www.adminer.org/) (or [phpMyAdmin](http://www.phpmyadmin.net/home_page/index.php))
+- [PimpMyLog](http://pimpmylog.com/)
+- [MailCatcher](http://mailcatcher.me/)
+- ImageMagick
 
 ## Defaults
 **Hosts**

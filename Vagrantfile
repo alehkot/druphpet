@@ -1,12 +1,23 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu-precise12042-x64-vbox43"
-  config.vm.box_url = "http://box.puphpet.com/ubuntu-precise12042-x64-vbox43.box"
+
+  # Allow caching to be used (see the vagrant-cachier plugin)
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :machine
+    #config.cache.synced_folder_opts = { type: :nfs }
+    config.cache.auto_detect = true
+    #config.cache.enable :apt
+    #config.cache.enable :gem
+    #config.cache.enable :npm
+  end 
+  
+  config.vm.box = "ubuntu-precise-x64"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
   
   config.vm.hostname = "drupal.dev"
  
   config.vm.network "private_network", ip: "192.168.9.10"
   
-  config.vm.network "forwarded_port", guest: 80, host: 8080, auto_correct: true  
+  config.vm.network "forwarded_port", guest: 80, host: 8888, auto_correct: true    
   
   config.vm.synced_folder "./www", "/var/www", owner: "vagrant", group: "vagrant"  
   # To enable Samba (Windows-only) comment the previous and remove comment from the next line.
