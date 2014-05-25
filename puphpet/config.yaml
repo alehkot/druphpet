@@ -52,6 +52,7 @@ server:
         - php-console-table
         - imagemagick
         - sendmail
+        - unzip
     dot_files:
         -
             bash_aliases: null

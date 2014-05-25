@@ -25,6 +25,8 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - [PimpMyLog](http://pimpmylog.com/)
 - [MailCatcher](http://mailcatcher.me/)
 - ImageMagick
+- Unzip
+- Git
 
 ## Defaults
 **Hosts**
