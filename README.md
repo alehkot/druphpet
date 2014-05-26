@@ -40,6 +40,14 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 * User: drupal
 * Pass: drupal
 
+**Mailcatcher**
+
+- http://192.168.9.10:8088
+
+**PimpMyLog**
+
+- http://192.168.9.10/pimpmylog
+
 ## Minimum requirements ##
 * Git
 * VirtualBox 4.3.10

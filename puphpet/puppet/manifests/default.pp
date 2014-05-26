@@ -4,6 +4,10 @@ if $server_values == undef {
   $server_values = hiera('server', false)
 }
 
+if $vagrant_values == undef {
+  $vagrant_values = hiera('vagrantfile-local', false)
+}
+
 # Ensure the time is accurate, reducing the possibilities of apt repositories
 # failing for invalid certificates
 include '::ntp'
@@ -672,6 +676,19 @@ class { 'pimpmylog':
 
 # MailCatcher
 
-class { 'mailcatcher':
+if $mailcatcher_values == undef {
+  $mailcatcher_values = hiera('mailcatcher', false)
+}
+
+if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] == 1 {
+  class { 'mailcatcher':    
+
+  }
   
+  $mailcatcher_host_ip = $mailcatcher_values['http_ip']
+  $mailcatcher_host_port = $mailcatcher_values['http_port']
+  
+  exec { "exec mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}":
+    command => "/usr/local/bin/mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}",    
+  }    
 }

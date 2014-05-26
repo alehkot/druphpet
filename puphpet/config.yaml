@@ -144,3 +144,7 @@ beanstalkd:
     binlogdir: /var/lib/beanstalkd/binlog
     binlogfsync: null
     binlogsize: '10485760'
+mailcatcher:
+    install: 1
+    http_ip: 0.0.0.0
+    http_port: 8088
