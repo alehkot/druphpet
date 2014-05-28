@@ -48,6 +48,10 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 
 - http://192.168.9.10/pimpmylog
 
+**Apache Solr**
+
+- http://drupal.dev:8983
+
 ## Minimum requirements ##
 * Git
 * VirtualBox 4.3.10
