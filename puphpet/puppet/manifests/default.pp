@@ -690,6 +690,7 @@ if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] ==
   
   exec { "exec mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}":
     command => "/usr/local/bin/mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}",    
+	require => Class['mailcatcher']
   }    
 }
 
