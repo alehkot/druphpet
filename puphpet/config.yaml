@@ -1,4 +1,4 @@
----
+  ---
 vagrantfile-local:
     vm:
         box: ubuntu-precise12042-x64-vbox43
@@ -148,3 +148,7 @@ mailcatcher:
     install: 1
     http_ip: 0.0.0.0
     http_port: 8088
+rabbitmq:
+    install: '1'
+    settings:
+        port: '5672'
