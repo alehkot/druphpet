@@ -76,6 +76,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 	- `192.168.9.10 drupal.dev`
 	- `192.168.9.10 xhprof.drupal.dev`
 - Execute `vagrant up`
+- On Windows if you need SMB support, it's important to install [Power Shell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595) beforehand.
 
 **Known issues**
 
