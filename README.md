@@ -27,6 +27,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - ImageMagick
 - Unzip
 - Git
+- RabbitMQ
 
 ## Defaults
 **Hosts**
@@ -47,6 +48,10 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 **PimpMyLog**
 
 - http://192.168.9.10/pimpmylog
+
+**RabbitMQ**
+
+- port: 5672
 
 ## Minimum requirements ##
 * Git
