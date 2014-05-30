@@ -14,8 +14,9 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - PHP 5.5 with steroids:
 	- XDebug	
 	- XHProf
-    - Soap
-    - Uploadprogress
+  - SOAP
+  - Uploadprogress
+  - APCu
 - Optionally, old versions of PHP are also available with the following extensions:
 	- APC
 	- XCache
