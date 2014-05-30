@@ -53,6 +53,8 @@ server:
         - imagemagick
         - sendmail
         - unzip
+        - mc
+        - graphviz
     dot_files:
         -
             bash_aliases: null
@@ -149,6 +151,8 @@ mailcatcher:
     http_ip: 0.0.0.0
     http_port: 8088
 rabbitmq:
-    install: '1'
+    install: 1
     settings:
         port: '5672'
+samba_server: 
+    install: 1

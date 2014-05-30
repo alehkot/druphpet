@@ -690,11 +690,11 @@ if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] ==
   
   exec { "exec mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}":
     command => "/usr/local/bin/mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}",    
-	require => Class['mailcatcher']
+    require => Class['mailcatcher']
   }    
 }
 
-# Begin rabbitmq
+# Begin RabbitMQ
 
 if $rabbitmq_values == undef {
   $rabbitmq_values = hiera('rabbitmq', false)
@@ -723,5 +723,35 @@ if hash_key_equals($rabbitmq_values, 'install', 1) {
       service_autorestart => $rabbitmq_webserver_restart,
       require             => Class['rabbitmq']
     }
+  }
+}  
+
+# Begin Samba
+
+if $samba_server_values == undef {
+  $samba_server_values = hiera('samba_server', false)
+}
+
+if hash_key_equals($samba_server_values, 'install', 1) {
+  class {'samba::server':
+    workgroup => 'Drupal',
+    server_string => 'Drupal VM server',
+    interfaces => 'eth1 lo',
+    security => 'share',
+  }
+
+  samba::server::share { 'data':
+    comment => 'data storage',
+    path  => "/var/www",
+    guest_only => true,
+    guest_ok => true,
+    guest_account => 'guest',
+    browsable => true,
+    create_mask => 0777,
+    force_create_mask => 0777,
+    directory_mask => 0777,
+    force_directory_mask => 0777,
+    force_group => 'vagrant',
+    force_user => 'vagrant',  
   }
 }

@@ -28,6 +28,11 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - Unzip
 - Git
 - RabbitMQ
+- Graphviz
+- MC
+- Samba Server
+
+You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 
 ## Defaults
 **Hosts**
@@ -56,6 +61,10 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 **Apache Solr**
 
 - http://drupal.dev:8983
+
+**Samba server share**
+
+- \\192.168.9.10\share
 
 ## Minimum requirements ##
 * Git
@@ -92,7 +101,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 
 - Windows-only, to enable "rsync", install the latest version of [Cygwin](http://www.cygwin.com) and in setup wizard pick "rsync" package to be installed (it's not included by default). Because Vagrant on Windows uses Cygdrive for rsync, you should `vagrant up` under Cygwin shell (an example location is 'c:\cygwin64\Cygwin.bat'). 
 
-- Windows-only, if during `vagrant up` using Cygwin you receive an error about "nio4r", execute the following statements:
+- Windows only, if during `vagrant up` using Cygwin you receive an error about "nio4r", execute the following statements:
 	- `export NIO4R_PURE="yes"`
 
 - Windows-only, if you receive the following error: 
