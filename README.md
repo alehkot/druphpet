@@ -3,6 +3,8 @@ A Puppet-based Drupal-ready VM suitable for instant and unified configuration of
 
 Based on [https://drupal.org/project/vm](https://drupal.org/project/vm "Virtual Machine") project on Drupal.org.
 
+One can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
+
 [Puphpet](https://github.com/puphpet/puphpet "Puphpet") compatible.
 
 Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
