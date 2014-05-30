@@ -67,7 +67,7 @@ You can always adjust installed packages and settings in `puphpet/config.yaml` f
 
 **Samba server share**
 
-- \\192.168.9.10\data
+- \\\192.168.9.10\data
 
 ## Minimum requirements ##
 * Git
