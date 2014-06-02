@@ -55,6 +55,7 @@ server:
         - unzip
         - mc
         - graphviz        
+        - memcached
     dot_files:
         -
             bash_aliases: null
@@ -160,3 +161,5 @@ samba_server:
     install: '1'
 apcu: 
     install: '1'
+memcache:
+    install: '1
