@@ -681,17 +681,18 @@ if $mailcatcher_values == undef {
 }
 
 if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] == 1 {
-  class { 'mailcatcher':    
+  class { 'mailcatcher':
 
   }
-  
+
   $mailcatcher_host_ip = $mailcatcher_values['http_ip']
   $mailcatcher_host_port = $mailcatcher_values['http_port']
-  
+
   exec { "exec mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}":
-    command => "/usr/local/bin/mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}",    
-    require => Class['mailcatcher']
-  }    
+    command => "/usr/local/bin/mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}",
+    require => Class['mailcatcher'],
+    onlyif  => 'test /usr/local/bin/mailcatcher',
+  }
 }
 
 # Begin RabbitMQ
@@ -724,7 +725,7 @@ if hash_key_equals($rabbitmq_values, 'install', 1) {
       require             => Class['rabbitmq']
     }
   }
-}  
+}
 
 # Begin Samba
 
@@ -751,8 +752,8 @@ if hash_key_equals($samba_server_values, 'install', 1) {
     force_create_mask => 0777,
     directory_mask => 0777,
     force_directory_mask => 0777,
-    force_group => 'root',
-    force_user => 'root',  
+    force_group => 'vagrant',
+    force_user => 'vagrant',
     writable => true,
   }
 }
