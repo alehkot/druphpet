@@ -770,20 +770,12 @@ if hash_key_equals($apcu_values, 'install', 1) {
   }
 }
 
-# Begin Memcache
+# Begin PHP Memcached
 
-if $memcache_values == undef {
-  $memcache_values = hiera('memcache', false)
+if $memcached_values == undef {
+  $memcached_values = hiera('memcached', false)
 }
 
-if hash_key_equals($memcache_values, 'install', 1) {
-  php::pecl::module { 'memcache':
-    use_package         => false,
-    service_autorestart => true,
-  }
-  php::augeas { 'augeas-memcache':
-    entry  => "PHP/extension[. = \"memcache.so\"]",
-    value  => 'memcache.so',
-    notify  => Service['httpd'],
-  }
+if hash_key_equals($memcached_values, 'install', 1) {
+  ensure_packages(['php-memcached'])
 }
