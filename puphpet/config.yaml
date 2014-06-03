@@ -161,5 +161,5 @@ samba_server:
     install: '1'
 apcu: 
     install: '1'
-memcache:
+php_memcached:
     install: '1

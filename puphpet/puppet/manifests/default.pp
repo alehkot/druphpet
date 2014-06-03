@@ -772,10 +772,10 @@ if hash_key_equals($apcu_values, 'install', 1) {
 
 # Begin PHP Memcached
 
-if $memcached_values == undef {
-  $memcached_values = hiera('memcached', false)
+if $php_memcached_values == undef {
+  $php_memcached_values = hiera('php_memcached', false)
 }
 
-if hash_key_equals($memcached_values, 'install', 1) {
-  ensure_packages(['php-memcached'])
+if hash_key_equals($php_memcached_values, 'install', 1) {
+  ensure_packages(['php5-memcached'])
 }

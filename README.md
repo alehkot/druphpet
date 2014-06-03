@@ -19,7 +19,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
   - SOAP
   - Uploadprogress
   - APCu
-  - Memcache
+  - Memcached
 - Optionally, old versions of PHP are also available with the following extensions:
 	- APC
 	- XCache
