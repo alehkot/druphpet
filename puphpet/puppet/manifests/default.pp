@@ -752,8 +752,8 @@ if hash_key_equals($samba_server_values, 'install', 1) {
     force_create_mask => 0777,
     directory_mask => 0777,
     force_directory_mask => 0777,
-    force_group => 'vagrant',
-    force_user => 'vagrant',
+    force_group => 'root',
+    force_user => 'root',
     writable => true,
   }
 }
