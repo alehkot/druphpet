@@ -156,10 +156,10 @@ case $::operatingsystem {
   }
   'ubuntu': {
     apt::key { '4F4EA0AAE5267A6C':
-      key_server => 'hkp://keyserver.ubuntu.com:80'
+      key_server => 'keyserver.ubuntu.com'
     }
     apt::key { '4CBEDD5A':
-      key_server => 'hkp://keyserver.ubuntu.com:80'
+      key_server => 'keyserver.ubuntu.com'
     }
 
     apt::ppa { 'ppa:pdoes/ppa': require => Apt::Key['4CBEDD5A'] }
