@@ -162,4 +162,4 @@ samba_server:
 apcu: 
     install: '1'
 php_memcached:
-    install: '1
+    install: '1'
