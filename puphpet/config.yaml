@@ -1,25 +1,31 @@
-  ---
+---
 vagrantfile-local:
     vm:
-        box: ubuntu-precise12042-x64-vbox43
-        box_url: 'http://box.puphpet.com/ubuntu-precise12042-x64-vbox43.box'
-        hostname: null
+        box: ubuntu-precise-x64
+        box_url: 'http://files.vagrantup.com/precise64.box'
+        hostname: drupal.dev
+        memory: 1024
+        chosen_provider: virtualbox
         network:
             private_network: 192.168.9.10
             forwarded_port:
                 5tryP4ZFTBV9:
-                    host: '8080'
+                    host: '8888'
                     guest: '80'
         provider:
             virtualbox:
                 modifyvm:
                     natdnshostresolver1: on
-                    memory: '1024'
                 setextradata:
                     VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
+            vmware:
+                numvcpus: 1
+            parallels:
+                cpus: 1
         provision:
             puppet:
-                manifests_path: puphpet/puppet/manifests
+                manifests_path: puphpet/puppet
+                manifest_file: default.pp
                 options:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
@@ -54,18 +60,22 @@ server:
         - sendmail
         - unzip
         - mc
-        - graphviz        
+        - graphviz
         - memcached
     dot_files:
         -
             bash_aliases: null
     _prevent_empty: ''
 apache:
-    modules:
-        - php
-        - rewrite
-        - vhost_alias
-        - access_compat
+    install: '1'
+    settings:
+        user: www-data
+        group: www-data
+        default_vhost: true
+        manage_user: false
+        manage_group: false
+        sendfile: 0
+        default_mods: false
     vhosts:
         drupal:
             servername: drupal.dev
@@ -75,14 +85,38 @@ apache:
             port: '80'
             override:
                 - All
-    user: vagrant
-    group: vagrant
-    default_vhost: true
-    mpm_module: prefork
-    apache_version: 2.4
-    mod_pagespeed: 0
-    mod_spdy: 0
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            custom_fragment: ''
+            ssl_cert: ''
+            ssl_key: ''
+            ssl_chain: ''
+            ssl_certs_dir: ''
+    modules:
+        - php
+        - rewrite
+        - vhost_alias
+nginx:
+    install: 0
+    vhosts:
+        WZob4fL9trIa:
+            server_name: awesome.dev
+            server_aliases:
+                - www.awesome.dev
+            www_root: /var/www/awesome.dev
+            listen_port: '80'
+            index_files:
+                - index.html
+                - index.htm
+                - index.php
+            envvars:
+                - 'APP_ENV dev'
+            ssl_cert: ''
+            ssl_key: ''
 php:
+    install: '1'
     version: '55'
     composer: '1'
     modules:
@@ -98,11 +132,12 @@ php:
         pecl:
             # Uncomment the next line for PHP < 5.5, if you want to use APC.
             # - apc
-            - xhprof
+
+            # @todo At this moment XHProf can't be installed this way.
+            # - xhprof
             - pecl_http
             - uploadprogress
-            # @todo At this moment APCu can't be installed this way.
-            # - apcu-4.0.4
+            - apcu
     ini:
         display_errors: On
         error_reporting: '-1'
@@ -136,7 +171,23 @@ mysql:
             grant:
                 - ALL
             name: drupal
-            host: %
+            host: '%'
+            user: drupal
+            password: drupal
+            sql_file: ''
+        nbcumedvil:
+            grant:
+                - ALL
+            name: nbcumedvil
+            host: '%'
+            user: drupal
+            password: drupal
+            sql_file: ''
+        i2iawards:
+            grant:
+                - ALL
+            name: i2iawards
+            host: '%'
             user: drupal
             password: drupal
             sql_file: ''
@@ -150,16 +201,28 @@ beanstalkd:
     binlogfsync: 'null'
     binlogsize: '10485760'
 mailcatcher:
-    install: '1'
+    install: '0'
     http_ip: '0.0.0.0'
     http_port: '8088'
 rabbitmq:
-    install: '1'
+    install: '0'
     settings:
         port: '5672'
-samba_server: 
+samba_server:
     install: '1'
-apcu: 
+apcu:
     install: '1'
 php_memcached:
     install: '1'
+mariadb:
+    install: '0'
+    root_password: '123'
+    adminer: 0
+    databases: {  }
+    version: '10.0'
+solr:
+    install: '0'
+php_xhprof:
+    install: '1'
+pimpmylog:
+    install: '0'

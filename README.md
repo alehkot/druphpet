@@ -67,7 +67,7 @@ You can always adjust installed packages and settings in `puphpet/config.yaml` f
 
 - http://drupal.dev:8983
 
-**Samba server share**
+**Samba server share (default)**
 
 - \\\192.168.9.10\data
 
@@ -91,6 +91,7 @@ You can always adjust installed packages and settings in `puphpet/config.yaml` f
 	- `192.168.9.10 xhprof.drupal.dev`
 - Execute `vagrant up`
 - On Windows if you need SMB support, it's important to install [Power Shell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595) beforehand.
+- To enable sharing of folders using default, NFS, Rsync methods, just remove comments from the appropriate lines in Vagrantfile. By default, only Samba server is enabled.
 
 **Known issues**
 
