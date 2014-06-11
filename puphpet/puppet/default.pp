@@ -1084,31 +1084,6 @@ if has_key($pimpmylog_values, 'install') and $pimpmylog_values['install'] == 1 {
   }
 }
 
-
-# Begin MailCatcher
-
-if $mailcatcher_values == undef {
-  $mailcatcher_values = hiera('mailcatcher', false)
-}
-
-if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] == 1 {
-  class { 'mailcatcher':
-    require => [
-      Package['httpd'],
-      Class['php'],
-    ],
-  }
-
-  $mailcatcher_host_ip = $mailcatcher_values['http_ip']
-  $mailcatcher_host_port = $mailcatcher_values['http_port']
-
-  exec { "exec mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}":
-    command => "/usr/local/bin/mailcatcher --http-ip=${mailcatcher_host_ip} --http-port=${mailcatcher_host_port}",
-    require => Class['mailcatcher'],
-    onlyif  => 'test /usr/local/bin/mailcatcher',
-  }
-}
-
 # Begin RabbitMQ
 
 if $rabbitmq_values == undef {
@@ -1366,5 +1341,103 @@ define mariadb_nginx_default_conf (
   class { 'puphpet::nginx':
     fastcgi_pass => $fastcgi_pass,
     notify       => Class['nginx::service'],
+  }
+}
+
+# Begin RVM
+
+class { 'rvm':
+  version => '1.20.12',
+  install_dependencies => false,
+}
+
+
+rvm::system_user { vagrant: ; }
+
+rvm_system_ruby {
+  'ruby-1.9.3-p429':
+    ensure => 'present',
+    default_use => false;
+}
+
+rvm_gemset {
+  'ruby-1.9.3-p429@vagrant':
+    ensure => present,
+    require => Rvm_system_ruby['ruby-1.9.3-p429'];
+}
+
+# Begin MailCatcher
+
+if $mailcatcher_values == undef {
+  $mailcatcher_values = hiera('mailcatcher', false)
+}
+
+if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] == 1 {
+
+  if ! defined(Class['supervisord']) {
+    class { 'supervisord':
+      install_pip => true,
+    }
+  }
+
+  user { 'mailcatcher':
+    ensure  => present,
+    comment => 'Mailcatcher Mock Smtp Service User',
+    home    => '/var/spool/mailcatcher',
+    shell   => '/bin/true',
+  }
+
+  $log_path = '/var/log/mailcatcher/mailcatcher.log'
+
+  file { '/var/log/mailcatcher':
+    ensure  => directory,
+    owner   => 'mailcatcher',
+    group   => 'mailcatcher',
+    mode    => 0755,
+    require => User['mailcatcher'],
+  }    
+
+  file { $log_path:
+    ensure  => file,
+    owner   => 'mailcatcher',
+    group   => 'mailcatcher',
+    mode    => 0755,
+    require => [User['mailcatcher'], File['/var/log/mailcatcher']],
+  }  
+
+  rvm_gem {
+    'ruby-1.9.3-p429@vagrant/mailcatcher':
+      name => 'mailcatcher',
+      ensure => latest,
+      require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
+  }
+
+  rvm_wrapper {
+    'mailcatcher':
+      target_ruby => 'ruby-1.9.3-p429@vagrant',
+      prefix      => 'bootup',
+      ensure      => present,
+      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+  }
+
+  $supervisord_mailcatcher_options = sort(join_keys_to_values({
+    ' --smtp-ip'   => $mailcatcher_values['settings']['smtp_ip'],
+    ' --smtp-port' => $mailcatcher_values['settings']['smtp_port'],
+    ' --http-ip'   => $mailcatcher_values['settings']['http_ip'],
+    ' --http-port' => $mailcatcher_values['settings']['http_port']
+  }, ' '))
+
+  $supervisord_mailcatcher_cmd = "/usr/local/rvm/bin/bootup_mailcatcher ${supervisord_mailcatcher_options} -f  >> ${log_path}"
+
+  supervisord::program { 'mailcatcher':
+    command     => $supervisord_mailcatcher_cmd,
+    priority    => '100',
+    user        => 'vagrant',
+    autostart   => true,
+    autorestart => true,
+    environment => {
+      'PATH' => "/bin:/sbin:/usr/bin:/usr/sbin:${mailcatcher_values['settings']['mailcatcher_path']}"
+    },
+    require => [Rvm_wrapper['mailcatcher'], User['mailcatcher']]
   }
 }
