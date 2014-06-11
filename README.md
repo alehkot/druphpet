@@ -34,6 +34,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - RabbitMQ
 - Graphviz
 - MC
+- Vim
 - Samba Server
 - Memcached
 - Ruby 1.9.3 (by RVM)
