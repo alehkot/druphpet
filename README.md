@@ -12,7 +12,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 ## Included ##
 - Ubuntu 64-bit Precise
 - Drush 7.x
-- Apache 2.4
+- Apache 2.4 with mod_pagespeed
 - PHP 5.5 with steroids:
 	- XDebug	
 	- XHProf
@@ -36,6 +36,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - MC
 - Samba Server
 - Memcached
+- Ruby 1.9.3 (by RVM)
 
 You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 
