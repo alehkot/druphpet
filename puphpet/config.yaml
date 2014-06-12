@@ -230,3 +230,8 @@ php_xhprof:
     install: '1'
 pimpmylog:
     install: '0'
+varnish:
+    install: '0'
+    settings:
+        http_port: 8080
+        storage_size: 0.5G

@@ -36,6 +36,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - MC
 - Samba Server
 - Memcached
+- Varnish
 
 You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 
@@ -71,6 +72,10 @@ You can always adjust installed packages and settings in `puphpet/config.yaml` f
 
 - \\\192.168.9.10\data
 
+**Varnish**
+
+- port: 8080
+
 ## Minimum requirements ##
 * Git
 * VirtualBox 4.3.10
@@ -94,6 +99,8 @@ You can always adjust installed packages and settings in `puphpet/config.yaml` f
 - To enable sharing of folders using default, NFS, Rsync methods, just remove comments from the appropriate lines in Vagrantfile. By default, only Samba server is enabled.
 
 **Known issues**
+
+- Varnish is just installed and hasn't been configured universally yet to deal with any number of sites in VM.
 
 - Windows-only, to enable Samba, follow the instuctions in Vagrantfile. 
 
