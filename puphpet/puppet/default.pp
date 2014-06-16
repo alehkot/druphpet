@@ -1442,80 +1442,141 @@ if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] ==
   }
 }
 
-# Begin Varnish
- 
-if $varnish_values == undef {
-  $varnish_values = hiera('varnish', false)
+# Begin experimental
+
+if $experimental_values == undef {
+  $experimental_values = hiera('experimental', false)
 }
 
-if has_key($varnish_values, 'install') and $varnish_values['install'] == 1 {
-  class {'varnish':
-    varnish_listen_port => 8080,
-    varnish_storage_size => '1G',
+if has_key($experimental_values, 'install') and $experimental_values['install'] == 1 {
+
+  # Begin Varnish
+   
+  if $varnish_values == undef {
+    $varnish_values = hiera('varnish', false)
   }
 
-  class { 'varnish::vcl': }
+  if has_key($varnish_values, 'install') and $varnish_values['install'] == 1 {
+    class {'varnish':
+      varnish_listen_port => 8080,
+      varnish_storage_size => '1G',
+    }
 
-  varnish::probe { 'health_check1': url => '/health_check_url1' }
+    class { 'varnish::vcl': }
 
-  varnish::backend { 'drupaldev': host => '192.168.9.10', port => '80', probe => 'health_check1' }
+    varnish::probe { 'health_check1': url => '/health_check_url1' }
 
-  varnish::selector { 'drupaldev': condition => 'true' }
-}
+    varnish::backend { 'drupaldev': host => '192.168.9.10', port => '80', probe => 'health_check1' }
 
-# Begin node.js
+    varnish::selector { 'drupaldev': condition => 'true' }
+  }
 
-class { 'wget':
+  # Begin node.js
 
-}
+  class { 'wget':
 
-class { 'nodejs':
-  version => 'stable',
-  require => Class['wget'],
-}
+  }
 
-package { 'yo':
-  provider => npm,
-}
+  class { 'nodejs':
+    version => 'stable',
+    require => Class['wget'],
+  }
 
-# Begin RVM packages
+  package { 'yo':
+    provider => npm,
+  }
 
-rvm_gem {
-  'ruby-1.9.3-p429@vagrant/sass':
-    name => 'sass',
-    ensure => latest,
-    require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
-}
+  package { 'coffee-script':
+    provider => npm,
+  }
 
-rvm_wrapper {
-  'sass':
-    target_ruby => 'ruby-1.9.3-p429@vagrant',
-    prefix      => 'rvm',
-    ensure      => present,
-    require     => Rvm_system_ruby['ruby-1.9.3-p429'];
-}
 
-file { '/usr/local/bin/sass':
-  ensure => 'link',
-  target => '/usr/local/rvm/bin/rvm_sass',
-}
+  # Begin RVM packages
 
-rvm_gem {
-  'ruby-1.9.3-p429@vagrant/compass':
-    name => 'compass',
-    ensure => latest,
-    require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
-}
+  rvm_gem {
+    'ruby-1.9.3-p429@vagrant/sass':
+      name => 'sass',
+      ensure => latest,
+      require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
+  }
 
-rvm_wrapper {
-  'compass':
-    target_ruby => 'ruby-1.9.3-p429@vagrant',
-    prefix      => 'rvm',
-    ensure      => present,
-    require     => Rvm_system_ruby['ruby-1.9.3-p429'];
-}
+  rvm_wrapper {
+    'sass':
+      target_ruby => 'ruby-1.9.3-p429@vagrant',
+      prefix      => 'rvm',
+      ensure      => present,
+      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+  }
 
-file { '/usr/local/bin/compass':
-  ensure => 'link',
-  target => '/usr/local/rvm/bin/rvm_compass',
+  file { '/usr/local/bin/sass':
+    ensure => 'link',
+    target => '/usr/local/rvm/bin/rvm_sass',
+  }
+
+  rvm_gem {
+    'ruby-1.9.3-p429@vagrant/compass':
+      name => 'compass',
+      ensure => latest,
+      require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
+  }
+
+  rvm_wrapper {
+    'compass':
+      target_ruby => 'ruby-1.9.3-p429@vagrant',
+      prefix      => 'rvm',
+      ensure      => present,
+      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+  }
+
+  file { '/usr/local/bin/compass':
+    ensure => 'link',
+    target => '/usr/local/rvm/bin/rvm_compass',
+  }
+
+  rvm_gem {
+    'ruby-1.9.3-p429@vagrant/bundle':
+      name => 'bundle',
+      ensure => latest,
+      require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
+  }
+
+  rvm_wrapper {
+    'bundle':
+      target_ruby => 'ruby-1.9.3-p429@vagrant',
+      prefix      => 'rvm',
+      ensure      => present,
+      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+  }
+
+  file { '/usr/local/bin/bundle':
+    ensure => 'link',
+    target => '/usr/local/rvm/bin/rvm_bundle',
+  }
+
+  rvm_gem {
+    'ruby-1.9.3-p429@vagrant/guard':
+      name => 'guard',
+      ensure => latest,
+      require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
+  }
+
+  rvm_wrapper {
+    'guard':
+      target_ruby => 'ruby-1.9.3-p429@vagrant',
+      prefix      => 'rvm',
+      ensure      => present,
+      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+  }
+
+  file { '/usr/local/bin/guard':
+    ensure => 'link',
+    target => '/usr/local/rvm/bin/rvm_guard',
+  }
+
+  rvm_gem {
+    'ruby-1.9.3-p429@vagrant/guard-livereload':
+      name => 'guard-livereload',
+      ensure => latest,
+      require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
+  }
 }

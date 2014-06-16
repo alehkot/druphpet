@@ -37,19 +37,23 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - Vim
 - Samba Server
 - Memcached
-- In beta:
+- Experimental:
   - Varnish
   - Ruby 1.9.3 using RVM with gems:
     - Sass
     - Compass
+    - Bundler
+    - Guard
+    - Guard-livereload    
   - node.js with packages:
     - Yeoman
     - Bower
     - Grunt
+    - Coffee-script
 
-_In beta_ status means that packages are installed, but not yet customizable as stable.
-    
 You can always adjust installed packages and settings in `puphpet/config.yaml` file.
+
+_Experimental_ status means that packages are installed, but not yet customizable as stable. To enable _experimental_ support, adjust its setting in `puphpet/config.yaml`. 
 
 ## Defaults
 **Hosts**

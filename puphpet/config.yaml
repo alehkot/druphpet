@@ -230,6 +230,8 @@ php_xhprof:
     install: '1'
 pimpmylog:
     install: '0'
+experimental: 
+    install: '0'
 varnish:
     install: '0'
     settings:
