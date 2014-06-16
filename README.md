@@ -39,7 +39,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - Memcached
 - In beta:
   - Varnish
-  - Ruby 1.9.3 using RVM withgems:
+  - Ruby 1.9.3 using RVM with gems:
     - Sass
     - Compass
   - node.js with packages:
