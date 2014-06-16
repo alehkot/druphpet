@@ -1462,3 +1462,60 @@ if has_key($varnish_values, 'install') and $varnish_values['install'] == 1 {
 
   varnish::selector { 'drupaldev': condition => 'true' }
 }
+
+# Begin node.js
+
+class { 'wget':
+
+}
+
+class { 'nodejs':
+  version => 'stable',
+  require => Class['wget'],
+}
+
+package { 'yo':
+  provider => npm,
+}
+
+# Begin RVM packages
+
+rvm_gem {
+  'ruby-1.9.3-p429@vagrant/sass':
+    name => 'sass',
+    ensure => latest,
+    require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
+}
+
+rvm_wrapper {
+  'sass':
+    target_ruby => 'ruby-1.9.3-p429@vagrant',
+    prefix      => 'rvm',
+    ensure      => present,
+    require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+}
+
+file { '/usr/local/bin/sass':
+  ensure => 'link',
+  target => '/usr/local/rvm/bin/rvm_sass',
+}
+
+rvm_gem {
+  'ruby-1.9.3-p429@vagrant/compass':
+    name => 'compass',
+    ensure => latest,
+    require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
+}
+
+rvm_wrapper {
+  'compass':
+    target_ruby => 'ruby-1.9.3-p429@vagrant',
+    prefix      => 'rvm',
+    ensure      => present,
+    require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+}
+
+file { '/usr/local/bin/compass':
+  ensure => 'link',
+  target => '/usr/local/rvm/bin/rvm_compass',
+}

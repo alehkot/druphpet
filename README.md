@@ -37,9 +37,18 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - Vim
 - Samba Server
 - Memcached
-- Varnish
-- Ruby 1.9.3 (by RVM)
+- In beta:
+  - Varnish
+  - Ruby 1.9.3 using RVM withgems:
+    - Sass
+    - Compass
+  - node.js with packages:
+    - Yeoman
+    - Bower
+    - Grunt
 
+_In beta_ status means that packages are installed, but not yet customizable as stable.
+    
 You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 
 ## Defaults
