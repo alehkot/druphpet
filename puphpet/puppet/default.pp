@@ -821,6 +821,7 @@ define php_mod {
     }
   }
 }
+
 define php_pear_mod {
   if ! defined(Puphpet::Php::Pear[$name]) {
     puphpet::php::pear { $name:
@@ -828,6 +829,7 @@ define php_pear_mod {
     }
   }
 }
+
 define php_pecl_mod {
   if ! defined(Puphpet::Php::Extra_repos[$name]) {
     puphpet::php::extra_repos { $name:
@@ -1486,10 +1488,17 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
     provider => npm,
   }
 
+  package { 'generator-angular':
+    provider => npm,
+  }    
+
   package { 'coffee-script':
     provider => npm,
   }
 
+  package { 'jshint':
+    provider => npm,
+  }  
 
   # Begin RVM packages
 
