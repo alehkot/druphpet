@@ -291,7 +291,6 @@ if hash_key_equals($apache_values, 'install', 1) {
     $apache_version = $apache::version::default
   }
 
-
   $apache_settings = merge($apache_values['settings'], {
     'mpm_module'     => $mpm_module,
     'conf_template'  => $apache_conf_template,
@@ -323,6 +322,11 @@ if hash_key_equals($apache_values, 'install', 1) {
       php_package => $apache_php_package
     }
   }
+
+  # Install access_compat Apache module for 2.4.
+  if $apache_version == '2.4' {
+    apache::mod { 'access_compat': }
+  }  
 
   if count($apache_values['vhosts']) > 0 {
     each( $apache_values['vhosts'] ) |$key, $vhost| {
