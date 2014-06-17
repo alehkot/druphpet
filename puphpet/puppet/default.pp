@@ -219,8 +219,17 @@ define add_dotdeb ($release){
 
 if $yaml_values == undef {
   $yaml_values = loadyaml('/vagrant/puphpet/config.yaml')
+  $local_yaml_values = loadyaml('/vagrant/puphpet/local.config.yaml')
 } if $apache_values == undef {
+
+  # Allow local overrides
+  if $local_yaml_values['apache'] == undef {
+    #$apache_values = $yaml_values['apache']
+  } else {
+    #$apache_values = merge($yaml_values['apache'], $local_yaml_values['apache']) 
+  }
   $apache_values = $yaml_values['apache']
+        
 } if $php_values == undef {
   $php_values = hiera('php', false)
 } if $hhvm_values == undef {
@@ -906,7 +915,7 @@ if $drush_values['install'] != undef and $drush_values['install'] == 1 {
 ## Begin MySQL manifest
 
 if $mysql_values == undef {
-  $mysql_values = hiera('mysql', false)
+  $mysql_values = hiera_hash('mysql', false)
 }
 
 if $php_values == undef {

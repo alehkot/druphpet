@@ -57,6 +57,9 @@ You can always adjust installed packages and settings in `puphpet/config.yaml` f
 
 _Experimental_ status means that packages are installed, but not yet customizable as stable. To enable _experimental_ support, adjust the 'experimental' setting in `puphpet/config.yaml`. 
 
+## Local overrides
+`puphpet/local.config.yaml` can be used to set overrides for default configuration from `puphpet/config.yaml`.
+
 ## Defaults
 **Hosts**
 

@@ -175,22 +175,6 @@ mysql:
             user: drupal
             password: drupal
             sql_file: ''
-        nbcumedvil:
-            grant:
-                - ALL
-            name: nbcumedvil
-            host: '%'
-            user: drupal
-            password: drupal
-            sql_file: ''
-        i2iawards:
-            grant:
-                - ALL
-            name: i2iawards
-            host: '%'
-            user: drupal
-            password: drupal
-            sql_file: ''
 beanstalkd:
     install: '0'
     listenaddress: '0.0.0.0'

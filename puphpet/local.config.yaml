@@ -1,0 +1,30 @@
+---
+apache:
+    vhosts:
+        drupal8.dev:
+            servername: drupal8.dev
+            serveraliases:
+                - www.drupal8.dev
+            docroot: /var/www/drupal8.dev
+            port: '80'
+            override:
+                - All
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            custom_fragment: ''
+            ssl_cert: ''
+            ssl_key: ''
+            ssl_chain: ''
+            ssl_certs_dir: ''
+mysql:
+    databases:
+        drupal8:
+            grant:
+                - ALL
+            name: drupal8
+            host: '%'
+            user: drupal
+            password: drupal
+            sql_file: ''
