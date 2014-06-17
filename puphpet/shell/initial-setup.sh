@@ -35,7 +35,7 @@ if [[ ! -f '/.puphpet-stuff/initial-setup-base-packages' ]]; then
 
         echo 'Installing rubygems'
         apt-get install -y rubygems >/dev/null
-        echo 'Finished installing rubygems'
+        echo 'Finished installing rubygems'        
 
         echo 'Installing base packages for r10k'
         apt-get install -y build-essential ruby-dev >/dev/null
@@ -58,6 +58,10 @@ if [[ ! -f '/.puphpet-stuff/initial-setup-base-packages' ]]; then
         echo 'Installing r10k'
         gem install r10k >/dev/null 2>&1
         echo 'Finished installing r10k'
+
+        echo 'Installing deep_merge'
+        gem install deep_merge
+        echo 'Finished installing deep_merge'        
 
         touch '/.puphpet-stuff/initial-setup-base-packages'
     elif [[ "${OS}" == 'centos' ]]; then
