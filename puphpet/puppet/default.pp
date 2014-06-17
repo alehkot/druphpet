@@ -229,7 +229,7 @@ if $yaml_values == undef {
     #$apache_values = merge($yaml_values['apache'], $local_yaml_values['apache']) 
   }
   $apache_values = $yaml_values['apache']
-        
+
 } if $php_values == undef {
   $php_values = hiera('php', false)
 } if $hhvm_values == undef {
@@ -1432,7 +1432,7 @@ if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] ==
       target_ruby => 'ruby-1.9.3-p429@vagrant',
       prefix      => 'bootup',
       ensure      => present,
-      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+      require     => Rvm_gem['ruby-1.9.3-p429@vagrant/mailcatcher'];
   }
 
   $supervisord_mailcatcher_options = sort(join_keys_to_values({
@@ -1527,7 +1527,7 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
       target_ruby => 'ruby-1.9.3-p429@vagrant',
       prefix      => 'rvm',
       ensure      => present,
-      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+      require     => Rvm_gem['ruby-1.9.3-p429@vagrant/sass'];
   }
 
   file { '/usr/local/bin/sass':
@@ -1547,7 +1547,7 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
       target_ruby => 'ruby-1.9.3-p429@vagrant',
       prefix      => 'rvm',
       ensure      => present,
-      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+      require     => Rvm_gem['ruby-1.9.3-p429@vagrant/compass'];
   }
 
   file { '/usr/local/bin/compass':
@@ -1567,7 +1567,7 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
       target_ruby => 'ruby-1.9.3-p429@vagrant',
       prefix      => 'rvm',
       ensure      => present,
-      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+      require     => Rvm_gem['ruby-1.9.3-p429@vagrant/bundle'];
   }
 
   file { '/usr/local/bin/bundle':
@@ -1587,7 +1587,7 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
       target_ruby => 'ruby-1.9.3-p429@vagrant',
       prefix      => 'rvm',
       ensure      => present,
-      require     => Rvm_system_ruby['ruby-1.9.3-p429'];
+      require     => Rvm_gem['ruby-1.9.3-p429@vagrant/guard'];
   }
 
   file { '/usr/local/bin/guard':
