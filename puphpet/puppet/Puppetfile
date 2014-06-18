@@ -28,3 +28,4 @@ mod 'rvm', :git => 'https://github.com/maestrodev/puppet-rvm.git', :ref => 'maes
 mod 'varnish', :git => 'https://github.com/maxchk/puppet-varnish.git'
 mod 'nodejs', :git => 'https://github.com/illogicalimbecile/puppet-nodejs'
 mod 'wget', :git => 'https://github.com/liquidstate/puppet-wget.git'
+mod 'webgrind', :git => 'https://github.com/alehkot/puppet-webgrind.git'

@@ -1602,3 +1602,15 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
       require => Rvm_gemset['ruby-1.9.3-p429@vagrant'];
   }
 }
+
+if $webgrind_values == undef {
+  $webgrind_values = hiera('webgrind', false)
+}
+
+if has_key($webgrind_values, 'install') and $webgrind_values['install'] == 1 {
+  
+  # Begin Webgrind 
+  class { 'webgrind':
+    domain => $webgrind_values['domain'],
+  }
+}

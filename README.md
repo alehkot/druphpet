@@ -29,6 +29,7 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - [PimpMyLog](http://pimpmylog.com/)
 - [MailCatcher](http://mailcatcher.me/)
 - ImageMagick
+- Webgrind
 - Unzip
 - Git
 - RabbitMQ
@@ -79,6 +80,10 @@ _Experimental_ status means that packages are installed, but not yet customizabl
 **PimpMyLog**
 
 - http://192.168.9.10/pimpmylog
+
+**Webgrind**
+
+- http://webgrind.drupal.dev
 
 **RabbitMQ**
 

@@ -93,11 +93,13 @@ apache:
             ssl_cert: ''
             ssl_key: ''
             ssl_chain: ''
-            ssl_certs_dir: ''
+            ssl_certs_dir: ''           
     modules:
         - php
         - rewrite
         - vhost_alias
+    mod_pagespeed: '0'
+    mod_spdy: '0'
 nginx:
     install: 0
     vhosts:
@@ -158,6 +160,8 @@ xdebug:
         xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
         xdebug.max_nesting_level: 250
+        xdebug.profiler_enable_trigger: '1'
+        xdebug.trace_enable_trigger: '1'
 drush:
     install: '1'
     settings:
@@ -174,7 +178,7 @@ mysql:
             host: '%'
             user: drupal
             password: drupal
-            sql_file: ''
+            sql_file: ''          
 beanstalkd:
     install: '0'
     listenaddress: '0.0.0.0'
@@ -215,9 +219,12 @@ php_xhprof:
 pimpmylog:
     install: '0'
 experimental: 
-    install: '0'
+    install: '1'
 varnish:
     install: '0'
     settings:
         http_port: 8080
         storage_size: 0.5G
+webgrind:
+    install: '0'
+    domain: 'webgrind.drupal.dev'
