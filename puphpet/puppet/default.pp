@@ -226,7 +226,7 @@ if $yaml_values == undef {
   if $local_yaml_values['apache'] == undef {
     #$apache_values = $yaml_values['apache']
   } else {
-    #$apache_values = merge($yaml_values['apache'], $local_yaml_values['apache']) 
+    #$apache_values = merge($yaml_values['apache'], $local_yaml_values['apache'])
   }
   $apache_values = $yaml_values['apache']
 
@@ -335,7 +335,7 @@ if hash_key_equals($apache_values, 'install', 1) {
   # Install access_compat Apache module for 2.4.
   if $apache_version == '2.4' {
     apache::mod { 'access_compat': }
-  }  
+  }
 
   if count($apache_values['vhosts']) > 0 {
     each( $apache_values['vhosts'] ) |$key, $vhost| {
@@ -1410,7 +1410,7 @@ if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] ==
     group   => 'mailcatcher',
     mode    => 0755,
     require => User['mailcatcher'],
-  }    
+  }
 
   file { $log_path:
     ensure  => file,
@@ -1418,7 +1418,7 @@ if has_key($mailcatcher_values, 'install') and $mailcatcher_values['install'] ==
     group   => 'mailcatcher',
     mode    => 0755,
     require => [User['mailcatcher'], File['/var/log/mailcatcher']],
-  }  
+  }
 
   rvm_gem {
     'ruby-1.9.3-p429@vagrant/mailcatcher':
@@ -1466,7 +1466,7 @@ if $experimental_values == undef {
 if has_key($experimental_values, 'install') and $experimental_values['install'] == 1 {
 
   # Begin Varnish
-   
+
   if $varnish_values == undef {
     $varnish_values = hiera('varnish', false)
   }
@@ -1503,7 +1503,11 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
 
   package { 'generator-angular':
     provider => npm,
-  }    
+  }
+
+  # package { 'gulp':
+    # provider => npm,
+  # }
 
   package { 'coffee-script':
     provider => npm,
@@ -1511,7 +1515,7 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
 
   package { 'jshint':
     provider => npm,
-  }  
+  }
 
   # Begin RVM packages
 
@@ -1603,13 +1607,57 @@ if has_key($experimental_values, 'install') and $experimental_values['install'] 
   }
 }
 
+# Begin New Relic
+
+if $newrelic_values == undef {
+  $newrelic_values = hiera('newrelic', false)
+}
+
+if has_key($newrelic_values, 'install') and $newrelic_values['install'] == 1 {
+
+  #class { 'nrsysmond':
+   # license_key => $newrelic_values['license_key'],
+  #}
+
+  newrelic::server {
+    'drupal':
+      newrelic_license_key => $newrelic_values['license_key'],
+  }
+
+  newrelic::php {
+    'drupal':
+      newrelic_license_key      => $newrelic_values['license_key'],
+      newrelic_php_conf_appname => $newrelic_values['application_name'];
+  }
+
+  # Restart Apache
+  if is_hash($apache_values) {
+    exec { 'httpd-restart':
+      command => 'service apache2 restart',
+      require => [
+        Class['apache'],
+        Package['newrelic-php5'],
+      ]
+    }
+  } elsif is_hash($nginx_values) {
+    exec { 'nginx-restart':
+      command => 'service nginx restart',
+    }
+  }
+  #class { 'newrelic_php':
+   # license_key => $newrelic_values['license_key'],
+  #}
+}
+
+# Begin Webgrind
+
 if $webgrind_values == undef {
   $webgrind_values = hiera('webgrind', false)
 }
 
 if has_key($webgrind_values, 'install') and $webgrind_values['install'] == 1 {
-  
-  # Begin Webgrind 
+
+  # Begin Webgrind
   class { 'webgrind':
     domain => $webgrind_values['domain'],
   }
