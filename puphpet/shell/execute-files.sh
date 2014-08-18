@@ -4,17 +4,41 @@ export DEBIAN_FRONTEND=noninteractive
 
 VAGRANT_CORE_FOLDER=$(cat '/.puphpet-stuff/vagrant-core-folder.txt')
 
-shopt -s nullglob
-files=("${VAGRANT_CORE_FOLDER}"/files/exec-once/*)
+EXEC_ONCE_DIR="$1"
+EXEC_ALWAYS_DIR="$2"
 
-if [[ ! -f '/.puphpet-stuff/exec-once-ran' && (${#files[@]} -gt 0) ]]; then
-    echo 'Running files in files/exec-once'
-    find "${VAGRANT_CORE_FOLDER}/files/exec-once" -maxdepth 1 -not -path '*/\.*' -type f \( ! -iname "empty" \) -exec chmod +x '{}' \; -exec {} \;
-    echo 'Finished running files in files/exec-once'
-    echo 'To run again, delete file /.puphpet-stuff/exec-once-ran'
-    touch /.puphpet-stuff/exec-once-ran
+echo "Running files in files/${EXEC_ONCE_DIR}"
+
+if [ -d "/.puphpet-stuff/${EXEC_ONCE_DIR}-ran" ]; then
+    rm -rf "/.puphpet-stuff/${EXEC_ONCE_DIR}-ran"
 fi
 
-echo 'Running files in files/exec-always'
-find "${VAGRANT_CORE_FOLDER}/files/exec-always" -maxdepth 1 -not -path '*/\.*' -type f \( ! -iname "empty" \) -exec chmod +x '{}' \; -exec {} \;
-echo 'Finished running files in files/exec-always'
+if [ ! -f "/.puphpet-stuff/${EXEC_ONCE_DIR}-ran" ]; then
+   touch "/.puphpet-stuff/${EXEC_ONCE_DIR}-ran"
+   echo "Created file /.puphpet-stuff/${EXEC_ONCE_DIR}-ran"
+fi
+
+find "${VAGRANT_CORE_FOLDER}/files/${EXEC_ONCE_DIR}" -maxdepth 1 -type f -name '*.sh' | sort | while read FILENAME; do
+    SHA1=$(sha1sum "${FILENAME}")
+
+    if ! grep -x -q "${SHA1}" "/.puphpet-stuff/${EXEC_ONCE_DIR}-ran"; then
+        echo "${SHA1}" >> "/.puphpet-stuff/${EXEC_ONCE_DIR}-ran"
+
+        chmod +x "${FILENAME}"
+        /bin/bash "${FILENAME}"
+    else
+        echo "Skipping executing ${FILENAME} as contents have not changed"
+    fi
+done
+
+echo "Finished running files in files/${EXEC_ONCE_DIR}"
+echo "To run again, delete hashes you want rerun in /.puphpet-stuff/${EXEC_ONCE_DIR}-ran or the whole file to rerun all"
+
+echo "Running files in files/${EXEC_ALWAYS_DIR}"
+
+find "${VAGRANT_CORE_FOLDER}/files/${EXEC_ALWAYS_DIR}" -maxdepth 1 -type f -name '*.sh' | sort | while read FILENAME; do
+    chmod +x "${FILENAME}"
+    /bin/bash "${FILENAME}"
+done
+
+echo "Finished running files in files/${EXEC_ALWAYS_DIR}"

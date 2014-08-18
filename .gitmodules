@@ -1,0 +1,9 @@
+[submodule "puphpet\\puppet\\modules\\apache"]
+	path = puphpet\\puppet\\modules\\apache
+	url = https://github.com/puphpet/puppetlabs-apache.git
+[submodule "puphpet\\puppet\\modules\\apt"]
+	path = puphpet\\puppet\\modules\\apt
+	url = https://github.com/puphpet/puppetlabs-apt.git
+[submodule "puphpet\\puppet\\modules\\stdlib"]
+	path = puphpet\\puppet\\modules\\stdlib
+	url = https://github.com/puphpet/puppetlabs-stdlib.git
