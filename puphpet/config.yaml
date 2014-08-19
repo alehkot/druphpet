@@ -7,6 +7,7 @@ vagrantfile-local:
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
+        sync_modules: true
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -79,7 +80,7 @@ server:
     _prevent_empty: ''
 firewall:
     install: '1'
-    rules: null    
+    rules: null
 apache:
     install: 0
     settings:

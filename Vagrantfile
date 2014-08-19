@@ -189,6 +189,10 @@ Vagrant.configure('2') do |config|
   config.vm.provision :shell, :path => 'puphpet/shell/install-ruby.sh'
   config.vm.provision :shell, :path => 'puphpet/shell/install-puppet.sh'
 
+  if data['vm']['sync_modules']
+    config.vm.provision :shell, :path => 'puphpet/shell/install-modules.sh'
+  end
+
   config.vm.provision :puppet do |puppet|
     puppet.facter = {
       'ssh_username'     => "#{ssh_username}",
