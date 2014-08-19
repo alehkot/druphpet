@@ -46,7 +46,20 @@ if hash_key_equals($mysql_values, 'install', 1) {
     class { 'mysql::server':
       package_name  => $mysql_server_server_package_name,
       root_password => $mysql_values['root_password'],
+      override_options => {
+        'mysqld' => {
+          'bind-address' => '0.0.0.0'
+        }
+      },
       require       => $mysql_server_require
+    }
+
+    if ! defined(Firewall["3306 tcp/3306"]) {
+      firewall { "3306 tcp/3306":
+        port   => 3306,
+        proto  => tcp,
+        action => 'accept',
+      }
     }
 
     class { 'mysql::client':

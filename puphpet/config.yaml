@@ -7,7 +7,7 @@ vagrantfile-local:
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
-        sync_modules: true
+        sync_modules: false
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -68,6 +68,7 @@ server:
         - curl
         - git-core
         - php-console-table
+        - libssh2-php
         - imagemagick
         - sendmail
         - unzip
@@ -220,8 +221,8 @@ mysql:
             grant:
                 - ALL
             name: drupal
-            host: localhost
-            user: dbuser
+            host: '%'
+            user: drupal
             password: 'drupal'
             sql_file: ''
 postgresql:
