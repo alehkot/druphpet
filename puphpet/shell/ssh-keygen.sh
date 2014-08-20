@@ -76,5 +76,7 @@ if [ "${VAGRANT_SSH_USERNAME}" != 'root' ]; then
     chmod 600 "${VAGRANT_SSH_FOLDER}/id_rsa"
     chmod 600 "${VAGRANT_SSH_FOLDER}/authorized_keys"
 
-    passwd -d "${VAGRANT_SSH_USERNAME}" >/dev/null
+    # @todo Find out a better way to deal with the old password.
+    # passwd -d "${VAGRANT_SSH_USERNAME}" >/dev/null
+    echo -e "vagrant\nvagrant" | passwd vagrant
 fi
