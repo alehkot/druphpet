@@ -123,10 +123,10 @@ nginx:
         proxy_buffers: '4 256k'
     vhosts:
         VTChGNgY0tNd:
-            server_name: drupal.dev
+            server_name: awesome.dev
             server_aliases:
-                - drupal.dev
-            www_root: /var/www/drupal.dev
+                - www.awesome.dev
+            www_root: /var/www/awesome.dev
             listen_port: '80'
             location: \.php$
             index_files:
@@ -177,7 +177,7 @@ hhvm:
         error_reporting: '-1'
     timezone: null
 xdebug:
-    install: '1'
+    install: '0'
     settings:
         xdebug.default_enable: '1'
         xdebug.remote_autostart: '0'
@@ -186,7 +186,7 @@ xdebug:
         xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
 xhprof:
-    install: '1'
+    install: '0'
 drush:
     install: '1'
     version: 6.3.0
@@ -214,16 +214,16 @@ nodejs:
         - jslint
 mysql:
     install: 1
-    root_password: 'drupal'
+    root_password: 'awesome'
     adminer: 1
     databases:
         gPB9UXozXZEq:
             grant:
                 - ALL
-            name: drupal
+            name: awesome
             host: '%'
-            user: drupal
-            password: 'drupal'
+            user: awesome
+            password: 'awesome'
             sql_file: ''
 postgresql:
     install: '0'
@@ -241,7 +241,7 @@ mariadb:
     databases: {  }
     version: '10.0'
 sqlite:
-    install: '1'
+    install: '0'
     adminer: '0'
     databases: {  }
 mongodb:
@@ -255,7 +255,7 @@ redis:
     settings:
         conf_port: '6379'
 mailcatcher:
-    install: '1'
+    install: '0'
     settings:
         smtp_ip: 0.0.0.0
         smtp_port: 1025
@@ -301,8 +301,8 @@ varnish:
         storage_size: 0.5G
 webgrind:
     install: '0'
-    domain: 'webgrind.drupal.dev'
+    domain: 'webgrind.awesome.dev'
 newrelic:
     install: '0'
-    application_name: 'Drupal'
+    application_name: 'Awesome'
     license_key: ''
