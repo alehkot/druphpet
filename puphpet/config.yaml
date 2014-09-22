@@ -3,7 +3,7 @@ vagrantfile-local:
     vm:
         box: puphpet/ubuntu1204-x64
         box_url: puphpet/ubuntu1204-x64
-        hostname: 'drupal.dev'
+        hostname: 'awesome.dev'
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
@@ -83,7 +83,7 @@ firewall:
     install: '1'
     rules: null
 apache:
-    install: 0
+    install: 1
     settings:
         user: www-data
         group: www-data
@@ -114,9 +114,9 @@ apache:
             ssl_key: ''
             ssl_chain: ''
             ssl_certs_dir: ''
-    mod_pagespeed: '1'
+    mod_pagespeed: '0'
 nginx:
-    install: '1'
+    install: '0'
     settings:
         default_vhost: 1
         proxy_buffer_size: 128k
@@ -162,7 +162,9 @@ php:
         display_errors: On
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
-    timezone: America/Chicago
+        memory_limit: '512M'
+        max_execution_time: '300'
+    timezone: Europe/Minsk
     mod_php: '0'
 hhvm:
     install: '0'
@@ -177,7 +179,7 @@ hhvm:
         error_reporting: '-1'
     timezone: null
 xdebug:
-    install: '0'
+    install: '1'
     settings:
         xdebug.default_enable: '1'
         xdebug.remote_autostart: '0'
@@ -186,10 +188,10 @@ xdebug:
         xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
 xhprof:
-    install: '0'
+    install: '1'
 drush:
     install: '1'
-    version: 6.3.0
+    version: 6.4.0
 ruby:
     install: '1'
     versions:
@@ -208,10 +210,12 @@ nodejs:
         - yo
         - generator-angular
         - gulp
+        - bower
         - coffee-script
         - jshint
         - csslint
         - jslint
+        - nodemon
 mysql:
     install: 1
     root_password: 'awesome'
@@ -255,7 +259,7 @@ redis:
     settings:
         conf_port: '6379'
 mailcatcher:
-    install: '0'
+    install: '1'
     settings:
         smtp_ip: 0.0.0.0
         smtp_port: 1025
@@ -287,20 +291,18 @@ elastic_search:
 samba_server:
     install: '1'
 php_memcached:
-    install: '0'
+    install: '1'
 solr:
     install: '0'
 pimpmylog:
-    install: '0'
-experimental:
-    install: '0'
+    install: '1'
 varnish:
     install: '0'
     settings:
         http_port: 8080
         storage_size: 0.5G
 webgrind:
-    install: '0'
+    install: '1'
     domain: 'webgrind.awesome.dev'
 newrelic:
     install: '0'
