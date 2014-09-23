@@ -1,8 +1,8 @@
 ---
 vagrantfile-local:
     vm:
-        box: puphpet/ubuntu1204-x64
-        box_url: puphpet/ubuntu1204-x64
+        box: puphpet/ubuntu1404-x64
+        box_url: puphpet/ubuntu1404-x64
         hostname: 'awesome.dev'
         memory: '1024'
         cpus: '2'
@@ -67,8 +67,7 @@ server:
         - vim
         - curl
         - git-core
-        - php-console-table
-        - libssh2-php
+        - php-console-table        
         - imagemagick
         - sendmail
         - unzip
@@ -147,7 +146,7 @@ nginx:
             spdy: '1'
 php:
     install: '1'
-    version: '55'
+    version: '56'
     composer: '1'
     composer_home: ''
     modules:
@@ -168,9 +167,12 @@ php:
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
         memory_limit: '512M'
+        upload_max_filesize: '128M'
+        post_max_size: '128M'
         max_execution_time: '300'
+        error_log: /var/log/php_errors.log
     timezone: Europe/Minsk
-    mod_php: '0'
+    mod_php: '1'
 hhvm:
     install: '0'
     nightly: 0
@@ -188,10 +190,12 @@ xdebug:
     settings:
         xdebug.default_enable: '1'
         xdebug.remote_autostart: '0'
-        xdebug.remote_connect_back: '1'
+        xdebug.remote_connect_back: '0'
+        xdebug.remote_host: 'localhost'
         xdebug.remote_enable: '1'
-        xdebug.remote_handler: dbgp
-        xdebug.remote_port: '9000'
+        xdebug.remote_handler: 'dbgp'
+        xdebug.remote_port: '9000'        
+        xdebug.max_nesting_level: '5000'
 xhprof:
     install: '1'
 drush:

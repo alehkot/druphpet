@@ -152,3 +152,7 @@ _Experimental_ status means that packages are installed, but not yet customizabl
 > "Vagrant uses the `VBoxManage` binary that ships with VirtualBox, and requires this to be available on the PATH. If VirtualBox is installed, please find the `VBoxManage` binary and add it to the PATH environmental variable."
 - during `vagrant up` execution, then execute the following command:
 	- `set PATH=%PATH%;C:\Program Files\Oracle\VirtualBox`
+
+- If you experience problems with remote debugging (PHP, NodeJS) try creating SSH-tunnels as following:
+  - PHP: `ssh -R 9000:localhost:9000 vagrant@awesome.dev`
+  - NodeJS: `ssh -L 5858:127.0.0.1:5858 vagrant@awesome.dev -N`
