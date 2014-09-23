@@ -81,7 +81,12 @@ server:
     _prevent_empty: ''
 firewall:
     install: '1'
-    rules: null
+    rules:
+      xdebug:
+        port: 9000
+        proto: tcp
+        action: accept
+        priority: 9000
 apache:
     install: 1
     settings:
