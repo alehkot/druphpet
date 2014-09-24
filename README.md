@@ -6,12 +6,12 @@ Forked from [Puphpet](http://puphpet.com "Puphpet").
 One can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
 
 ## Included ##
-- Ubuntu 64-bit Precise
-- Drush 7.x
-- Apache 2.4 with mod_pagespeed
-- PHP 5.5(6) with steroids:
-	- XDebug
-	- XHProf
+- Ubuntu 64-bit Precise 14.04
+- Drush 6.4
+- Apache 2.2(4) with mod_pagespeed and/or nginx
+- PHP 5.6 with steroids:
+  - XDebug
+  - XHProf
   - SOAP
   - Uploadprogress
   - APCu
@@ -28,7 +28,6 @@ One can easily add sites, databases, packages, etc. simply be editing `puphpet/c
 - ImageMagick
 - Webgrind
 - Curl
-- LibSSH2
 - Sendmail
 - Unzip
 - Git
@@ -94,7 +93,7 @@ _Experimental_ status means that packages are installed, but not yet customizabl
 
 **Apache Solr**
 
-- http://awesome.dev:8983
+- http://awesome.dev:8983/solr
 
 **Samba server share (default)**
 
