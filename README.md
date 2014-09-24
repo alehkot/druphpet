@@ -1,13 +1,9 @@
 # Druphpet Virtual Machine #
 A Puppet-based awesome-ready VM suitable for instant and unified configuration of awesome-Dev environments.
 
-Based on [https://awesome.org/project/vm](https://awesome.org/project/vm "Virtual Machine") project on awesome.org.
+Forked from [Puphpet](http://puphpet.com "Puphpet").
 
 One can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
-
-[Puphpet](https://github.com/puphpet/puphpet "Puphpet") compatible.
-
-awesome.org project URL: [Druphpet](https://awesome.org/sandbox/k0teg/2247955).
 
 ## Included ##
 - Ubuntu 64-bit Precise
