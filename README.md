@@ -1,9 +1,8 @@
 # Druphpet Virtual Machine #
-A Puppet-based awesome-ready VM suitable for instant and unified configuration of awesome-Dev environments.
+A Puppet-based Drupal-ready VM suitable for instant and unified configuration of awesome-Dev environments.
+You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
 
-Forked from [Puphpet](http://puphpet.com "Puphpet").
-
-One can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
+Based on VM generated using [Puphpet](http://puphpet.com "Puphpet").
 
 ## Included ##
 - Ubuntu 64-bit Precise 14.04
@@ -56,8 +55,6 @@ One can easily add sites, databases, packages, etc. simply be editing `puphpet/c
     - JSLint
 
 Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
-
-_Experimental_ status means that packages are installed, but not yet customizable as stable. To enable _experimental_ support, adjust the 'experimental' setting in `puphpet/config.yaml`.
 
 ## Local overrides
 (not working at this moment)
