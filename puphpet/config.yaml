@@ -74,6 +74,7 @@ server:
         - mc
         - graphviz
         - memcached
+        - libssh2-1-dev
     dot_files:
         -
             bash_aliases: null
@@ -162,6 +163,7 @@ php:
             - pecl_http
             - uploadprogress
             - apcu
+            - ssh2
     ini:
         display_errors: On
         error_reporting: '-1'
