@@ -163,7 +163,7 @@ php:
             - pecl_http
             - uploadprogress
             - apcu
-            - ssh2
+            - ssh2-0.12
     ini:
         display_errors: On
         error_reporting: '-1'
