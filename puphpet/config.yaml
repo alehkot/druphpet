@@ -1,11 +1,13 @@
 ---
 vagrantfile-local:
     vm:
-        box: ubuntu-precise-x64
-        box_url: 'http://files.vagrantup.com/precise64.box'
-        hostname: drupal.dev
-        memory: 1024
+        box: puphpet/ubuntu1404-x64
+        box_url: puphpet/ubuntu1404-x64
+        hostname: 'awesome.dev'
+        memory: '1024'
+        cpus: '2'
         chosen_provider: virtualbox
+        sync_modules: true
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -25,18 +27,28 @@ vagrantfile-local:
         provision:
             puppet:
                 manifests_path: puphpet/puppet
-                manifest_file: default.pp
+                manifest_file: site.pp
+                module_path: puphpet/puppet/modules
                 options:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            svLXV9ln5L9l:
-                id: webroot
-                source: ./www
+            wRT5TsSy6sE4:
+                source: ./
                 target: /var/www
-                nfs: 'false'
-        usable_port_range: 2200..2250
+                sync_type: default
+                rsync:
+                    args:
+                        - '--verbose'
+                        - '--archive'
+                        - '-z'
+                    exclude:
+                        - .vagrant/
+                    auto: 'false'
+        usable_port_range:
+            start: 10200
+            stop: 10500
     ssh:
         host: null
         port: null
@@ -48,26 +60,35 @@ vagrantfile-local:
         forward_x11: false
         shell: 'bash -l'
     vagrant:
-        host: ':detect'
+        host: detect
 server:
     packages:
         - build-essential
         - vim
         - curl
         - git-core
-        - php-console-table
+        - php-console-table        
         - imagemagick
         - sendmail
         - unzip
         - mc
         - graphviz
         - memcached
+        - libssh2-1-dev
     dot_files:
         -
             bash_aliases: null
     _prevent_empty: ''
-apache:
+firewall:
     install: '1'
+    rules:
+      xdebug:
+        port: 9000
+        proto: tcp
+        action: accept
+        priority: 9000
+apache:
+    install: 1
     settings:
         user: www-data
         group: www-data
@@ -75,160 +96,226 @@ apache:
         manage_user: false
         manage_group: false
         sendfile: 0
-        default_mods: false
+    modules:
+        - rewrite
     vhosts:
-        drupal:
-            servername: drupal.dev
+        0M1pWVWI2bhY:
+            servername: awesome.dev
             serveraliases:
-                - www.drupal.dev
-            docroot: /var/www/drupal.dev
+                - www.awesome.dev
+            docroot: /var/www/awesome
             port: '80'
+            setenv:
+                - 'APP_ENV dev'
             override:
                 - All
             options:
                 - Indexes
                 - FollowSymLinks
                 - MultiViews
+            engine: php
             custom_fragment: ''
             ssl_cert: ''
             ssl_key: ''
             ssl_chain: ''
             ssl_certs_dir: ''
-    modules:
-        - php
-        - rewrite
-        - vhost_alias
     mod_pagespeed: '0'
-    mod_spdy: '0'
 nginx:
-    install: 0
+    install: '0'
+    settings:
+        default_vhost: 1
+        proxy_buffer_size: 128k
+        proxy_buffers: '4 256k'
     vhosts:
-        WZob4fL9trIa:
+        VTChGNgY0tNd:
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
             www_root: /var/www/awesome.dev
             listen_port: '80'
+            location: \.php$
             index_files:
                 - index.html
                 - index.htm
                 - index.php
             envvars:
                 - 'APP_ENV dev'
+            engine: php
+            ssl: '1'
             ssl_cert: ''
             ssl_key: ''
+            spdy: '1'
 php:
     install: '1'
-    version: '55'
+    version: '56'
     composer: '1'
+    composer_home: ''
     modules:
         php:
             - cli
-            - curl
-            - gd
             - intl
             - mcrypt
-            # Uncomment the next line for PHP < 5.5, if you want to use XCache.
-            # - xcache
-        pear: {  }
+            - curl
+            - gd
+        pear:
+            - PHP_CodeSniffer
         pecl:
-            # Uncomment the next line for PHP < 5.5, if you want to use APC.
-            # - apc
-
-            # @todo At this moment XHProf can't be installed this way.
-            # - xhprof
             - pecl_http
             - uploadprogress
             - apcu
+            - ssh2-0.12
     ini:
         display_errors: On
         error_reporting: '-1'
-        memory_limit: 512M
-        short_open_tag: Off
         session.save_path: /var/lib/php/session
-        post_max_size: 2048M
-        upload_max_filesize: 2048M
-        error_log: /tmp/php_errors.log
+        memory_limit: '512M'
+        upload_max_filesize: '128M'
+        post_max_size: '128M'
+        max_execution_time: '300'
+        error_log: /var/log/php_errors.log
     timezone: Europe/Minsk
+    mod_php: '1'
+hhvm:
+    install: '0'
+    nightly: 0
+    composer: '1'
+    composer_home: ''
+    settings:
+        host: 127.0.0.1
+        port: '9000'
+    ini:
+        display_errors: On
+        error_reporting: '-1'
+    timezone: null
 xdebug:
     install: '1'
     settings:
         xdebug.default_enable: '1'
         xdebug.remote_autostart: '0'
-        xdebug.remote_connect_back: '1'
+        xdebug.remote_connect_back: '0'
+        xdebug.remote_host: 'localhost'
         xdebug.remote_enable: '1'
-        xdebug.remote_handler: dbgp
-        xdebug.remote_port: '9000'
-        xdebug.max_nesting_level: 250
-        xdebug.profiler_enable_trigger: '1'
-        xdebug.trace_enable_trigger: '1'
+        xdebug.remote_handler: 'dbgp'
+        xdebug.remote_port: '9000'        
+        xdebug.max_nesting_level: '5000'
+xhprof:
+    install: '1'
 drush:
     install: '1'
-    settings:
-        drush.tag_branch: master
+    version: 6.4.0
+ruby:
+    install: '1'
+    versions:
+        hRDoJFjOLzkH:
+            default: '1'
+            version: 1.9.3
+            gems:
+                - sass
+                - compass
+                - guard
+                - livereload
+            bundler: '1'
+nodejs:
+    install: '1'
+    npm_packages:
+        - yo
+        - generator-angular
+        - gulp
+        - bower
+        - coffee-script
+        - jshint
+        - csslint
+        - jslint
+        - nodemon
 mysql:
-    root_password: 'drupal'
-    phpmyadmin: '0'
-    adminer: '1'
+    install: 1
+    root_password: 'awesome'
+    adminer: 1
     databases:
-        drupal:
+        gPB9UXozXZEq:
             grant:
                 - ALL
-            name: drupal
+            name: awesome
             host: '%'
-            user: drupal
-            password: drupal
+            user: awesome
+            password: 'awesome'
             sql_file: ''
-beanstalkd:
-    install: '0'
-    listenaddress: '0.0.0.0'
-    listenport: '13000'
-    maxjobsize: '65535'
-    maxconnections: '1024'
-    binlogdir: '/var/lib/beanstalkd/binlog'
-    binlogfsync: 'null'
-    binlogsize: '10485760'
-mailcatcher:
+postgresql:
     install: '0'
     settings:
-        http_ip: 0.0.0.0
-        http_port: 8088
+        root_password: '123'
+        user_group: postgres
+        encoding: UTF8
+        version: '9.3'
+    databases: {  }
+    adminer: '0'
+mariadb:
+    install: '0'
+    root_password: '123'
+    adminer: '1'
+    databases: {  }
+    version: '10.0'
+sqlite:
+    install: '0'
+    adminer: '0'
+    databases: {  }
+mongodb:
+    install: '0'
+    settings:
+        auth: 1
+        port: '27017'
+    databases: {  }
+redis:
+    install: '0'
+    settings:
+        conf_port: '6379'
+mailcatcher:
+    install: '1'
+    settings:
         smtp_ip: 0.0.0.0
         smtp_port: 1025
-        mailcatcher_path: /usr/local/rvm/bin
+        http_ip: 0.0.0.0
+        http_port: '1080'
+        mailcatcher_path: /usr/local/rvm/wrappers/default
+        from_email_method: inline
+beanstalkd:
+    install: '0'
+    settings:
+        listenaddress: 0.0.0.0
+        listenport: '13000'
+        maxjobsize: '65535'
+        maxconnections: '1024'
+        binlogdir: /var/lib/beanstalkd/binlog
+        binlogfsync: null
+        binlogsize: '10485760'
+    beanstalk_console: 0
+    binlogdir: /var/lib/beanstalkd/binlog
 rabbitmq:
     install: '0'
     settings:
         port: '5672'
+elastic_search:
+    install: '0'
+    settings:
+        java_install: true
+        autoupgrade: true
 samba_server:
     install: '1'
-apcu:
-    install: '1'
 php_memcached:
-    install: '0'
-mariadb:
-    install: '0'
-    root_password: '123'
-    adminer: 0
-    databases: {  }
-    version: '10.0'
+    install: '1'
 solr:
     install: '0'
-php_xhprof:
-    install: '0'
 pimpmylog:
-    install: '0'
-experimental:
-    install: '0'
+    install: '1'
 varnish:
     install: '0'
     settings:
         http_port: 8080
         storage_size: 0.5G
 webgrind:
-    install: '0'
-    domain: 'webgrind.drupal.dev'
+    install: '1'
+    domain: 'webgrind.awesome.dev'
 newrelic:
     install: '0'
-    application_name: 'Drupal'
+    application_name: 'Awesome'
     license_key: ''

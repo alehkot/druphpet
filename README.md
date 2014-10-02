@@ -1,25 +1,23 @@
 # Druphpet Virtual Machine #
-A Puppet-based Drupal-ready VM suitable for instant and unified configuration of Drupal-Dev environments.
+A Puppet-based Drupal-ready VM suitable for instant and unified configuration of awesome-Dev environments.
+You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
 
-Based on [https://drupal.org/project/vm](https://drupal.org/project/vm "Virtual Machine") project on Drupal.org.
+Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet"). 
 
-One can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
-
-[Puphpet](https://github.com/puphpet/puphpet "Puphpet") compatible.
-
-Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
+The VM includes the fastest option available to synchronize folders in Windows - via SMB share. Please find the instuctions below on how to map a network drive.
 
 ## Included ##
-- Ubuntu 64-bit Precise
-- Drush 7.x
-- Apache 2.4 with mod_pagespeed
-- PHP 5.5 with steroids:
-	- XDebug
-	- XHProf
+- Ubuntu 64-bit Precise 14.04
+- Drush 6.4
+- Apache 2.2(4) with mod_pagespeed and/or nginx
+- PHP 5.6 with steroids:
+  - XDebug
+  - XHProf
   - SOAP
   - Uploadprogress
   - APCu
   - Memcached
+  - PHP_CodeSniffer
 - Optionally, old versions of PHP are also available with the following extensions:
 	- APC
 	- XCache
@@ -30,6 +28,8 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - [MailCatcher](http://mailcatcher.me/)
 - ImageMagick
 - Webgrind
+- Curl
+- Sendmail
 - Unzip
 - Git
 - RabbitMQ
@@ -39,40 +39,40 @@ Drupal.org project URL: [Druphpet](https://drupal.org/sandbox/k0teg/2247955).
 - Vim
 - Samba Server
 - Memcached
-- Experimental:
-  - Varnish
-  - Ruby 1.9.3 using RVM with gems:
-    - Sass
-    - Compass
-    - Bundler
-    - Guard
-    - Guard-livereload
-  - node.js with packages:
-    - Yeoman with generators:
-      - AngularJS
+- Ruby 1.9.3 using RVM with gems:
+  - Sass
+  - Compass
+  - Bundler
+  - Guard
+  - Guard-livereload
+  - Nodemon
+- node.js with packages:
+    - Yeoman
     - Bower
     - Grunt
+    - Gulp
     - Coffee-script
     - JSHint
+    - CSSLint
+    - JSLint
 
 Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 
-_Experimental_ status means that packages are installed, but not yet customizable as stable. To enable _experimental_ support, adjust the 'experimental' setting in `puphpet/config.yaml`.
-
 ## Local overrides
+(not working at this moment)
 `puphpet/local.config.yaml` can be used to set overrides for default configuration from `puphpet/config.yaml`.
 
 ## Defaults
 **Hosts**
 
-- http://drupal.dev
-- http://xhprof.drupal.dev
+- http://awesome.dev
+- http://xhprof.awesome.dev
 
 **Database Credentials**
 
-* Name: drupal
-* User: drupal
-* Pass: drupal
+* Name: awesome
+* User: awesome
+* Pass: awesome
 
 **Mailcatcher**
 
@@ -84,7 +84,7 @@ _Experimental_ status means that packages are installed, but not yet customizabl
 
 **Webgrind**
 
-- http://webgrind.drupal.dev
+- http://webgrind.awesome.dev
 
 **RabbitMQ**
 
@@ -92,11 +92,13 @@ _Experimental_ status means that packages are installed, but not yet customizabl
 
 **Apache Solr**
 
-- http://drupal.dev:8983
+- http://awesome.dev:8983/solr
 
 **Samba server share (default)**
 
 - \\\192.168.9.10\data
+
+On Windows, after `vagrant up`, you can just open "My computer", click "Map network drive" and enter the address above.
 
 **Varnish**
 
@@ -117,15 +119,15 @@ _Experimental_ status means that packages are installed, but not yet customizabl
 - Make sure you have the latests versions of VirtualBox and Vagrant installed (see 'minimum requirements' section).
 - Clone the repository
 - Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
-	- `192.168.9.10 drupal.dev`
-	- `192.168.9.10 xhprof.drupal.dev`
+	- `192.168.9.10 awesome.dev`
+	- `192.168.9.10 xhprof.awesome.dev`
 - Execute `vagrant up`
-- In case of any errors, try to provision the VM again and execute `vagrant reload --provision`
+- In case of any errors, try to provision the VM at least once again: `vagrant reload --provision`
 - On Windows if you need SMB support, it's important to install [Power Shell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595) beforehand.
-- To enable sharing of folders using default, NFS, Rsync methods, just remove comments from the appropriate lines in Vagrantfile. By default, only Samba server is enabled.
+- To enable sharing of folders using default, NFS, Rsync methods, just remove comments from the appropriate lines in Vagrantfile. By default, only SMB  is enabled.
 
 **Known issues**
-- Varnish is just installed and hasn't been configured universally yet to deal with any number of sites in VM.
+- Integration of some of the modules in Druphpet is still in progress.
 
 - Windows-only, to enable Samba, follow the instuctions in Vagrantfile.
 
@@ -146,3 +148,7 @@ _Experimental_ status means that packages are installed, but not yet customizabl
 > "Vagrant uses the `VBoxManage` binary that ships with VirtualBox, and requires this to be available on the PATH. If VirtualBox is installed, please find the `VBoxManage` binary and add it to the PATH environmental variable."
 - during `vagrant up` execution, then execute the following command:
 	- `set PATH=%PATH%;C:\Program Files\Oracle\VirtualBox`
+
+- If you experience problems with remote debugging (PHP, NodeJS) try creating SSH-tunnels as following:
+  - PHP: `ssh -R 9000:localhost:9000 vagrant@awesome.dev`
+  - NodeJS: `ssh -L 5858:127.0.0.1:5858 vagrant@awesome.dev -N`

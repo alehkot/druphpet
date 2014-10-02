@@ -1,2 +1,6 @@
 .vagrant
 www
+puphpet/files/dot/ssh/id_rsa*
+puphpet/files/dot/ssh/root_id_rsa*
+.idea
+puphpet/puppet/modules/*
