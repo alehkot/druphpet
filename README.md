@@ -2,7 +2,9 @@
 A Puppet-based Drupal-ready VM suitable for instant and unified configuration of awesome-Dev environments.
 You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
 
-Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet").
+Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet"). 
+
+The VM includes the fastest option available to synchronize folders in Windows - via SMB share. Please find the instuctions below on how to map a network drive.
 
 ## Included ##
 - Ubuntu 64-bit Precise 14.04
@@ -95,6 +97,8 @@ Some of the packages are not enabled by default. You can always adjust installed
 **Samba server share (default)**
 
 - \\\192.168.9.10\data
+
+On Windows, after `vagrant up`, you can just open "My computer", click "Map network drive" and enter the address above.
 
 **Varnish**
 
