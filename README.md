@@ -2,7 +2,7 @@
 A Puppet-based Drupal-ready VM suitable for instant and unified configuration of awesome-Dev environments.
 You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
 
-Based on VM generated using [Puphpet](http://puphpet.com "Puphpet").
+Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet").
 
 ## Included ##
 - Ubuntu 64-bit Precise 14.04
@@ -118,12 +118,12 @@ Some of the packages are not enabled by default. You can always adjust installed
 	- `192.168.9.10 awesome.dev`
 	- `192.168.9.10 xhprof.awesome.dev`
 - Execute `vagrant up`
-- In case of any errors, try to provision the VM again and execute `vagrant reload --provision`
+- In case of any errors, try to provision the VM at least once again: `vagrant reload --provision`
 - On Windows if you need SMB support, it's important to install [Power Shell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595) beforehand.
-- To enable sharing of folders using default, NFS, Rsync methods, just remove comments from the appropriate lines in Vagrantfile. By default, only Samba server is enabled.
+- To enable sharing of folders using default, NFS, Rsync methods, just remove comments from the appropriate lines in Vagrantfile. By default, only SMB  is enabled.
 
 **Known issues**
-- Varnish is just installed and hasn't been configured universally yet to deal with any number of sites in VM.
+- Integration of some of the modules in Druphpet is still in progress.
 
 - Windows-only, to enable Samba, follow the instuctions in Vagrantfile.
 
