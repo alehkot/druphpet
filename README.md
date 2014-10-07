@@ -82,6 +82,11 @@ Some of the packages are not enabled by default. You can always adjust installed
 
 - http://192.168.9.10/pimpmylog
 
+**Memcached**
+
+* host: localhost (from VM)
+* port: 11211
+
 **Webgrind**
 
 - http://webgrind.awesome.dev
