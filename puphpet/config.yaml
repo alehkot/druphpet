@@ -3,11 +3,11 @@ vagrantfile-local:
     vm:
         box: puphpet/ubuntu1404-x64
         box_url: puphpet/ubuntu1404-x64
-        hostname: 'awesome.dev'
+        hostname: ''
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
-        sync_modules: true
+        sync_modules: false
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -63,11 +63,12 @@ vagrantfile-local:
         host: detect
 server:
     packages:
+        # Uncomment the next line for Ubuntu.
         - build-essential
         - vim
         - curl
         - git-core
-        - php-console-table        
+        - php-console-table
         - imagemagick
         - sendmail
         - unzip
@@ -75,6 +76,7 @@ server:
         - graphviz
         - memcached
         - libssh2-1-dev
+        - libmemcached-dev
     dot_files:
         -
             bash_aliases: null
@@ -147,7 +149,7 @@ nginx:
             spdy: '1'
 php:
     install: '1'
-    version: '56'
+    version: '55'
     composer: '1'
     composer_home: ''
     modules:
@@ -164,6 +166,7 @@ php:
             - uploadprogress
             - apcu
             - ssh2-0.12
+            - memcached
     ini:
         display_errors: On
         error_reporting: '-1'
@@ -172,6 +175,11 @@ php:
         upload_max_filesize: '128M'
         post_max_size: '128M'
         max_execution_time: '300'
+        apc.shm_size: '128M'
+        apc.ttl: '0'
+        apc.gc_ttl: '600'
+        apc.enable_cli: '1'
+        apc.mmap_file_mask: '/tmp/apc.XXXXXX'
         error_log: /var/log/php_errors.log
     timezone: Europe/Minsk
     mod_php: '1'
@@ -196,7 +204,7 @@ xdebug:
         xdebug.remote_host: 'localhost'
         xdebug.remote_enable: '1'
         xdebug.remote_handler: 'dbgp'
-        xdebug.remote_port: '9000'        
+        xdebug.remote_port: '9000'
         xdebug.max_nesting_level: '5000'
 xhprof:
     install: '1'
@@ -251,9 +259,9 @@ postgresql:
     adminer: '0'
 mariadb:
     install: '0'
-    root_password: '123'
+    root_password: 'awesome'
     adminer: '1'
-    databases: {  }
+    databases: {}
     version: '10.0'
 sqlite:
     install: '0'
@@ -302,7 +310,7 @@ elastic_search:
 samba_server:
     install: '1'
 php_memcached:
-    install: '1'
+    install: '0'
 solr:
     install: '0'
 pimpmylog:
