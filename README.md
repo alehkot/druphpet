@@ -157,3 +157,5 @@ On Windows, after `vagrant up`, you can just open "My computer", click "Map netw
 - If you experience problems with remote debugging (PHP, NodeJS) try creating SSH-tunnels as following:
   - PHP: `ssh -R 9000:localhost:9000 vagrant@awesome.dev`
   - NodeJS: `ssh -L 5858:127.0.0.1:5858 vagrant@awesome.dev -N`
+
+- In case of a public key warning with the previous commands try to delete your known_hosts file.
