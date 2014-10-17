@@ -157,3 +157,5 @@ On Windows, after `vagrant up`, you can just open "My computer", click "Map netw
 - If you experience problems with remote debugging (PHP, NodeJS) try creating SSH-tunnels as following:
   - PHP: `ssh -R 9000:localhost:9000 vagrant@awesome.dev`
   - NodeJS: `ssh -L 5858:127.0.0.1:5858 vagrant@awesome.dev -N`
+  
+- You can change the sync_modules variable to false after the first time your box is provisioned.
