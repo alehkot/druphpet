@@ -146,3 +146,5 @@ _Experimental_ status means that packages are installed, but not yet customizabl
 > "Vagrant uses the `VBoxManage` binary that ships with VirtualBox, and requires this to be available on the PATH. If VirtualBox is installed, please find the `VBoxManage` binary and add it to the PATH environmental variable."
 - during `vagrant up` execution, then execute the following command:
 	- `set PATH=%PATH%;C:\Program Files\Oracle\VirtualBox`
+
+- You can change the sync_modules variable to false after the first time your box is provisioned.
