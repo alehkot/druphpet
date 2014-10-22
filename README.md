@@ -161,3 +161,5 @@ On Windows, after `vagrant up`, you can just open "My computer", click "Map netw
 - In case of a public key warning with the previous commands try to delete your known_hosts file.
 
 - You can change the sync_modules variable to false after the first time your box is provisioned.
+
+- If you receive the error `Error: Unknown function loadyaml`, switch 'sync_modules' property in config.yaml to `true`.
