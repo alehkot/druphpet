@@ -63,7 +63,6 @@ vagrantfile-local:
         host: detect
 server:
     packages:
-        # Uncomment the next line for Ubuntu.
         - build-essential
         - vim
         - curl
