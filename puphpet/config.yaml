@@ -7,7 +7,7 @@ vagrantfile-local:
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
-        sync_modules: true
+        sync_modules: false
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -100,6 +100,8 @@ apache:
         sendfile: 0
     modules:
         - rewrite
+        - headers
+        - expires
     vhosts:
         0M1pWVWI2bhY:
             servername: druphpet.dev
@@ -117,10 +119,10 @@ apache:
                 - MultiViews
             engine: php
             custom_fragment: ''
-            ssl_cert: ''
-            ssl_key: ''
-            ssl_chain: ''
-            ssl_certs_dir: ''
+            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
+            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
+            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
+            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
     mod_pagespeed: '0'
 nginx:
     install: '0'
@@ -161,6 +163,7 @@ php:
             - gd
         pear:
             - PHP_CodeSniffer
+            - Console_Table
         pecl:
             - pecl_http
             - uploadprogress
