@@ -8,7 +8,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 ## Included ##
 - Ubuntu 64-bit Precise 14.04
-- Drush 6.4
+- Drush 7.0-alpha-5
 - Apache 2.2(4) with mod_pagespeed and/or nginx
 - PHP 5.6 with steroids:
   - XDebug
