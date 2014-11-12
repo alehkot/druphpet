@@ -1,10 +1,10 @@
 # Druphpet Virtual Machine #
-A Puppet-based Drupal-ready VM suitable for instant and unified configuration of awesome-Dev environments.
-You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in Yaml format.
+A very fast and Puppet-based Drupal-ready VM suitable for instant and unified configuration of local environments.
+You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in YAML format.
 
 Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet"). 
 
-The VM includes the fastest option available to synchronize folders in Windows - via SMB share. Please find the instuctions below on how to map a network drive.
+The VM includes the fastest option available to synchronize folders in Windows - via SMB share. Please find the instructions below on how to map a network drive.
 
 ## Included ##
 - Ubuntu 64-bit Precise 14.04
@@ -65,8 +65,8 @@ Some of the packages are not enabled by default. You can always adjust installed
 ## Defaults
 **Hosts**
 
-- http://awesome.dev
-- http://xhprof.awesome.dev
+- http://druphpet.dev
+- http://xhprof.druphpet.dev
 
 **Database Credentials**
 
@@ -89,7 +89,7 @@ Some of the packages are not enabled by default. You can always adjust installed
 
 **Webgrind**
 
-- http://webgrind.awesome.dev
+- http://webgrind.druphpet.dev
 
 **RabbitMQ**
 
@@ -97,13 +97,15 @@ Some of the packages are not enabled by default. You can always adjust installed
 
 **Apache Solr**
 
-- http://awesome.dev:8983/solr
+- http://druphpet.dev:8983/solr
 
 **Samba server share (default)**
 
 - \\\192.168.9.10\data
 
 On Windows, after `vagrant up`, you can just open "My computer", click "Map network drive" and enter the address above.
+
+On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following network address: `smb://192.168.9.10/data`
 
 **Varnish**
 
@@ -124,8 +126,8 @@ On Windows, after `vagrant up`, you can just open "My computer", click "Map netw
 - Make sure you have the latests versions of VirtualBox and Vagrant installed (see 'minimum requirements' section).
 - Clone the repository
 - Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
-	- `192.168.9.10 awesome.dev`
-	- `192.168.9.10 xhprof.awesome.dev`
+	- `192.168.9.10 druphpet.dev`
+	- `192.168.9.10 xhprof.druphpet.dev`
 - Execute `vagrant up`
 - In case of any errors, try to provision the VM at least once again: `vagrant reload --provision`
 - On Windows if you need SMB support, it's important to install [Power Shell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595) beforehand.
@@ -155,8 +157,8 @@ On Windows, after `vagrant up`, you can just open "My computer", click "Map netw
 	- `set PATH=%PATH%;C:\Program Files\Oracle\VirtualBox`
 
 - If you experience problems with remote debugging (PHP, NodeJS) try creating SSH-tunnels as following:
-  - PHP: `ssh -R 9000:localhost:9000 vagrant@awesome.dev`
-  - NodeJS: `ssh -L 5858:127.0.0.1:5858 vagrant@awesome.dev -N`
+  - PHP: `ssh -R 9000:localhost:9000 vagrant@druphpet.dev`
+  - NodeJS: `ssh -L 5858:127.0.0.1:5858 vagrant@druphpet.dev -N`
 
 - In case of a public key warning with the previous commands try to delete your known_hosts file.
 

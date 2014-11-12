@@ -164,6 +164,7 @@ php:
         pear:
             - PHP_CodeSniffer
             - Console_Table
+            - Console_Color2-0.1.2
         pecl:
             - pecl_http
             - uploadprogress
