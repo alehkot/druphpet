@@ -23,6 +23,8 @@ The VM includes the fastest option available to synchronize folders in Windows -
 	- XCache
 - Apache Solr 4.6.0
 - MySQL 5.5.37
+- dos2unix
+- [Percona Toolkit](http://www.percona.com/software/percona-toolkit)
 - [Adminer](http://www.adminer.org/) (or [phpMyAdmin](http://www.phpmyadmin.net/home_page/index.php))
 - [PimpMyLog](http://pimpmylog.com/)
 - [MailCatcher](http://mailcatcher.me/)

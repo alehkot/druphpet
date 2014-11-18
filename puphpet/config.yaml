@@ -77,6 +77,8 @@ server:
         - libssh2-1-dev
         - libmemcached-dev
         - htop
+        - dos2unix
+        - percona-toolkit
     dot_files:
         -
             bash_aliases: null
