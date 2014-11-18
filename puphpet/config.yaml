@@ -3,11 +3,11 @@ vagrantfile-local:
     vm:
         box: puphpet/ubuntu1404-x64
         box_url: puphpet/ubuntu1404-x64
-        hostname: 'awesome.dev'
+        hostname: ''
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
-        sync_modules: true
+        sync_modules: false
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -67,7 +67,7 @@ server:
         - vim
         - curl
         - git-core
-        - php-console-table        
+        - php-console-table
         - imagemagick
         - sendmail
         - unzip
@@ -75,6 +75,10 @@ server:
         - graphviz
         - memcached
         - libssh2-1-dev
+        - libmemcached-dev
+        - htop
+        - dos2unix
+        - percona-toolkit
     dot_files:
         -
             bash_aliases: null
@@ -98,12 +102,14 @@ apache:
         sendfile: 0
     modules:
         - rewrite
+        - headers
+        - expires
     vhosts:
         0M1pWVWI2bhY:
-            servername: awesome.dev
+            servername: druphpet.dev
             serveraliases:
-                - www.awesome.dev
-            docroot: /var/www/awesome
+                - www.druphpet.dev
+            docroot: /var/www/druphpet
             port: '80'
             setenv:
                 - 'APP_ENV dev'
@@ -115,10 +121,10 @@ apache:
                 - MultiViews
             engine: php
             custom_fragment: ''
-            ssl_cert: ''
-            ssl_key: ''
-            ssl_chain: ''
-            ssl_certs_dir: ''
+            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
+            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
+            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
+            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
     mod_pagespeed: '0'
 nginx:
     install: '0'
@@ -128,10 +134,10 @@ nginx:
         proxy_buffers: '4 256k'
     vhosts:
         VTChGNgY0tNd:
-            server_name: awesome.dev
+            server_name: druphpet.dev
             server_aliases:
-                - www.awesome.dev
-            www_root: /var/www/awesome.dev
+                - www.druphpet.dev
+            www_root: /var/www/druphpet.dev
             listen_port: '80'
             location: \.php$
             index_files:
@@ -147,7 +153,7 @@ nginx:
             spdy: '1'
 php:
     install: '1'
-    version: '56'
+    version: '55'
     composer: '1'
     composer_home: ''
     modules:
@@ -159,11 +165,14 @@ php:
             - gd
         pear:
             - PHP_CodeSniffer
+            - Console_Table
+            - Console_Color2-0.1.2
         pecl:
             - pecl_http
             - uploadprogress
             - apcu
             - ssh2-0.12
+            - memcached
     ini:
         display_errors: On
         error_reporting: '-1'
@@ -172,6 +181,11 @@ php:
         upload_max_filesize: '128M'
         post_max_size: '128M'
         max_execution_time: '300'
+        apc.shm_size: '128M'
+        apc.ttl: '0'
+        apc.gc_ttl: '600'
+        apc.enable_cli: '1'
+        apc.mmap_file_mask: '/tmp/apc.XXXXXX'
         error_log: /var/log/php_errors.log
     timezone: Europe/Minsk
     mod_php: '1'
@@ -192,17 +206,16 @@ xdebug:
     settings:
         xdebug.default_enable: '1'
         xdebug.remote_autostart: '0'
-        xdebug.remote_connect_back: '0'
+        xdebug.remote_connect_back: '1'
         xdebug.remote_host: 'localhost'
         xdebug.remote_enable: '1'
-        xdebug.remote_handler: 'dbgp'
-        xdebug.remote_port: '9000'        
+        xdebug.remote_port: '9000'
         xdebug.max_nesting_level: '5000'
 xhprof:
     install: '1'
 drush:
     install: '1'
-    version: 6.4.0
+    version: 7.0.0-alpha5
 ruby:
     install: '1'
     versions:
@@ -227,18 +240,19 @@ nodejs:
         - csslint
         - jslint
         - nodemon
+        - grunt-cli
 mysql:
     install: 1
-    root_password: 'awesome'
+    root_password: 'druphpet'
     adminer: 1
     databases:
         gPB9UXozXZEq:
             grant:
                 - ALL
-            name: awesome
+            name: druphpet
             host: '%'
-            user: awesome
-            password: 'awesome'
+            user: druphpet
+            password: 'druphpet'
             sql_file: ''
 postgresql:
     install: '0'
@@ -251,9 +265,9 @@ postgresql:
     adminer: '0'
 mariadb:
     install: '0'
-    root_password: '123'
+    root_password: 'druphpet'
     adminer: '1'
-    databases: {  }
+    databases: {}
     version: '10.0'
 sqlite:
     install: '0'
@@ -302,7 +316,7 @@ elastic_search:
 samba_server:
     install: '1'
 php_memcached:
-    install: '1'
+    install: '0'
 solr:
     install: '0'
 pimpmylog:
@@ -314,8 +328,8 @@ varnish:
         storage_size: 0.5G
 webgrind:
     install: '1'
-    domain: 'webgrind.awesome.dev'
+    domain: 'webgrind.druphpet.dev'
 newrelic:
     install: '0'
-    application_name: 'Awesome'
+    application_name: 'druphpet'
     license_key: ''
