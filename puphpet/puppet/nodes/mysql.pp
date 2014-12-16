@@ -47,7 +47,7 @@ if hash_key_equals($mysql_values, 'install', 1) {
       true    => {},
       default => $mysql_values['override_options']
     }
-
+    
     class { 'mysql::server':
       package_name     => $mysql_server_server_package_name,
       root_password    => $mysql_values['root_password'],
@@ -60,6 +60,22 @@ if hash_key_equals($mysql_values, 'install', 1) {
       require      => $mysql_server_require
     }
 
+    $root_user_resource = {
+      ensure        => $ensure,
+      password_hash => mysql_password($mysql_values['root_password']),
+      provider      => 'mysql',
+      require       => Class['mysql::server'],
+    }
+    ensure_resource('mysql_user', 'root@%', $root_user_resource)
+    
+    mysql_grant { 'root@%/*.*':
+      privileges => 'ALL',
+      provider   => 'mysql',
+      user       => 'root@%',
+      table      => '*.*',
+      require    => [Mysql_user['root@%'], Class['mysql::server'] ],
+    }     
+    
     if count($mysql_values['databases']) > 0 {
       each( $mysql_values['databases'] ) |$key, $database| {
         $database_merged = delete(merge($database, {
