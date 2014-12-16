@@ -25,4 +25,3 @@ if hash_key_equals($redis_values, 'install', 1) {
     }
   }
 }
-

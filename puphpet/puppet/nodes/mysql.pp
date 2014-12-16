@@ -43,23 +43,16 @@ if hash_key_equals($mysql_values, 'install', 1) {
   }
 
   if $mysql_values['root_password'] {
-    class { 'mysql::server':
-      package_name  => $mysql_server_server_package_name,
-      root_password => $mysql_values['root_password'],
-      override_options => {
-        'mysqld' => {
-          'bind-address' => '0.0.0.0'
-        }
-      },
-      require       => $mysql_server_require
+    $mysql_override_options = empty($mysql_values['override_options']) ? {
+      true    => {},
+      default => $mysql_values['override_options']
     }
 
-    if ! defined(Firewall["3306 tcp/3306"]) {
-      firewall { "3306 tcp/3306":
-        port   => 3306,
-        proto  => tcp,
-        action => 'accept',
-      }
+    class { 'mysql::server':
+      package_name     => $mysql_server_server_package_name,
+      root_password    => $mysql_values['root_password'],
+      require          => $mysql_server_require,
+      override_options => $mysql_override_options
     }
 
     class { 'mysql::client':
@@ -74,7 +67,7 @@ if hash_key_equals($mysql_values, 'install', 1) {
         }), 'name')
 
         create_resources( puphpet::mysql::db, {
-          "${database['user']}@${database['name']}" => $database_merged
+          "${key}" => $database_merged
         })
       }
     }
@@ -96,7 +89,10 @@ if hash_key_equals($mysql_values, 'install', 1) {
     }
   }
 
-  if hash_key_equals($mysql_values, 'adminer', 1) and $mysql_php_installed {
+  if hash_key_equals($mysql_values, 'adminer', 1)
+    and $mysql_php_installed
+    and ! defined(Class['puphpet::adminer'])
+  {
     if hash_key_equals($apache_values, 'install', 1) {
       $mysql_adminer_webroot_location = '/var/www/default'
     } elsif hash_key_equals($nginx_values, 'install', 1) {
@@ -112,4 +108,3 @@ if hash_key_equals($mysql_values, 'install', 1) {
     }
   }
 }
-

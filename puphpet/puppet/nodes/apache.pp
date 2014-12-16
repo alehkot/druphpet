@@ -17,7 +17,7 @@ if hash_key_equals($apache_values, 'install', 1) {
   }
 
   if ! $require_mod_php {
-    if $::operatingsystem == 'debian' and !$require_mod_php {
+    if $::operatingsystem == 'debian' {
       apache_debian_repo{ 'do': }
     } elsif $::operatingsystem == 'ubuntu' and $::lsbdistcodename == 'precise' {
       apt::ppa { 'ppa:ondrej/apache2': require => Apt::Key['4F4EA0AAE5267A6C'] }
@@ -225,7 +225,7 @@ define apache_centos {
   exec { 'download httpd-2.4.10':
     creates => $httpd_download_location,
     command => "wget --quiet --tries=5 --connect-timeout=10 -O '${httpd_download_location}' '${httpd_url}'",
-    timeout => 30,
+    timeout => 3600,
     path    => '/usr/bin',
   } ->
   exec { 'untar httpd-2.4.10':
@@ -254,4 +254,3 @@ define apache_mod {
     class { "apache::mod::${name}": }
   }
 }
-

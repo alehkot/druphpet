@@ -47,4 +47,3 @@ if hash_key_equals($beanstalkd_values, 'install', 1) {
     }
   }
 }
-

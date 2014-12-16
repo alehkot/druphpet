@@ -144,7 +144,7 @@ if hash_key_equals($php_values, 'install', 1) {
         ensure => directory,
         group  => 'www-data',
         owner  => 'www-data',
-        mode   => 0755,
+        mode   => 0775,
       }
     }
   }
@@ -205,4 +205,3 @@ define php_pecl_mod {
     }
   }
 }
-

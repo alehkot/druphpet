@@ -87,4 +87,3 @@ if hash_key_equals($hhvm_values, 'install', 1) {
     }
   }
 }
-

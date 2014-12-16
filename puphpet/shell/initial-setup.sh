@@ -19,6 +19,19 @@ fi
 touch '/.puphpet-stuff/vagrant-core-folder.txt'
 echo "${VAGRANT_CORE_FOLDER}" > '/.puphpet-stuff/vagrant-core-folder.txt'
 
+# Adding this here with a datestamped filename for future issues like #1189
+# apt repos become stale, Ubuntu/Debian move stuff around and break existing
+# boxes that no longer require apt-get update. Force it one more time. Update
+# datestamp as required for future breaks.
+if [[ ! -f '/.puphpet-stuff/initial-setup-repo-update-11052014' ]]; then
+    if [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
+        echo 'Running datestamped initial-setup apt-get update'
+        apt-get update >/dev/null
+        touch '/.puphpet-stuff/initial-setup-repo-update-11052014'
+        echo 'Finished running datestamped initial-setup apt-get update'
+    fi
+fi
+
 if [[ -f '/.puphpet-stuff/initial-setup-base-packages' ]]; then
     exit 0
 fi
@@ -27,6 +40,10 @@ if [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
     echo 'Running initial-setup apt-get update'
     apt-get update >/dev/null
     echo 'Finished running initial-setup apt-get update'
+
+    echo 'Installing curl'
+    apt-get -y install curl >/dev/null
+    echo 'Finished installing curl'
 
     echo 'Installing git'
     apt-get -y install git-core >/dev/null
@@ -42,7 +59,7 @@ if [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
     apt-get -y install build-essential >/dev/null
     echo 'Finished installing build-essential packages'
 elif [[ "${OS}" == 'centos' ]]; then
-    echo 'Adding repos: elrep, epel, scl'
+    echo 'Adding repos: elrepo, epel, scl'
     perl -p -i -e 's@enabled=1@enabled=0@gi' /etc/yum/pluginconf.d/fastestmirror.conf
     perl -p -i -e 's@#baseurl=http://mirror.centos.org/centos/\$releasever/os/\$basearch/@baseurl=http://mirror.rackspace.com/CentOS//\$releasever/os/\$basearch/\nenabled=1@gi' /etc/yum.repos.d/CentOS-Base.repo
     perl -p -i -e 's@#baseurl=http://mirror.centos.org/centos/\$releasever/updates/\$basearch/@baseurl=http://mirror.rackspace.com/CentOS//\$releasever/updates/\$basearch/\nenabled=1@gi' /etc/yum.repos.d/CentOS-Base.repo
@@ -54,6 +71,10 @@ elif [[ "${OS}" == 'centos' ]]; then
     yum clean all >/dev/null
     yum -y check-update >/dev/null
     echo 'Finished adding repos: elrep, epel, scl'
+
+    echo 'Installing curl'
+    yum -y install curl >/dev/null
+    echo 'Finished installing curl'
 
     echo 'Installing git'
     yum -y install git >/dev/null

@@ -141,4 +141,3 @@ define postgresql_db (
     }
   }
 }
-

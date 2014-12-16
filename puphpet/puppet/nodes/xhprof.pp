@@ -52,4 +52,3 @@ if hash_key_equals($xhprof_values, 'install', 1)
     webserver_service => $xhprof_webserver_service
   }
 }
-

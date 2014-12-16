@@ -47,4 +47,3 @@ if hash_key_equals($xdebug_values, 'install', 1)
     }
   }
 }
-

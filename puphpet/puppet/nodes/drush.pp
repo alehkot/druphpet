@@ -41,4 +41,3 @@ if hash_key_equals($drush_values, 'install', 1) {
     }
   }
 }
-

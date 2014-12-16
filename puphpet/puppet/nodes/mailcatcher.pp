@@ -54,4 +54,3 @@ if hash_key_equals($mailcatcher_values, 'install', 1) {
     ],
   }
 }
-

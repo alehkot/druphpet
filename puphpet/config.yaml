@@ -7,7 +7,7 @@ vagrantfile-local:
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
-        sync_modules: false
+        sync_modules: true
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -148,12 +148,13 @@ nginx:
                 - 'APP_ENV dev'
             engine: php
             ssl: '1'
+            client_max_body_size: 1m
             ssl_cert: ''
             ssl_key: ''
             spdy: '1'
 php:
     install: '1'
-    version: '55'
+    version: '56'
     composer: '1'
     composer_home: ''
     modules:
@@ -213,6 +214,9 @@ xdebug:
         xdebug.max_nesting_level: '5000'
 xhprof:
     install: '1'
+wpcli:
+    install: '0'
+    version: v0.17.1    
 drush:
     install: '1'
     version: 7.0.0-alpha5
@@ -241,10 +245,19 @@ nodejs:
         - jslint
         - nodemon
         - grunt-cli
+python:
+    install: '1'
+    packages: {  }
+    versions:
+        VaW8Bw9fauSd:
+            version: ''        
 mysql:
     install: 1
     root_password: 'druphpet'
     adminer: 1
+    override_options: 
+        'mysqld': 
+            'bind-address': '0.0.0.0'       
     databases:
         gPB9UXozXZEq:
             grant:
@@ -309,16 +322,17 @@ rabbitmq:
     settings:
         port: '5672'
 elastic_search:
-    install: '0'
+    install: '1'
     settings:
+        version: 1.4.1
         java_install: true
-        autoupgrade: true
 samba_server:
     install: '1'
-php_memcached:
-    install: '0'
 solr:
-    install: '0'
+    install: '1'
+    settings:
+        version: 4.10.2
+        port: '8984'
 pimpmylog:
     install: '1'
 varnish:

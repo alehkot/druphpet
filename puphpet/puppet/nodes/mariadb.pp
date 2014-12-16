@@ -79,10 +79,16 @@ if hash_key_equals($mariadb_values, 'install', 1) {
       version => $mariadb_values['version']
     }
 
+    $mariadb_override_options = empty($mariadb_values['override_options']) ? {
+      true    => {},
+      default => $mariadb_values['override_options']
+    }
+
     class { 'mysql::server':
-      package_name  => $puphpet::params::mariadb_package_server_name,
-      root_password => $mariadb_values['root_password'],
-      service_name  => 'mysql',
+      package_name     => $puphpet::params::mariadb_package_server_name,
+      root_password    => $mariadb_values['root_password'],
+      service_name     => 'mysql',
+      override_options => $mariadb_override_options
     }
 
     class { 'mysql::client':
@@ -118,7 +124,10 @@ if hash_key_equals($mariadb_values, 'install', 1) {
     }
   }
 
-  if hash_key_equals($mariadb_values, 'adminer', 1) and $mariadb_php_installed {
+  if hash_key_equals($mariadb_values, 'adminer', 1)
+    and $mariadb_php_installed
+    and ! defined(Class['puphpet::adminer'])
+  {
     if hash_key_equals($apache_values, 'install', 1) {
       $mariadb_adminer_webroot_location = '/var/www/default'
     } elsif hash_key_equals($nginx_values, 'install', 1) {
@@ -134,4 +143,3 @@ if hash_key_equals($mariadb_values, 'install', 1) {
     }
   }
 }
-
