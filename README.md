@@ -21,7 +21,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - Optionally, old versions of PHP are also available with the following extensions:
 	- APC
 	- XCache
-- Apache Solr 4.6.0
+- Apache Solr 4.10.2
 - MySQL 5.5.37
 - dos2unix
 - [Percona Toolkit](http://www.percona.com/software/percona-toolkit)
@@ -57,6 +57,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
     - JSHint
     - CSSLint
     - JSLint
+- Python
 
 Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 
@@ -117,7 +118,6 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
 * Git
 * VirtualBox 4.3.10
 * Vagrant 1.5.4
-* (For Samba, Windows-only) PowerShell 3
 
 ## Download links (Windows) ##
 - [VirtualBox](http://download.virtualbox.org/virtualbox/4.3.10/VirtualBox-4.3.10-93012-Win.exe "Download VirtualBox 4.3.10")
