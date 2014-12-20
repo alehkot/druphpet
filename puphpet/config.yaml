@@ -177,7 +177,7 @@ php:
     ini:
         display_errors: On
         error_reporting: '-1'
-        session.save_path: /var/lib/php/session
+        session.save_path: '/var/lib/php5/sessions'
         memory_limit: '512M'
         upload_max_filesize: '128M'
         post_max_size: '128M'
