@@ -73,9 +73,11 @@ Some of the packages are not enabled by default. You can always adjust installed
 
 **Database Credentials**
 
-* Name: awesome
-* User: awesome
-* Pass: awesome
+* Host: 192.168.9.10
+* Name: druphpet
+* User: druphpet
+* Pass: druphpet
+* To connect with a remote MySQL client, after initial `vagrant up` it's recommended to reboot the VM using `vagrant reload`.
 
 **Mailcatcher**
 
