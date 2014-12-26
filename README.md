@@ -37,6 +37,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - RabbitMQ
 - New Relic
 - Graphviz
+- Vsftpd
 - MC
 - Vim
 - Samba Server
@@ -71,6 +72,11 @@ Some of the packages are not enabled by default. You can always adjust installed
 - http://druphpet.dev
 - http://xhprof.druphpet.dev
 
+**FTP**
+* Host: 192.168.9.10
+* User: vagrant
+* Pass: vagrant
+
 **Database Credentials**
 
 * Name: awesome
@@ -100,7 +106,7 @@ Some of the packages are not enabled by default. You can always adjust installed
 
 **Apache Solr**
 
-- http://druphpet.dev:8983/solr
+- http://druphpet.dev:8984/solr
 
 **Samba server share (default)**
 
