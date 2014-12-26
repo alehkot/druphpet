@@ -6,9 +6,22 @@ Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet").
 
 The VM includes the fastest option available to synchronize folders in Windows - via SMB share. Please find the instructions below on how to map a network drive.
 
+## Install ##
+- Make sure you have the latests versions of VirtualBox and Vagrant installed (see 'minimum requirements' section).
+- Clone the repository `git clone https://github.com/alehkot/druphpet.git`.
+- Add any number of Apache hosts and databases you want in appropriate sections of druphpet/puphpet/config.yaml file.
+- Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
+	- `192.168.9.10 druphpet.dev`
+	- `192.168.9.10 xhprof.druphpet.dev`
+	- `192.168.9.10 ...`
+	- `192.168.9.10 [yourhost]`
+- Execute `vagrant up`.
+- In case of any errors during the initial setup, try to run provision the VM once again: `vagrant reload --provision`. It usually resolves any issues.
+- It is strongly recommended to reboot the VM after successful provisioning using `vagrant reload`.
+
 ## Included ##
 - Ubuntu 64-bit Precise 14.04
-- Drush 7.0-alpha-5
+- Drush 7.0-alpha7
 - Apache 2.2(4) with mod_pagespeed and/or nginx
 - PHP 5.6 with steroids:
   - XDebug
@@ -79,9 +92,11 @@ Some of the packages are not enabled by default. You can always adjust installed
 
 **Database Credentials**
 
-* Name: awesome
-* User: awesome
-* Pass: awesome
+* Host: 192.168.9.10
+* Name: druphpet
+* User: druphpet
+* Pass: druphpet
+* To connect with a remote MySQL client, after initial `vagrant up` it's recommended to reboot the VM using `vagrant reload`.
 
 **Mailcatcher**
 
@@ -129,17 +144,6 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
 - [VirtualBox](http://download.virtualbox.org/virtualbox/4.3.10/VirtualBox-4.3.10-93012-Win.exe "Download VirtualBox 4.3.10")
 - [Vagrant](https://dl.bintray.com/mitchellh/vagrant/vagrant_1.5.4.msi "Download Vagrant 1.5.4")
 - [PowerShell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595 "Download PowerShell 3")
-
-## Install ##
-- Make sure you have the latests versions of VirtualBox and Vagrant installed (see 'minimum requirements' section).
-- Clone the repository
-- Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
-	- `192.168.9.10 druphpet.dev`
-	- `192.168.9.10 xhprof.druphpet.dev`
-- Execute `vagrant up`
-- In case of any errors, try to provision the VM at least once again: `vagrant reload --provision`
-- On Windows if you need SMB support, it's important to install [Power Shell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595) beforehand.
-- To enable sharing of folders using default, NFS, Rsync methods, just remove comments from the appropriate lines in Vagrantfile. By default, only SMB  is enabled.
 
 **Known issues**
 - Integration of some of the modules in Druphpet is still in progress.
