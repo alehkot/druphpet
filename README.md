@@ -96,7 +96,7 @@ Some of the packages are not enabled by default. You can always adjust installed
 * Name: druphpet
 * User: druphpet
 * Pass: druphpet
-* To connect with a remote MySQL client, after initial `vagrant up` it's recommended to reboot the VM using `vagrant reload`.
+* To connect using a MySQL client other than Adminer, after initial `vagrant up` it's recommended to reboot the VM using `vagrant reload`.
 
 **Mailcatcher**
 

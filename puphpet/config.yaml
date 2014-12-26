@@ -347,3 +347,5 @@ newrelic:
     install: '0'
     application_name: 'druphpet'
     license_key: ''
+vsftpd:
+    install: '1'
