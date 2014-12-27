@@ -96,7 +96,7 @@ Some of the packages are not enabled by default. You can always adjust installed
 * Name: druphpet
 * User: druphpet
 * Pass: druphpet
-* To connect using a MySQL client other than Adminer, after initial `vagrant up` it's recommended to reboot the VM using `vagrant reload`.
+* To connect using a MySQL client other than Phpmyadmin, after initial `vagrant up` it's recommended to reboot the VM using `vagrant reload`.
 
 **Mailcatcher**
 
@@ -110,6 +110,10 @@ Some of the packages are not enabled by default. You can always adjust installed
 
 * host: localhost (from VM)
 * port: 11211
+
+**Phpmyadmin**
+
+- http://phpmyadmin.druphpet.dev
 
 **Webgrind**
 

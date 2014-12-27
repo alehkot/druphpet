@@ -216,7 +216,7 @@ xhprof:
     install: '1'
 wpcli:
     install: '0'
-    version: v0.17.1    
+    version: v0.17.1
 drush:
     install: '1'
     version: 7.0.0-alpha7
@@ -250,14 +250,14 @@ python:
     packages: {  }
     versions:
         VaW8Bw9fauSd:
-            version: ''        
+            version: ''
 mysql:
     install: 1
     root_password: 'druphpet'
     adminer: 1
-    override_options: 
-        'mysqld': 
-            'bind-address': '0.0.0.0'       
+    override_options:
+        'mysqld':
+            'bind-address': '0.0.0.0'
     databases:
         gPB9UXozXZEq:
             grant:
@@ -342,10 +342,15 @@ varnish:
         storage_size: 0.5G
 webgrind:
     install: '1'
-    domain: 'webgrind.druphpet.dev'
+    settings:
+        domain: 'webgrind.druphpet.dev'
 newrelic:
     install: '0'
     application_name: 'druphpet'
     license_key: ''
 vsftpd:
     install: '1'
+phpmyadmin:
+    install: '1'
+    settings:
+        domain: 'phpmyadmin.druphpet.dev'
