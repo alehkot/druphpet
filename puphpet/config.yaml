@@ -125,86 +125,6 @@ apache:
             ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
             ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
             ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
-        nbcumedvil:
-            servername: nbcumedvil.local
-            serveraliases:
-                - local.nbcumedvil
-            docroot: /var/www/nbcumedvil/docroot
-            port: '80'
-            setenv:
-                - 'APP_ENV dev'
-            override:
-                - All
-            options:
-                - Indexes
-                - FollowSymLinks
-                - MultiViews
-            engine: php
-            custom_fragment: ''
-            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
-            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
-            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
-            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
-        drupal8:
-            servername: drupal8.dev
-            serveraliases:
-                - dev.drupal8
-            docroot: /var/www/drupal8
-            port: '80'
-            setenv:
-                - 'APP_ENV dev'
-            override:
-                - All
-            options:
-                - Indexes
-                - FollowSymLinks
-                - MultiViews
-            engine: php
-            custom_fragment: ''
-            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
-            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
-            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
-            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
-        magento:
-            servername: magento.dev
-            serveraliases:
-                - dev.magento
-            docroot: /var/www/magento
-            port: '80'
-            setenv:
-                - 'APP_ENV dev'
-            override:
-                - All
-            options:
-                - Indexes
-                - FollowSymLinks
-                - MultiViews
-            engine: php
-            custom_fragment: ''
-            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
-            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
-            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
-            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
-        wordpress:
-            servername: wordpress.dev
-            serveraliases:
-                - dev.wordpress
-            docroot: /var/www/wordpress
-            port: '80'
-            setenv:
-                - 'APP_ENV dev'
-            override:
-                - All
-            options:
-                - Indexes
-                - FollowSymLinks
-                - MultiViews
-            engine: php
-            custom_fragment: ''
-            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
-            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
-            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
-            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
     mod_pagespeed: '0'
 nginx:
     install: '0'
@@ -248,12 +168,13 @@ php:
             - PHP_CodeSniffer
             - Console_Table
             - Console_Color2-0.1.2
-        pecl:
-            - pecl_http
+        pecl:            
             - uploadprogress
             - apcu
             - ssh2-0.12
             - memcached
+            # Uncomment when the issue during installation is gone.
+            # - pecl_http
     ini:
         display_errors: On
         error_reporting: '-1'
@@ -347,38 +268,6 @@ mysql:
             user: druphpet
             password: 'druphpet'
             sql_file: ''
-        nbcumedvil:
-            grant:
-                - ALL
-            name: nbcumedvil
-            host: '%'
-            user: nbcumedvil
-            password: 'nbcumedvil'
-            sql_file: ''
-        drupal8:
-            grant:
-                - ALL
-            name: drupal8
-            host: '%'
-            user: drupal8
-            password: 'drupal8'
-            sql_file: ''
-        magento:
-            grant:
-                - ALL
-            name: magento
-            host: '%'
-            user: magento
-            password: 'magento'
-            sql_file: ''
-        wordpress:
-            grant:
-                - ALL
-            name: wordpress
-            host: '%'
-            user: wordpress
-            password: 'wordpress'
-            sql_file: ''            
 postgresql:
     install: '0'
     settings:
