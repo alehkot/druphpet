@@ -322,7 +322,7 @@ nodejs:
         - coffee-script
         - jshint
         - csslint
-        - jslint
+        - eslint
         - nodemon
         - grunt-cli
 python:

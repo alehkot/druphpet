@@ -100,7 +100,7 @@ Some of the packages are not enabled by default. You can always adjust installed
 
 **Mailcatcher**
 
-- http://192.168.9.10:8088
+- http://192.168.9.10:1080
 
 **PimpMyLog**
 
