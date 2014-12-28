@@ -6,6 +6,6 @@ if $pimpmylog_values == undef {
 
 if has_key($pimpmylog_values, 'install') and $pimpmylog_values['install'] == 1 {
   class { 'pimpmylog':
-
+    webroot_location => '/var/www/default'
   }
 }

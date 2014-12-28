@@ -7,7 +7,7 @@ vagrantfile-local:
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
-        sync_modules: true
+        sync_modules: false
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -110,6 +110,86 @@ apache:
             serveraliases:
                 - www.druphpet.dev
             docroot: /var/www/druphpet
+            port: '80'
+            setenv:
+                - 'APP_ENV dev'
+            override:
+                - All
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            engine: php
+            custom_fragment: ''
+            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
+            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
+            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
+            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
+        nbcumedvil:
+            servername: nbcumedvil.local
+            serveraliases:
+                - local.nbcumedvil
+            docroot: /var/www/nbcumedvil/docroot
+            port: '80'
+            setenv:
+                - 'APP_ENV dev'
+            override:
+                - All
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            engine: php
+            custom_fragment: ''
+            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
+            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
+            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
+            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
+        drupal8:
+            servername: drupal8.dev
+            serveraliases:
+                - dev.drupal8
+            docroot: /var/www/drupal8
+            port: '80'
+            setenv:
+                - 'APP_ENV dev'
+            override:
+                - All
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            engine: php
+            custom_fragment: ''
+            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
+            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
+            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
+            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
+        magento:
+            servername: magento.dev
+            serveraliases:
+                - dev.magento
+            docroot: /var/www/magento
+            port: '80'
+            setenv:
+                - 'APP_ENV dev'
+            override:
+                - All
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
+            engine: php
+            custom_fragment: ''
+            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
+            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
+            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
+            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
+        wordpress:
+            servername: wordpress.dev
+            serveraliases:
+                - dev.wordpress
+            docroot: /var/www/wordpress
             port: '80'
             setenv:
                 - 'APP_ENV dev'
@@ -254,7 +334,7 @@ python:
 mysql:
     install: 1
     root_password: 'druphpet'
-    adminer: 1
+    adminer: 0
     override_options:
         'mysqld':
             'bind-address': '0.0.0.0'
@@ -267,6 +347,38 @@ mysql:
             user: druphpet
             password: 'druphpet'
             sql_file: ''
+        nbcumedvil:
+            grant:
+                - ALL
+            name: nbcumedvil
+            host: '%'
+            user: nbcumedvil
+            password: 'nbcumedvil'
+            sql_file: ''
+        drupal8:
+            grant:
+                - ALL
+            name: drupal8
+            host: '%'
+            user: drupal8
+            password: 'drupal8'
+            sql_file: ''
+        magento:
+            grant:
+                - ALL
+            name: magento
+            host: '%'
+            user: magento
+            password: 'magento'
+            sql_file: ''
+        wordpress:
+            grant:
+                - ALL
+            name: wordpress
+            host: '%'
+            user: wordpress
+            password: 'wordpress'
+            sql_file: ''            
 postgresql:
     install: '0'
     settings:
@@ -322,7 +434,7 @@ rabbitmq:
     settings:
         port: '5672'
 elastic_search:
-    install: '1'
+    install: '0'
     settings:
         version: 1.4.1
         java_install: true
