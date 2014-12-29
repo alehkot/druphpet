@@ -75,10 +75,6 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 
-## Local overrides
-(not working at this moment)
-`puphpet/local.config.yaml` can be used to set overrides for default configuration from `puphpet/config.yaml`.
-
 ## Defaults
 **Hosts**
 
