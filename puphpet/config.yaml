@@ -105,7 +105,7 @@ firewall:
         action: accept
         priority: 9000
 apache:
-    install: 1
+    install: '0'
     settings:
         user: www-data
         group: www-data
@@ -140,7 +140,7 @@ apache:
             ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
     mod_pagespeed: '0'
 nginx:
-    install: '0'
+    install: '1'
     settings:
         default_vhost: 1
         proxy_buffer_size: 128k
@@ -163,11 +163,11 @@ nginx:
                 - 'APP_ENV dev'
             engine: php
             client_max_body_size: 5m
-            ssl: '1'           
+            ssl: '0'           
             ssl_cert: ''
             ssl_key: ''
-            rewrite_to_https: '1'
-            spdy: '1'
+            rewrite_to_https: '0'
+            spdy: '0'
 php:
     install: '1'
     version: '56'
@@ -206,7 +206,7 @@ php:
         apc.mmap_file_mask: '/tmp/apc.XXXXXX'
         error_log: /var/log/php_errors.log
     timezone: Europe/Minsk
-    mod_php: '1'
+    mod_php: '0'
 hhvm:
     install: '0'
     nightly: 0
@@ -375,14 +375,14 @@ solr:
         version: 4.10.2
         port: '8984'
 pimpmylog:
-    install: '1'
+    install: '0'
 varnish:
     install: '0'
     settings:
         http_port: 8080
         storage_size: 0.5G
 webgrind:
-    install: '1'
+    install: '0'
     settings:
         domain: 'webgrind.druphpet.dev'
 newrelic:
@@ -392,6 +392,6 @@ newrelic:
 vsftpd:
     install: '1'
 phpmyadmin:
-    install: '1'
+    install: '0'
     settings:
         domain: 'phpmyadmin.druphpet.dev'
