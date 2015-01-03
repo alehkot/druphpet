@@ -20,58 +20,59 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - It is strongly recommended to reboot the VM after successful provisioning using `vagrant reload`.
 
 ## Included ##
-- Ubuntu 64-bit Precise 14.04
-- Drush 7.0-alpha7
-- Apache 2.2(4) with mod_pagespeed and/or nginx
-- PHP 5.6 with steroids:
-  - XDebug
-  - XHProf
-  - SOAP
-  - Uploadprogress
-  - APCu
-  - Memcached
-  - PHP_CodeSniffer
+- [Ubuntu 64-bit Precise 14.04](http://www.ubuntu.com/)
+- [Drush 7.0-alpha7](http://drush.org/en/master/)
+- [Apache 2.4](http://httpd.apache.org/) or [Nginx](http://nginx.org/)
+- [PHP 5.6](http://php.net/) with extensions:
+  - _(debugger, pecl)_ [XDebug](http://xdebug.org/)
+  - _(profiler, tool, pecl)_ [XHProf](https://github.com/phacility/xhprof)
+  - _(pecl)_ [SOAP](http://php.net/manual/en/intro.soap.php)
+  - _(pecl)_ [Uploadprogress](http://pecl.php.net/package/uploadprogress)
+  - _(pecl)_ [APCu](https://github.com/krakjoe/apcu/blob/simplify/INSTALL)
+  - _(pecl)_ [Memcached](http://php.net/manual/en/intro.memcached.php)
+  - _(tool, PEAR)_ [PHP_CodeSniffer](http://pear.php.net/package/PHP_CodeSniffer/redirected)
+  - _(PEAR)_ [PHP_Console_Table](http://pear.php.net/package/Console_Table)
 - Optionally, old versions of PHP are also available with the following extensions:
-	- APC
-	- XCache
-- Apache Solr 4.10.2
-- MySQL 5.5.37
-- dos2unix
+	- _(pecl)_ [APC](http://php.net/manual/en/book.apc.php)
+	- _(pecl)_ [XCache](http://xcache.lighttpd.net/)
+- [Apache Solr 4.10.2](http://lucene.apache.org/solr/)
+- [MySQL 5.5.37](http://www.mysql.com/)
+- [dos2unix](http://linuxcommand.org/man_pages/dos2unix1.html)
 - [Percona Toolkit](http://www.percona.com/software/percona-toolkit)
 - [Adminer](http://www.adminer.org/) (or [phpMyAdmin](http://www.phpmyadmin.net/home_page/index.php))
 - [PimpMyLog](http://pimpmylog.com/)
 - [MailCatcher](http://mailcatcher.me/)
-- ImageMagick
-- Webgrind
-- Curl
-- Sendmail
-- Unzip
-- Git
-- RabbitMQ
-- New Relic
-- Graphviz
-- Vsftpd
-- MC
-- Vim
-- Samba Server
-- Memcached
-- Ruby 1.9.3 using RVM with gems:
-  - Sass
-  - Compass
-  - Bundler
-  - Guard
-  - Guard-livereload
-  - Nodemon
-- node.js with packages:
-    - Yeoman
-    - Bower
-    - Grunt
-    - Gulp
-    - Coffee-script
-    - JSHint
-    - CSSLint
-    - JSLint
-- Python
+- [ImageMagick](http://www.imagemagick.org/)
+- [Webgrind](https://github.com/jokkedk/webgrind)
+- [Curl](http://curl.haxx.se/)
+- [Sendmail](http://www.linuxserverhowto.com/linux-mail-server-sendmail/index.html)
+- [Unzip](http://www.cyberciti.biz/tips/how-can-i-zipping-and-unzipping-files-under-linux.html)
+- [Git](http://git-scm.com/)
+- [RabbitMQ](http://www.rabbitmq.com/) or [Beanstalkd](http://kr.github.io/beanstalkd/)
+- [New Relic](http://newrelic.com/)
+- [Graphviz](http://www.graphviz.org/)
+- [Vsftpd](https://security.appspot.com/vsftpd.html)
+- [MC](http://linux.die.net/man/1/mc)
+- [Vim](http://www.vim.org/)
+- [Samba Server](https://www.samba.org/samba/docs/using_samba/ch02.html)
+- [Memcached](http://memcached.org/)
+- [Ruby 1.9.3](https://www.ruby-lang.org/) using [RVM](https://rvm.io/) with gems:
+  - [Sass](http://sass-lang.com/)
+  - [Compass](http://compass-style.org/)
+  - [Bundler](http://bundler.io/)
+  - [Guard](https://github.com/guard/guard)
+  - [Guard-livereload](https://github.com/guard/guard-livereload)
+- [Node.js](http://nodejs.org/) with packages:
+    - [Yeoman](http://yeoman.io/)
+    - [Bower](http://bower.io/)
+    - [Grunt](http://gruntjs.com/)
+    - [Gulp](http://gulpjs.com/)
+    - [Coffee-script](http://coffeescript.org/)
+    - [JSHint](http://jshint.com/)
+    - [CSSLint](http://csslint.net/)
+    - [ESLint](http://eslint.org/)
+    - [Nodemon](http://nodemon.io/)
+- [Python](https://www.python.org/)
 
 Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 

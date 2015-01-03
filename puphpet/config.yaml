@@ -62,6 +62,7 @@ vagrantfile-local:
     vagrant:
         host: detect
 server:
+    install: '1'
     packages:
         - build-essential
         - vim
@@ -83,6 +84,18 @@ server:
         -
             bash_aliases: null
     _prevent_empty: ''
+cron:
+    install: '0'
+    jobs:
+        crlnxelghgl0:
+            monthday: ''
+            name: druphpet
+            user: root
+            command: 'echo "you are using druphpet"'
+            minute: ''
+            hour: '*/10'
+            weekday: ''
+            month: ''    
 firewall:
     install: '1'
     rules:
@@ -132,8 +145,10 @@ nginx:
         default_vhost: 1
         proxy_buffer_size: 128k
         proxy_buffers: '4 256k'
+    upstreams: {  }        
     vhosts:
         VTChGNgY0tNd:
+            proxy: ''
             server_name: druphpet.dev
             server_aliases:
                 - www.druphpet.dev
@@ -147,10 +162,11 @@ nginx:
             envvars:
                 - 'APP_ENV dev'
             engine: php
-            ssl: '1'
-            client_max_body_size: 1m
+            client_max_body_size: 5m
+            ssl: '1'           
             ssl_cert: ''
             ssl_key: ''
+            rewrite_to_https: '1'
             spdy: '1'
 php:
     install: '1'
@@ -275,24 +291,48 @@ postgresql:
         user_group: postgres
         encoding: UTF8
         version: '9.3'
-    databases: {  }
+    databases:
+        ovKmEZcMgJTX:
+            grant: ALL
+            name: druphpet
+            user: druphpet
+            password: ''
+            sql_file: ''
     adminer: '0'
 mariadb:
     install: '0'
     root_password: 'druphpet'
     adminer: '1'
-    databases: {}
+    databases:
+        FpcnrjijrBDO:
+            grant:
+                - ALL
+            name: druphpet
+            host: localhost
+            user: druphpet
+            password: druphpet
+            sql_file: ''
     version: '10.0'
 sqlite:
     install: '0'
     adminer: '0'
-    databases: {  }
+    databases:
+        0nNstbdJm0JB:
+            name: druphpet
+            owner: vagrant
+            group: ''
+            mode: '755'
+            sql_file: ''
 mongodb:
     install: '0'
     settings:
         auth: 1
         port: '27017'
-    databases: {  }
+    databases:
+        zEH4gB9sPFGo:
+            name: druphpet
+            user: druphpet
+            password: druphpet
 redis:
     install: '0'
     settings:
