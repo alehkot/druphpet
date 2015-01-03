@@ -12,7 +12,6 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - Add any number of Apache hosts and databases you want in appropriate sections of druphpet/puphpet/config.yaml file.
 - Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
 	- `192.168.9.10 druphpet.dev`
-	- `192.168.9.10 xhprof.druphpet.dev`
 	- `192.168.9.10 ...`
 	- `192.168.9.10 [yourhost]`
 - Execute `vagrant up`.
@@ -80,7 +79,6 @@ Some of the packages are not enabled by default. You can always adjust installed
 **Hosts**
 
 - http://druphpet.dev
-- http://xhprof.druphpet.dev
 
 **FTP**
 * Host: 192.168.9.10
@@ -98,6 +96,10 @@ Some of the packages are not enabled by default. You can always adjust installed
 **Mailcatcher**
 
 - http://192.168.9.10:1080
+
+**XHProf**
+
+- http://192.168.9.10/xhprof/xhprof_html
 
 **PimpMyLog**
 
