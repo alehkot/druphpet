@@ -73,7 +73,9 @@ The VM includes the fastest option available to synchronize folders in Windows -
     - [Nodemon](http://nodemon.io/)
 - [Python](https://www.python.org/)
 
-Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
+### Some notes
+- Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
+- If you want to use **Nginx** HTTP server instead of **Apache** please checkout special ['nginx'](https://github.com/alehkot/druphpet/tree/nginx) branch of the repository. Please note, the following modules of Druphpet haven't been integrated with Nginx yet, hence disabled: Webgrind, Pimpmylog, Phpmyadmin.
 
 ## Defaults
 **Hosts**
