@@ -99,6 +99,12 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 - http://192.168.9.10:1080
 
+**Xdebug**
+
+- Xdebug is configured to automatically connect back to host if ?XDEBUG_SESSION_START=XXXX query parameter is set, e.g. http://druphpet.dev/index.php?XDEBUG_SESSION_START=PHPSTORM. 
+- To use Xdebug with [Jetbrains PHPStorm](https://www.jetbrains.com/phpstorm/) please follow  [instructions](http://randyfay.com/content/remote-drupalphp-debugging-xdebug-and-phpstorm).
+- If you do everything properly, but upon accessing pages of your website XDebug ignores the breakpoints you set in an IDE, it might be a case of a misconfigured firewall on your host environment. Try disabling the firewall. 
+
 **XHProf**
 
 - http://192.168.9.10/xhprof/xhprof_html
@@ -173,7 +179,7 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
 - during `vagrant up` execution, then execute the following command:
 	- `set PATH=%PATH%;C:\Program Files\Oracle\VirtualBox`
 
-- If you experience problems with remote debugging (PHP, NodeJS) try creating SSH-tunnels as following:
+- If you experience problems with remote debugging (PHP, NodeJS) and don't want (or can't) configure your firewall try creating SSH-tunnels as following:
   - PHP: `ssh -R 9000:localhost:9000 vagrant@druphpet.dev`
   - NodeJS: `ssh -L 5858:127.0.0.1:5858 vagrant@druphpet.dev -N`
 
