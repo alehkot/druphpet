@@ -101,9 +101,9 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 **Xdebug**
 
-- Xdebug is configured to automatically connect back to host if ?XDEBUG_SESSION_START=XXXX query parameter is set, e.g. http://druphpet.dev/index.php?XDEBUG_SESSION_START=PHPSTORM. 
-- To use Xdebug with [Jetbrains PHPStorm](https://www.jetbrains.com/phpstorm/) please follow  [instructions](http://randyfay.com/content/remote-drupalphp-debugging-xdebug-and-phpstorm).
-- If you do everything properly, but upon accessing pages of your website XDebug ignores the breakpoints you set in an IDE, it might be a case of a misconfigured firewall on your host environment. Try disabling the firewall. 
+- Xdebug is configured to automatically connect back to host if _XDEBUG_SESSION_START_ query parameter is set, e.g. if you access http://druphpet.dev/index.php?XDEBUG_SESSION_START=PHPSTORM. 
+- To use Xdebug with [Jetbrains PHPStorm](https://www.jetbrains.com/phpstorm/) please follow the [instructions](http://randyfay.com/content/remote-drupalphp-debugging-xdebug-and-phpstorm).
+- If upon accessing pages of your website _XDEBUG_SESSION_START_ Xdebug ignores breakpoints you set in your IDE, it might be a case of a misconfigured firewall in your host environment. Try disabling the firewall to see if the issue is resolved. 
 
 **XHProf**
 
