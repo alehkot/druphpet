@@ -204,7 +204,9 @@ php:
         apc.gc_ttl: '600'
         apc.enable_cli: '1'
         apc.mmap_file_mask: '/tmp/apc.XXXXXX'
-        error_log: /var/log/php_errors.log
+        error_log: '/var/log/php_errors.log'
+        mbstring.http_input: 'pass'
+        mbstring.http_output: 'pass'
     timezone: Europe/Minsk
     mod_php: '0'
 hhvm:
