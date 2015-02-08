@@ -7,7 +7,14 @@ vagrantfile-local:
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
+        # Normally, you can switch sync_modules to false, 
+        # after the first successful provision
+        # if you don't want to update Puppet modules.
         sync_modules: true
+        # Switch puphpet_sync to true if you want to use standard 
+        # Vagrant synced folder mechanisms, including:
+        # default (VirtualBox), SMB, rsync, NFS. 
+        puphpet_sync: false
         network:
             private_network: 192.168.9.10
             forwarded_port:
@@ -84,6 +91,10 @@ server:
         -
             bash_aliases: null
     _prevent_empty: ''
+users_groups:
+    install: '1'
+    groups: {  }
+    users: {  }
 cron:
     install: '0'
     jobs:
@@ -194,16 +205,25 @@ php:
     ini:
         display_errors: On
         error_reporting: '-1'
-        session.save_path: '/var/lib/php5/sessions'
+        session.save_path: '/var/lib/php/session'
         memory_limit: '512M'
         upload_max_filesize: '128M'
         post_max_size: '128M'
         max_execution_time: '300'
-        apc.shm_size: '128M'
-        apc.ttl: '0'
-        apc.gc_ttl: '600'
-        apc.enable_cli: '1'
-        apc.mmap_file_mask: '/tmp/apc.XXXXXX'
+        opcache.memory_consumption: '128'
+        opcache.interned_strings_buffer: '8'
+        opcache.max_accelerated_files: '10000'
+        opcache.revalidate_freq: '60'
+        opcache.fast_shutdown: '1'
+        opcache.enable_cli: '1'
+        opcache.save_comments: '1'
+        # For older version of PHP comment the above opcache section
+        # and uncomment the below apc section.
+        # apc.shm_size: '128M'
+        # apc.ttl: '0'
+        # apc.gc_ttl: '600'
+        # apc.enable_cli: '1'
+        # apc.mmap_file_mask: '/tmp/apc.XXXXXX'
         error_log: '/var/log/php_errors.log'
         mbstring.http_input: 'pass'
         mbstring.http_output: 'pass'
