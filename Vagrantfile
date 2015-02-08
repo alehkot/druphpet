@@ -78,25 +78,38 @@ Vagrant.configure('2') do |config|
     config.cache.scope = :box
   end
 
-  #data['vm']['synced_folder'].each do |i, folder|
-  #  if folder['source'] != '' && folder['target'] != ''
-  #    if folder['sync_type'] == 'nfs'
-  #      config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}", type: 'nfs'
-  #    elsif folder['sync_type'] == 'smb'
-  #      config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}", type: 'smb'
-  #    elsif folder['sync_type'] == 'rsync'
-  #      rsync_args = !folder['rsync']['args'].nil? ? folder['rsync']['args'] : ['--verbose', '--archive', '-z']
-  #      rsync_auto = !folder['rsync']['auto'].nil? ? folder['rsync']['auto'] : true
-  #      rsync_exclude = !folder['rsync']['exclude'].nil? ? folder['rsync']['exclude'] : ['.vagrant/']
+  if data['vm']['puphpet_sync'] == true
+    data['vm']['synced_folder'].each do |i, folder|
+      if folder['source'] != '' && folder['target'] != ''
+        sync_owner = !folder['sync_owner'].nil? ? folder['sync_owner'] : 'www-data'
+        sync_group = !folder['sync_group'].nil? ? folder['sync_group'] : 'www-data'
 
-  #      config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
-  #        rsync__args: rsync_args, rsync__exclude: rsync_exclude, rsync__auto: rsync_auto, type: 'rsync'
-  #    else
-  #      config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
-  #        group: 'www-data', owner: 'www-data', mount_options: ['dmode=775', 'fmode=764']
-  #    end
-  #  end
-  # end
+        if folder['sync_type'] == 'nfs'
+          if Vagrant.has_plugin?('vagrant-bindfs')
+            config.vm.synced_folder "#{folder['source']}", "/mnt/vagrant-#{i}", id: "#{i}", type: 'nfs'
+            config.bindfs.bind_folder "/mnt/vagrant-#{i}", "#{folder['target']}", user: sync_owner, group: sync_group
+          else
+            config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}", type: 'nfs'
+          end
+        elsif folder['sync_type'] == 'smb'
+          config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}", type: 'smb'
+        elsif folder['sync_type'] == 'rsync'
+          rsync_args = !folder['rsync']['args'].nil? ? folder['rsync']['args'] : ['--verbose', '--archive', '-z']
+          rsync_auto = !folder['rsync']['auto'].nil? ? folder['rsync']['auto'] : true
+          rsync_exclude = !folder['rsync']['exclude'].nil? ? folder['rsync']['exclude'] : ['.vagrant/']
+
+          config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
+            rsync__args: rsync_args, rsync__exclude: rsync_exclude, rsync__auto: rsync_auto, type: 'rsync', group: sync_group, owner: sync_owner
+        elsif data['vm']['chosen_provider'] == 'parallels'
+          config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
+            group: sync_group, owner: sync_owner, mount_options: ['share']
+        else
+          config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
+            group: sync_group, owner: sync_owner, mount_options: ['dmode=775', 'fmode=764']
+        end
+      end
+    end
+  end
 
   config.vm.usable_port_range = (data['vm']['usable_port_range']['start'].to_i..data['vm']['usable_port_range']['stop'].to_i)
 
@@ -122,32 +135,12 @@ Vagrant.configure('2') do |config|
       virtualbox.customize ['modifyvm', :id, '--memory', "#{data['vm']['memory']}"]
       virtualbox.customize ['modifyvm', :id, '--cpus', "#{data['vm']['cpus']}"]
 
-      if data['vm']['hostname'].to_s.strip.length != 0
-        virtualbox.customize ['modifyvm', :id, '--name', config.vm.hostname]
-      end
-    end
-  end
-
-  if data['vm']['chosen_provider'] == 'vmware_fusion' || data['vm']['chosen_provider'] == 'vmware_workstation'
-    ENV['VAGRANT_DEFAULT_PROVIDER'] = (data['vm']['chosen_provider'] == 'vmware_fusion') ? 'vmware_fusion' : 'vmware_workstation'
-
-    config.vm.provider 'vmware_fusion' do |v|
-      data['vm']['provider']['vmware'].each do |key, value|
-        if key == 'memsize'
-          next
-        end
-        if key == 'cpus'
-          next
-        end
-
-        v.vmx["#{key}"] = "#{value}"
-      end
-
-      v.vmx['memsize']  = "#{data['vm']['memory']}"
-      v.vmx['numvcpus'] = "#{data['vm']['cpus']}"
-
-      if data['vm']['hostname'].to_s.strip.length != 0
-        v.vmx['displayName'] = config.vm.hostname
+      if data['vm']['provider']['virtualbox']['modifyvm']['name'].nil? ||
+        data['vm']['provider']['virtualbox']['modifyvm']['name'].empty?
+        
+        if data['vm']['hostname'].to_s.strip.length != 0
+          virtualbox.customize ['modifyvm', :id, '--name', config.vm.hostname]
+        end        
       end
     end
   end
@@ -170,8 +163,11 @@ Vagrant.configure('2') do |config|
       v.memory = "#{data['vm']['memory']}"
       v.cpus   = "#{data['vm']['cpus']}"
 
-      if data['vm']['hostname'].to_s.strip.length != 0
-        v.name = config.vm.hostname
+      if data['vm']['provider']['parallels']['name'].nil? ||
+        data['vm']['provider']['parallels']['name'].empty?
+        if data['vm']['hostname'].to_s.strip.length != 0
+          v.name = config.vm.hostname
+        end
       end
     end
   end
@@ -218,11 +214,26 @@ Vagrant.configure('2') do |config|
   end
   config.vm.provision :shell, :path => 'puphpet/shell/important-notices.sh'
 
-  if File.file?("#{dir}/puphpet/files/dot/ssh/id_rsa")
+  customKey  = "#{dir}/files/dot/ssh/id_rsa"
+  vagrantKey = "#{dir}/.vagrant/machines/default/#{ENV['VAGRANT_DEFAULT_PROVIDER']}/private_key"
+
+  if File.file?(customKey)
     config.ssh.private_key_path = [
-      "#{dir}/puphpet/files/dot/ssh/id_rsa",
-      "#{dir}/puphpet/files/dot/ssh/insecure_private_key"
+      customKey,
+      "#{ENV['HOME']}/.vagrant.d/insecure_private_key"
     ]
+
+    if File.file?(vagrantKey) and ! FileUtils.compare_file(customKey, vagrantKey)
+      File.delete(vagrantKey)
+    end
+
+    if ! File.directory?(File.dirname(vagrantKey))
+      FileUtils.mkdir_p(File.dirname(vagrantKey))
+    end
+
+    if ! File.file?(vagrantKey)
+      FileUtils.cp(customKey, vagrantKey)
+    end
   end
 
   if !data['ssh']['host'].nil?
