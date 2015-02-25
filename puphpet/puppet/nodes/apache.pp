@@ -40,7 +40,7 @@ if hash_key_equals($apache_values, 'install', 1) {
 
   if downcase($::provisioner_type) in $apache_provider_types {
     $webroot_location_group = 'www-data'
-    $vhost_docroot_group    = undef
+    $vhost_docroot_group    = 'www-data'
   } else {
     $webroot_location_group = undef
     $vhost_docroot_group    = 'www-user'
@@ -156,6 +156,7 @@ if hash_key_equals($apache_values, 'install', 1) {
 
       $vhost_merged = delete(merge($vhost, {
         'custom_fragment' => template('puphpet/apache/custom_fragment.erb'),
+        'directories'     => values_no_error($vhost['directories']),
         'ssl'             => 'ssl' in $vhost and str2bool($vhost['ssl']) ? { true => true, default => false },
         'ssl_cert'        => hash_key_true($vhost, 'ssl_cert')      ? { true => $vhost['ssl_cert'],      default => $puphpet::params::ssl_cert_location },
         'ssl_key'         => hash_key_true($vhost, 'ssl_key')       ? { true => $vhost['ssl_key'],       default => $puphpet::params::ssl_key_location },
@@ -211,7 +212,7 @@ define apache_debian_repo {
     repos             => 'main',
     required_packages => 'debian-keyring debian-archive-keyring',
     key               => '9EB5E8A3DF17D0B3',
-    key_server        => 'keys.gnupg.net',
+    key_server        => 'hkp://keyserver.ubuntu.com:80',
     include_src       => true
   }
 }

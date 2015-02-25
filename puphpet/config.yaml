@@ -71,7 +71,7 @@ vagrantfile-local:
 server:
     install: '1'
     packages:
-        - build-essential
+        #- build-essential
         - vim
         - curl
         - git-core
@@ -156,7 +156,7 @@ nginx:
         default_vhost: 1
         proxy_buffer_size: 128k
         proxy_buffers: '4 256k'
-    upstreams: {  }        
+    upstreams: {  }
     vhosts:
         VTChGNgY0tNd:
             proxy: ''
@@ -197,15 +197,15 @@ php:
             - Console_Color2-0.1.2
         pecl:            
             - uploadprogress
-            - apcu
-            - ssh2-0.12
+            #- apcu
+            - ssh2
             - memcached
             # Uncomment when the issue during installation is gone.
-            # - pecl_http
+            #- pecl_http
     ini:
         display_errors: On
         error_reporting: '-1'
-        session.save_path: '/var/lib/php/session'
+        session.save_path: '/var/lib/php5/sessions'
         memory_limit: '512M'
         upload_max_filesize: '128M'
         post_max_size: '128M'
@@ -217,17 +217,20 @@ php:
         opcache.fast_shutdown: '1'
         opcache.enable_cli: '1'
         opcache.save_comments: '1'
-        # For older version of PHP comment the above opcache section
-        # and uncomment the below apc section.
-        # apc.shm_size: '128M'
-        # apc.ttl: '0'
-        # apc.gc_ttl: '600'
-        # apc.enable_cli: '1'
-        # apc.mmap_file_mask: '/tmp/apc.XXXXXX'
+        # For older versions of PHP (<5.5) 
+        # comment the above opcache section
+        # and uncomment the following apc section.
+        #
+        #apc.shm_size: '128M'
+        #apc.ttl: '0'
+        #apc.gc_ttl: '600'
+        #apc.enable_cli: '1'
+        #apc.mmap_file_mask: '/tmp/apc.XXXXXX'
+        #apc.stat: '1'
         error_log: '/var/log/php_errors.log'
         mbstring.http_input: 'pass'
         mbstring.http_output: 'pass'
-    timezone: Europe/Minsk
+    timezone: 'Europe/Minsk'
     mod_php: '1'
 hhvm:
     install: '0'
@@ -272,10 +275,9 @@ ruby:
                 - livereload
             bundler: '1'
 nodejs:
-    install: '1'
+    install: '0'
     npm_packages:
-        - yo
-        - generator-angular
+        - yo        
         - gulp
         - bower
         - coffee-script

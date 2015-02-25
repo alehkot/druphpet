@@ -147,7 +147,7 @@ if hash_key_equals($php_values, 'install', 1) {
           ensure => directory,
           group  => 'www-data',
           owner  => 'www-data',
-          mode   => 0775,
+          mode   => 0777,
         }
       }
     }
