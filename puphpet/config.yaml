@@ -275,7 +275,7 @@ ruby:
                 - livereload
             bundler: '1'
 nodejs:
-    install: '0'
+    install: '1'
     npm_packages:
         - yo        
         - gulp
