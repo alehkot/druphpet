@@ -7,13 +7,13 @@ vagrantfile-local:
         memory: '1024'
         cpus: '2'
         chosen_provider: virtualbox
-        # Normally, you can switch sync_modules to false, 
+        # Normally, you can switch sync_modules to false,
         # after the first successful provision
         # if you don't want to update Puppet modules.
         sync_modules: true
-        # Switch puphpet_sync to true if you want to use standard 
+        # Switch puphpet_sync to true if you want to use standard
         # Vagrant synced folder mechanisms, including:
-        # default (VirtualBox), SMB, rsync, NFS. 
+        # default (VirtualBox), SMB, rsync, NFS.
         puphpet_sync: false
         network:
             private_network: 192.168.9.10
@@ -71,7 +71,7 @@ vagrantfile-local:
 server:
     install: '1'
     packages:
-        - build-essential
+        #- build-essential
         - vim
         - curl
         - git-core
@@ -106,7 +106,7 @@ cron:
             minute: ''
             hour: '*/10'
             weekday: ''
-            month: ''    
+            month: ''
 firewall:
     install: '1'
     rules:
@@ -156,7 +156,7 @@ nginx:
         default_vhost: 1
         proxy_buffer_size: 128k
         proxy_buffers: '4 256k'
-    upstreams: {  }        
+    upstreams: {  }
     vhosts:
         VTChGNgY0tNd:
             proxy: ''
@@ -191,43 +191,49 @@ php:
             - mcrypt
             - curl
             - gd
+            - mysqlnd
         pear:
             - PHP_CodeSniffer
             - Console_Table
             - Console_Color2-0.1.2
-        pecl:            
+        pecl:
             - uploadprogress
             - apcu
-            - ssh2-0.12
+            - ssh2
             - memcached
+            - yaml
             # Uncomment when the issue during installation is gone.
-            # - pecl_http
+            #- pecl_http
     ini:
         display_errors: On
         error_reporting: '-1'
-        session.save_path: '/var/lib/php/session'
+        session.save_path: '/var/lib/php5/sessions'
         memory_limit: '512M'
         upload_max_filesize: '128M'
         post_max_size: '128M'
         max_execution_time: '300'
+        realpath_cache_size: '128K'
+        realpath_cache_ttl: '3600'
         opcache.memory_consumption: '128'
         opcache.interned_strings_buffer: '8'
         opcache.max_accelerated_files: '10000'
-        opcache.revalidate_freq: '60'
+        # If you've already installed software,
+        # it's better to increase the revalidate_freq to
+        # some number of seconds (e.g. 60).
+        opcache.revalidate_freq: '0'
         opcache.fast_shutdown: '1'
         opcache.enable_cli: '1'
         opcache.save_comments: '1'
-        # For older version of PHP comment the above opcache section
-        # and uncomment the below apc section.
-        # apc.shm_size: '128M'
-        # apc.ttl: '0'
-        # apc.gc_ttl: '600'
-        # apc.enable_cli: '1'
-        # apc.mmap_file_mask: '/tmp/apc.XXXXXX'
+        apc.shm_size: '128M'
+        apc.ttl: '0'
+        apc.gc_ttl: '600'
+        apc.enable_cli: '1'
+        apc.mmap_file_mask: '/tmp/apc.XXXXXX'
+        apc.stat: '1'
         error_log: '/var/log/php_errors.log'
         mbstring.http_input: 'pass'
         mbstring.http_output: 'pass'
-    timezone: Europe/Minsk
+    timezone: 'Europe/Minsk'
     mod_php: '0'
 hhvm:
     install: '0'
@@ -275,7 +281,6 @@ nodejs:
     install: '1'
     npm_packages:
         - yo
-        - generator-angular
         - gulp
         - bower
         - coffee-script
@@ -297,6 +302,11 @@ mysql:
     override_options:
         'mysqld':
             'bind-address': '0.0.0.0'
+            'max_allowed_packet': '128M'
+            'wait_timeout': '600'
+            'query_cache_type': '0'
+            'innodb_flush_log_at_trx_commit': '2'
+            'innodb_lock_wait_timeout': '40'
     databases:
         gPB9UXozXZEq:
             grant:
