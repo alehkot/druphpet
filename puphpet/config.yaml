@@ -201,6 +201,7 @@ php:
             - apcu
             - ssh2
             - memcached
+            - yaml
             # Uncomment when the issue during installation is gone.
             #- pecl_http
     ini:
@@ -303,6 +304,8 @@ mysql:
             'bind-address': '0.0.0.0'
             'max_allowed_packet': '128M'
             'wait_timeout': '600'
+            'query_cache_type': '0'
+            'innodb_flush_log_at_trx_commit': '2'
             'innodb_lock_wait_timeout': '40'
     databases:
         gPB9UXozXZEq:
