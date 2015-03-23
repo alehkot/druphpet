@@ -1,120 +1,212 @@
 if $mysql_values == undef { $mysql_values = hiera_hash('mysql', false) }
 if $php_values == undef { $php_values = hiera_hash('php', false) }
+if $hhvm_values == undef { $hhvm_values = hiera_hash('hhvm', false) }
 if $apache_values == undef { $apache_values = hiera_hash('apache', false) }
 if $nginx_values == undef { $nginx_values = hiera_hash('nginx', false) }
 
 include puphpet::params
 
-if hash_key_equals($mysql_values, 'install', 1) {
+if array_true($mysql_values, 'install') {
+  include puphpet::mysql::params
   include mysql::params
 
-  if hash_key_equals($apache_values, 'install', 1)
-    or hash_key_equals($nginx_values, 'install', 1)
+  if array_true($apache_values, 'install')
+    or array_true($nginx_values, 'install')
   {
     $mysql_webserver_restart = true
   } else {
     $mysql_webserver_restart = false
   }
 
-  if $::osfamily == 'redhat' {
-    $rhel_mysql = 'http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm'
-    exec { 'mysql-community-repo':
-      command => "yum -y --nogpgcheck install '${rhel_mysql}' && touch /.puphpet-stuff/mysql-community-release",
-      creates => '/.puphpet-stuff/mysql-community-release'
-    }
+  $mysql_version = to_string($mysql_values['settings']['version'])
 
-    $mysql_server_require             = Exec['mysql-community-repo']
-    $mysql_server_server_package_name = 'mysql-community-server'
-    $mysql_server_client_package_name = 'mysql-community-client'
-  } else {
-    $mysql_server_require             = []
-    $mysql_server_server_package_name = $mysql::params::server_package_name
-    $mysql_server_client_package_name = $mysql::params::client_package_name
+  class { 'puphpet::mysql::repo':
+    version => $mysql_version,
   }
 
-  if hash_key_equals($php_values, 'install', 1) {
+  if $mysql_version in ['55', '5.5'] {
+    $mysql_server_package = $puphpet::mysql::params::mysql_server_55
+    $mysql_client_package = $puphpet::mysql::params::mysql_client_55
+  } elsif $mysql_version in ['56', '5.6'] {
+    $mysql_server_package = $puphpet::mysql::params::mysql_server_56
+    $mysql_client_package = $puphpet::mysql::params::mysql_client_56
+  }
+
+  if array_true($php_values, 'install') {
     $mysql_php_installed = true
     $mysql_php_package   = 'php'
-  } elsif hash_key_equals($hhvm_values, 'install', 1) {
+  } elsif array_true($hhvm_values, 'install') {
     $mysql_php_installed = true
     $mysql_php_package   = 'hhvm'
   } else {
     $mysql_php_installed = false
   }
 
-  if $mysql_values['root_password'] {
-    $mysql_override_options = empty($mysql_values['override_options']) ? {
-      true    => {},
-      default => $mysql_values['override_options']
+  if empty($mysql_values['settings']['root_password']) {
+    fail( 'MySQL requires choosing a root password. Please check your config.yaml file.' )
+  }
+
+  $mysql_override_options = deep_merge($mysql::params::default_options, {
+    'mysqld' => {
+      'tmpdir' => "${mysql::params::datadir}/tmp",
+    }
+  })
+
+  $mysql_settings = delete(deep_merge({
+    'package_name'     => $mysql_server_package,
+    'restart'          => true,
+    'override_options' => $mysql_override_options,
+    require            => Class['puphpet::mysql::repo'],
+  }, $mysql_values['settings']), 'version')
+
+  create_resources('class', {
+    'mysql::server' => $mysql_settings
+  })
+
+  class { 'mysql::client':
+    package_name => $mysql_client_package,
+    require      => Class['puphpet::mysql::repo'],
+  }
+
+  # prevent problems with being unable to create dir in /tmp
+  if ! defined(File[$mysql_override_options['mysqld']['tmpdir']]) {
+    file { $mysql_override_options['mysqld']['tmpdir']:
+      ensure  => directory,
+      owner   => $mysql_override_options['mysqld']['user'],
+      group   => $mysql::params::root_group,
+      mode    => '0775',
+      require => Class['mysql::client'],
+      notify  => Service[$mysql::params::server_service_name]
+    }
+  }
+
+  Mysql_user <| |>
+  -> Mysql_database <| |>
+  -> Mysql_grant <| |>
+
+  # config file could contain no users key
+  $mysql_users = array_true($mysql_values, 'users') ? {
+    true    => $mysql_values['users'],
+    default => { }
+  }
+
+  each( $mysql_users ) |$key, $user| {
+    # if no host passed with username, default to all
+    if '@' in $user['name'] {
+      $name = $user['name']
+    } else {
+      $name = "${user['name']}@%"
+    }
+
+    # force to_string to convert possible ints
+    $password_hash = mysql_password(to_string($user['password']))
+    
+    $user_merged = {
+      ensure        => 'present',
+      password_hash => $password_hash      
+    }    
+
+    create_resources( mysql_user, { "${name}" => $user_merged })
+  }
+
+  # config file could contain no databases key
+  $mysql_databases = array_true($mysql_values, 'databases') ? {
+    true    => $mysql_values['databases'],
+    default => { }
+  }
+
+  each( $mysql_databases ) |$key, $database| {
+    $name = $database['name']
+    $sql  = $database['sql']
+
+    $import_timeout = array_true($database, 'import_timeout') ? {
+      true    => $database['import_timeout'],
+      default => 300
     }
     
-    class { 'mysql::server':
-      package_name     => $mysql_server_server_package_name,
-      root_password    => $mysql_values['root_password'],
-      require          => $mysql_server_require,
-      override_options => $mysql_override_options
+    $database_merged = {
+      ensure      => 'present',
     }
 
-    class { 'mysql::client':
-      package_name => $mysql_server_client_package_name,
-      require      => $mysql_server_require
-    }
+    create_resources( mysql_database, { "${name}" => $database_merged })
 
-    $root_user_resource = {
-      ensure        => $ensure,
-      password_hash => mysql_password($mysql_values['root_password']),
-      provider      => 'mysql',
-      require       => Class['mysql::server'],
-    }
-    ensure_resource('mysql_user', 'root@%', $root_user_resource)
-    
-    mysql_grant { 'root@%/*.*':
-      privileges => 'ALL',
-      provider   => 'mysql',
-      user       => 'root@%',
-      table      => '*.*',
-      require    => [Mysql_user['root@%'], Class['mysql::server'] ],
-    }     
-    
-    if count($mysql_values['databases']) > 0 {
-      each( $mysql_values['databases'] ) |$key, $database| {
-        $database_merged = delete(merge($database, {
-          'dbname' => $database['name'],
-        }), 'name')
+    if $sql {
+      # Run import only on initial database creation
+      $touch_file = "/.puphpet-stuff/db-import-${name}"
 
-        create_resources( puphpet::mysql::db, {
-          "${key}" => $database_merged
-        })
-      }
-    }
-
-    if $mysql_php_installed and $mysql_php_package == 'php' {
-      if $::osfamily == 'redhat' and $php_values['version'] == '53' {
-        $mysql_php_module = 'mysql'
-      } elsif $::lsbdistcodename == 'lucid' or $::lsbdistcodename == 'squeeze' {
-        $mysql_php_module = 'mysql'
-      } else {
-        $mysql_php_module = 'mysqlnd'
-      }
-
-      if ! defined(Puphpet::Php::Module[$mysql_php_module]) {
-        puphpet::php::module { $mysql_php_module:
-          service_autorestart => $mysql_webserver_restart,
-        }
+      exec{ "${name}-import":
+        command     => "mysql ${name} < ${sql} && touch ${touch_file}",
+        creates     => $touch_file,
+        logoutput   => true,
+        environment => "HOME=${::root_home}",
+        path        => '/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin',
+        timeout     => $import_timeout,
+        require     => Mysql_database[$name]
       }
     }
   }
 
-  if hash_key_equals($mysql_values, 'adminer', 1)
+  # config file could contain no grants key
+  $mysql_grants = array_true($mysql_values, 'grants') ? {
+    true    => $mysql_values['grants'],
+    default => { }
+  }
+
+  each( $mysql_grants ) |$key, $grant| {
+    # if no host passed with username, default to all
+    if '@' in $grant['user'] {
+      $user = $grant['user']
+    } else {
+      $user = "${grant['user']}@%"
+    }
+
+    $table = $grant['table']
+
+    $name = "${user}/${table}"
+
+    $options = array_true($grant, 'options') ? {
+      true    => $grant['options'],
+      default => ['GRANT']
+    }
+
+    $grant_merged = merge($grant, {
+      ensure    => 'present',
+      'user'    => $user,
+      'options' => $options,
+    })
+
+    create_resources( mysql_grant, { "${name}" => $grant_merged })
+  }
+
+  if $mysql_php_installed and $mysql_php_package == 'php' {
+    if $::osfamily == 'redhat' and $php_values['version'] == '53' {
+      $mysql_php_module = 'mysql'
+    } elsif $::lsbdistcodename == 'lucid' or $::lsbdistcodename == 'squeeze' {
+      $mysql_php_module = 'mysql'
+    } else {
+      $mysql_php_module = 'mysqlnd'
+    }
+
+    if ! defined(Puphpet::Php::Module[$mysql_php_module]) {
+      puphpet::php::module { $mysql_php_module:
+        service_autorestart => $mysql_webserver_restart,
+      }
+    }
+  }
+
+  if array_true($mysql_values, 'adminer')
     and $mysql_php_installed
     and ! defined(Class['puphpet::adminer'])
   {
-    if hash_key_equals($apache_values, 'install', 1) {
-      $mysql_adminer_webroot_location = '/var/www/default'
-    } elsif hash_key_equals($nginx_values, 'install', 1) {
-      $mysql_adminer_webroot_location = $puphpet::params::nginx_webroot_location
+    $mysql_apache_webroot = $puphpet::params::apache_webroot_location
+    $mysql_nginx_webroot  = $puphpet::params::nginx_webroot_location
+
+    if array_true($apache_values, 'install') {
+      $mysql_adminer_webroot_location = $mysql_apache_webroot
+    } elsif array_true($nginx_values, 'install') {
+      $mysql_adminer_webroot_location = $mysql_nginx_webroot
     } else {
-      $mysql_adminer_webroot_location = '/var/www/default'
+      $mysql_adminer_webroot_location = $mysql_apache_webroot
     }
 
     class { 'puphpet::adminer':

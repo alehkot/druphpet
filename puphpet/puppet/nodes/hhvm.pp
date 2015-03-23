@@ -24,27 +24,35 @@ if hash_key_equals($hhvm_values, 'install', 1) {
 
   if ! defined(User['hhvm']) {
     user { 'hhvm':
+      ensure     => present,
       home       => '/home/hhvm',
       groups     => 'www-data',
-      ensure     => present,
       managehome => true,
       require    => Group['www-data']
     }
   }
 
-  $supervisord_hhvm_cmd = "hhvm --mode server -vServer.Type=fastcgi -vServer.Port=${hhvm_values['settings']['port']}"
+  # Use supervisord to keep the HHVM daemon up and running
+  $hhvm_port = "-vServer.Port=${hhvm_values['settings']['port']}"
+  $supervisord_hhvm = "hhvm --mode server -vServer.Type=fastcgi ${hhvm_port}"
 
-  supervisord::program { 'hhvm':
-    command     => $supervisord_hhvm_cmd,
+  service { 'hhvm':
+    ensure  => stopped,
+    before  => Supervisord::Supervisorctl['restart_hhvm'],
+    require => [
+      User['hhvm'],
+      Package['hhvm']
+    ]
+  }
+  -> supervisord::program { 'hhvm':
+    command     => $supervisord_hhvm,
     priority    => '100',
     user        => 'hhvm',
     autostart   => true,
     autorestart => 'true',
-    environment => { 'PATH' => '/bin:/sbin:/usr/bin:/usr/sbin' },
-    require     => [
-      User['hhvm'],
-      Package['hhvm']
-    ]
+    environment => {
+      'PATH' => '/bin:/sbin:/usr/bin:/usr/sbin',
+    }
   }
 
   file { '/usr/bin/php':
@@ -53,29 +61,29 @@ if hash_key_equals($hhvm_values, 'install', 1) {
     require => Package['hhvm']
   }
 
-  if count($hhvm_values['ini']) > 0 {
-    $hhvm_inis = merge({
-      'date.timezone' => $hhvm_values['timezone'],
-    }, $hhvm_values['ini'])
+  $hhvm_inis = merge({
+    'date.timezone' => $hhvm_values['timezone'],
+  }, $hhvm_values['ini'])
 
-    $hhvm_ini = '/etc/hhvm/php.ini'
+  $hhvm_ini = '/etc/hhvm/php.ini'
 
-    each( $hhvm_inis ) |$key, $value| {
-      exec { "hhvm-php.ini@${key}/${value}":
-        command => "perl -p -i -e 's#${key} = .*#${key} = ${value}#gi' ${hhvm_ini}",
-        onlyif  => "test -f ${hhvm_ini}",
-        unless  => "grep -x '${key} = ${value}' ${hhvm_ini}",
-        path    => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
-        require => Package['hhvm'],
-        notify  => Supervisord::Supervisorctl['restart_hhvm'],
-      }
+  each( $hhvm_inis ) |$key, $value| {
+    $hhvm_perl_cmd = "perl -p -i -e 's#${key} = .*#${key} = ${value}#gi'"
+
+    exec { "hhvm-php.ini@${key}/${value}":
+      command => "${hhvm_perl_cmd} ${hhvm_ini}",
+      onlyif  => "test -f ${hhvm_ini}",
+      unless  => "grep -x '${key} = ${value}' ${hhvm_ini}",
+      path    => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+      require => Package['hhvm'],
+      notify  => Supervisord::Supervisorctl['restart_hhvm'],
     }
+  }
 
-    supervisord::supervisorctl { 'restart_hhvm':
-      command     => 'restart',
-      process     => 'hhvm',
-      refreshonly => true,
-    }
+  supervisord::supervisorctl { 'restart_hhvm':
+    command     => 'restart',
+    process     => 'hhvm',
+    refreshonly => true,
   }
 
   if hash_key_equals($hhvm_values, 'composer', 1)

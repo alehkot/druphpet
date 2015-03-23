@@ -21,6 +21,7 @@ vagrantfile-local:
                 5tryP4ZFTBV9:
                     host: '8888'
                     guest: '80'
+        post_up_message: ''
         provider:
             virtualbox:
                 modifyvm:
@@ -42,6 +43,8 @@ vagrantfile-local:
                     - '--parser future'
         synced_folder:
             wRT5TsSy6sE4:
+                owner: www-data
+                group: www-data
                 source: ./
                 target: /var/www
                 sync_type: default
@@ -110,13 +113,14 @@ cron:
 firewall:
     install: '1'
     rules:
-      xdebug:
-        port: 9000
+      xdebug:      
+        port: 
+          - '9000'
         proto: tcp
         action: accept
-        priority: 9000
+        priority: '9000'
 apache:
-    install: 1
+    install: '1'
     settings:
         user: www-data
         group: www-data
@@ -137,12 +141,20 @@ apache:
             port: '80'
             setenv:
                 - 'APP_ENV dev'
-            override:
-                - All
-            options:
-                - Indexes
-                - FollowSymLinks
-                - MultiViews
+            directories:
+                kmrv3px17sho:
+                    provider: directory
+                    path: /var/www/awesome
+                    options:
+                        - Indexes
+                        - FollowSymlinks
+                        - MultiViews
+                    allow_override:
+                        - All
+                    require:
+                        - all
+                        - granted
+                    custom_fragment: ''
             engine: php
             custom_fragment: ''
             ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
@@ -158,27 +170,44 @@ nginx:
         proxy_buffers: '4 256k'
     upstreams: {  }
     vhosts:
-        VTChGNgY0tNd:
+        h48blbvrwu5z:
             proxy: ''
             server_name: druphpet.dev
             server_aliases:
                 - www.druphpet.dev
-            www_root: /var/www/druphpet.dev
+            www_root: /var/www/druphpet
             listen_port: '80'
-            location: \.php$
             index_files:
                 - index.html
                 - index.htm
                 - index.php
-            envvars:
-                - 'APP_ENV dev'
-            engine: php
-            client_max_body_size: 5m
-            ssl: '1'
+            client_max_body_size: 1m
+            locations:
+                yfnydgbhj3sq:
+                    location: /
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - index.php
+                    fastcgi: ''
+                    fastcgi_index: ''
+                    fastcgi_split_path: ''
+                bpu7g2copt2z:
+                    location: '~ \.php$'
+                    try_files:
+                        - $uri
+                        - $uri/
+                        - index.php
+                        - /index.php$is_args$args
+                    fastcgi: '127.0.0.1:9000'
+                    fastcgi_index: index.php
+                    fastcgi_split_path: '^(.+\.php)(/.*)$'
+                    fast_cgi_params_extra:
+                        - 'SCRIPT_FILENAME $request_filename'
+                        - 'APP_ENV dev'
             ssl_cert: ''
             ssl_key: ''
-            rewrite_to_https: '1'
-            spdy: '1'
+            ssl_port: '443'
 php:
     install: '1'
     version: '56'
@@ -203,7 +232,7 @@ php:
             - memcached
             - yaml
             # Uncomment when the issue during installation is gone.
-            #- pecl_http
+            # - pecl_http
     ini:
         display_errors: On
         error_reporting: '-1'
@@ -233,7 +262,7 @@ php:
         error_log: '/var/log/php_errors.log'
         mbstring.http_input: 'pass'
         mbstring.http_output: 'pass'
-    timezone: 'Europe/Minsk'
+        date.timezone: 'UTC'
     mod_php: '1'
 hhvm:
     install: '0'
@@ -272,11 +301,12 @@ ruby:
             default: '1'
             version: 1.9.3
             gems:
+                - bundler
                 - sass
                 - compass
                 - guard
                 - livereload
-            bundler: '1'
+            bundler: '0'
 nodejs:
     install: '1'
     npm_packages:
@@ -290,32 +320,39 @@ nodejs:
         - nodemon
         - grunt-cli
 python:
-    install: '1'
+    install: '0'
     packages: {  }
     versions:
         VaW8Bw9fauSd:
             version: ''
 mysql:
-    install: 1
-    root_password: 'druphpet'
+    install: '1'
+    settings:
+        version: '5.6'
+        root_password: 'druphpet'
+        override_options:
+            'mysqld':
+                'bind-address': '0.0.0.0'
+                'max_allowed_packet': '128M'
+                'wait_timeout': '600'
+                'query_cache_type': '0'
+                'innodb_flush_log_at_trx_commit': '2'
+                'innodb_lock_wait_timeout': '40'
     adminer: 0
-    override_options:
-        'mysqld':
-            'bind-address': '0.0.0.0'
-            'max_allowed_packet': '128M'
-            'wait_timeout': '600'
-            'query_cache_type': '0'
-            'innodb_flush_log_at_trx_commit': '2'
-            'innodb_lock_wait_timeout': '40'
-    databases:
-        gPB9UXozXZEq:
-            grant:
-                - ALL
+    users:
+        Jbm67TYdOcYk:
             name: druphpet
-            host: '%'
-            user: druphpet
             password: 'druphpet'
-            sql_file: ''
+    databases:
+        7fbvia6kvJyy:
+            name: druphpet
+            sql: ''
+    grants:
+        jIuf8vNQ40xJ:
+            user: druphpet
+            table: '*.*'
+            privileges:
+                - ALL
 postgresql:
     install: '0'
     settings:
