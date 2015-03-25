@@ -300,13 +300,12 @@ ruby:
         hRDoJFjOLzkH:
             default: '1'
             version: 1.9.3
-            gems:
-                - bundler
+            gems:                
                 - sass
                 - compass
                 - guard
                 - livereload
-            bundler: '0'
+            bundler: '1'
 nodejs:
     install: '1'
     npm_packages:
