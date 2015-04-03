@@ -3,10 +3,6 @@ if $apache_values == undef { $apache_values = $yaml_values['apache'] }
 if $php_values == undef { $php_values = hiera_hash('php', false) }
 if $hhvm_values == undef { $hhvm_values = hiera_hash('hhvm', false) }
 
-define print() {
-   notice("The value is: '${name}'")
-}
-
 include puphpet::params
 
 if hash_key_equals($apache_values, 'install', 1) {
@@ -144,8 +140,6 @@ if hash_key_equals($apache_values, 'install', 1) {
       require => Exec['Set apache webroot owner and group'],
     }
     
-    print{$vhost: }
-
     # needed by apache::vhost
     if ! defined(File[$vhost['docroot']]) {
       file { $vhost['docroot']:

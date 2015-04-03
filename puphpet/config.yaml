@@ -144,7 +144,7 @@ apache:
             directories:
                 kmrv3px17sho:
                     provider: directory
-                    path: /var/www/awesome
+                    path: /var/www/druphpet
                     options:
                         - Indexes
                         - FollowSymlinks
