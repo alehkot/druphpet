@@ -23,121 +23,126 @@ if hash_key_equals($postgresql_values, 'install', 1) {
     $postgresql_php_installed = false
   }
 
-  if $postgresql_values['settings']['root_password'] {
-    group { $postgresql_values['settings']['user_group']:
-      ensure => present
+  if empty($postgresql_values['settings']['server']['postgres_password']) {
+    fail( 'PostgreSQL requires choosing a root password. Please check your config.yaml file.' )
+  }
+
+  Class['postgresql::globals']
+  -> Class['postgresql::server']
+
+  $postgresql_settings_global = merge({
+    'manage_package_repo' => true,
+    'encoding'            => 'UTF8',
+  }, $postgresql_values['settings']['global'])
+
+  $postgresql_settings_server = merge({
+    'user'  => 'postgres',
+    'group' => 'postgres',
+  }, $postgresql_values['settings']['server'])
+
+  create_resources('class', {
+    'postgresql::globals' => $postgresql_settings_global
+  })
+
+  create_resources('class', {
+    'postgresql::server' => $postgresql_settings_server
+  })
+
+  Postgresql::Server::Role <| |>
+  -> Postgresql::Server::Database <| |>
+  -> Postgresql::Server::Database_grant <| |>
+
+  # config file could contain no users key
+  $postgresql_users = array_true($postgresql_values, 'users') ? {
+    true    => $postgresql_values['users'],
+    default => { }
+  }
+
+  each( $postgresql_users ) |$key, $user| {
+    $superuser = array_true($user, 'superuser') ? {
+      true    => true,
+      default => false,
     }
 
-    class { 'postgresql::globals':
-      manage_package_repo => true,
-      encoding            => $postgresql_values['settings']['encoding'],
-      version             => $postgresql_values['settings']['version']
-    }->
-    class { 'postgresql::server':
-      postgres_password => $postgresql_values['settings']['root_password'],
-      version           => $postgresql_values['settings']['version'],
-      require           => Group[$postgresql_values['settings']['user_group']]
+    $user_no_superuser = delete(merge({
+      'password_hash' => postgresql_password($user['username'], $user['password']),
+      'login'         => true,
+    }, $user), 'password')
+
+    $user_merged = merge($user_no_superuser, {
+      'superuser' => $superuser,
+    })
+
+    create_resources( postgresql::server::role, {
+      "${user_merged['username']}" => $user_merged
+    })
+  }
+
+  # config file could contain no databases key
+  $postgresql_databases = array_true($postgresql_values, 'databases') ? {
+    true    => $postgresql_values['databases'],
+    default => { }
+  }
+
+  each( $postgresql_databases ) |$key, $database| {
+    $owner = array_true($database, 'owner') ? {
+      true    => $database['owner'],
+      default => $postgresql::server::user,
     }
 
-    if count($postgresql_values['databases']) > 0 {
-      each( $postgresql_values['databases'] ) |$key, $database| {
-        $database_merged = delete(merge($database, {
-          'dbname' => $database['name'],
-        }), 'name')
+    $database_merged = merge($database, {
+      'owner' => $owner,
+    })
 
-        create_resources( postgresql_db, {
-          "${database['user']}@${database['name']}" => $database_merged
-        })
-      }
-    }
+    create_resources( postgresql::server::database, {
+      "${owner}@${database['dbname']}" => $database_merged
+    })
+  }
 
-    if $postgresql_php_installed
-      and $postgresql_php_package == 'php'
-      and ! defined(Puphpet::Php::Module['pgsql'])
-    {
-      puphpet::php::module { 'pgsql':
-        service_autorestart => $postgresql_webserver_restart,
-      }
+  # config file could contain no grants key
+  $postgresql_grants = array_true($postgresql_values, 'grants') ? {
+    true    => $postgresql_values['grants'],
+    default => { }
+  }
+
+  each( $postgresql_grants ) |$key, $grant| {
+    $grant_merged = merge($grant, {
+      'privilege' => join($grant['privilege'], ','),
+    })
+
+    create_resources( postgresql::server::database_grant, {
+      "${grant['role']}@${grant['db']}" => $grant_merged,
+    })
+  }
+
+  if $postgresql_php_installed
+    and $postgresql_php_package == 'php'
+    and ! defined(Puphpet::Php::Module['pgsql'])
+  {
+    puphpet::php::module { 'pgsql':
+      service_autorestart => $postgresql_webserver_restart,
     }
   }
 
-  if hash_key_equals($postgresql_values, 'adminer', 1) and $postgresql_php_installed {
+  if hash_key_equals($postgresql_values, 'adminer', 1)
+    and $postgresql_php_installed
+  {
+    $postgre_apache_webroot = $puphpet::params::apache_webroot_location
+    $postgre_nginx_webroot = $puphpet::params::nginx_webroot_location
+
     if hash_key_equals($apache_values, 'install', 1) {
-      $postgresql_adminer_webroot_location = '/var/www/default'
+      $postgresql_adminer_webroot_location = $postgre_apache_webroot
     } elsif hash_key_equals($nginx_values, 'install', 1) {
-      $postgresql_adminer_webroot_location = $puphpet::params::nginx_webroot_location
+      $nginx_webroot = $puphpet::params::nginx_webroot_location
+      $postgresql_adminer_webroot_location = $postgre_nginx_webroot
     } else {
-      $postgresql_adminer_webroot_location = '/var/www/default'
+      $postgresql_adminer_webroot_location = $postgre_apache_webroot
     }
 
     class { 'puphpet::adminer':
       location    => "${postgresql_adminer_webroot_location}/adminer",
       owner       => 'www-data',
       php_package => $postgresql_php_package
-    }
-  }
-}
-
-define postgresql_db (
-  $dbname,
-  $user,
-  $password,
-  $encoding   = $postgresql::server::encoding,
-  $locale     = $postgresql::server::locale,
-  $grant      = 'ALL',
-  $tablespace = undef,
-  $template   = 'template0',
-  $istemplate = false,
-  $owner      = undef,
-  $sql_file   = false
-) {
-  if ! value_true($dbname) or ! value_true($user)
-    or ! value_true($password)
-  {
-    fail( 'PostgreSQL DB requires that name, user, password and grant be set. Please check your settings!' )
-  }
-
-  if ! defined(Postgresql::Server::Database[$dbname]) {
-    postgresql::server::database { $dbname:
-      encoding   => $encoding,
-      tablespace => $tablespace,
-      template   => $template,
-      locale     => $locale,
-      istemplate => $istemplate,
-      owner      => $owner,
-    }
-  }
-
-  if ! defined(Postgresql::Server::Role[$user]) {
-    postgresql::server::role { $user:
-      password_hash => postgresql_password($user, $password),
-    }
-  }
-
-  $grant_string = "GRANT ${user} - ${grant} - ${dbname}"
-
-  if ! defined(Postgresql::Server::Database_grant[$grant_string]) {
-    postgresql::server::database_grant { $grant_string:
-      privilege => $grant,
-      db        => $dbname,
-      role      => $user,
-    }
-  }
-
-  if($tablespace != undef and defined(Postgresql::Server::Tablespace[$tablespace])) {
-    Postgresql::Server::Tablespace[$tablespace] -> Postgresql::Server::Database[$dbname]
-  }
-
-  if $sql_file {
-    $table = "${dbname}.*"
-
-    exec{ "${dbname}-import":
-      command     => "sudo -u postgres psql ${dbname} < ${sql_file}",
-      logoutput   => true,
-      refreshonly => true,
-      require     => Postgresql::Server::Database_grant[$grant_string],
-      onlyif      => "test -f ${sql_file}",
-      subscribe   => Postgresql::Server::Database[$dbname],
     }
   }
 }
