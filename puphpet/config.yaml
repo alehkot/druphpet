@@ -113,8 +113,8 @@ cron:
 firewall:
     install: '1'
     rules:
-      xdebug:      
-        port: 
+      xdebug:
+        port:
           - '9000'
         proto: tcp
         action: accept
@@ -300,7 +300,7 @@ ruby:
         hRDoJFjOLzkH:
             default: '1'
             version: 1.9.3
-            gems:                
+            gems:
                 - sass
                 - compass
                 - guard
@@ -353,20 +353,28 @@ mysql:
             privileges:
                 - ALL
 postgresql:
-    install: '0'
+    install: '1'
     settings:
-        root_password: '123'
-        user_group: postgres
-        encoding: UTF8
-        version: '9.3'
+        global:
+            encoding: UTF8
+            version: '9.3'
+        server:
+            postgres_password: '123'
     databases:
-        ovKmEZcMgJTX:
-            grant: ALL
-            name: druphpet
-            user: druphpet
-            password: ''
-            sql_file: ''
-    adminer: '0'
+        iXCAtX74PT5O:
+            dbname: druphpet
+            owner: druphpet
+    users:
+        7FpBU7xCVzlx:
+            username: druphpet
+            password: druphpet
+    grants:
+        l9aYFqlE1rW3:
+            privilege:
+                - ALL
+            db: druphpet
+            role: druphpet
+    adminer: '1'
 mariadb:
     install: '0'
     root_password: 'druphpet'

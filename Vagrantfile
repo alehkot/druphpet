@@ -84,8 +84,7 @@ Vagrant.configure('2') do |config|
   end
 
   if Vagrant.has_plugin?('vagrant-cachier')
-    config.cache.scope = :box
-    config.cache.auto_detect = true
+    config.cache.scope = :box    
   end
 
   if data['vm']['puphpet_sync'] == true
