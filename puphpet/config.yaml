@@ -353,7 +353,7 @@ mysql:
             privileges:
                 - ALL
 postgresql:
-    install: '1'
+    install: '0'
     settings:
         global:
             encoding: UTF8
