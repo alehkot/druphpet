@@ -2,7 +2,7 @@
 A very fast and Puppet-based Drupal-ready VM suitable for instant and unified configuration of local environments.
 You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in YAML format.
 
-Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet").
+Based on VMs by [Puphpet](http://puphpet.com "Puphpet").
 
 The VM includes the fastest option available to synchronize folders in Windows - via SMB share. Please find the instructions below on how to map a network drive.
 
