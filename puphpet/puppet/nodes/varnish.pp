@@ -1,20 +1,12 @@
-# Begin Varnish
+# Begin Varnish.
 
-if $varnish_values == undef {
-  $varnish_values = hiera('varnish', false)
-}
-
-if has_key($varnish_values, 'install') and $varnish_values['install'] == 1 {
-  class {'varnish':
-    varnish_listen_port => 8080,
-    varnish_storage_size => '1G',
-  }
-
-  class { 'varnish::vcl': }
-
+class druphpet_varnish($varnish) {
+  create_resources('class', {'varnish' => {
+      varnish_listen_port => $varnish['settings']['varnish_listen_port'],
+      varnish_storage_size => $varnish['settings']['varnish_storage_size']
+  }})
+  class {'varnish::vcl': , require => Class['varnish']}
   varnish::probe { 'health_check1': url => '/health_check_url1' }
-
-  varnish::backend { 'drupaldev': host => '192.168.9.10', port => '80', probe => 'health_check1' }
-
+  varnish::backend { 'drupaldev': host => $varnish['settings']['host'], port => $varnish['settings']['host_port'], probe => 'health_check1' }
   varnish::selector { 'drupaldev': condition => 'true' }
 }

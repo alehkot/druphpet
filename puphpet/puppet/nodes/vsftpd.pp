@@ -1,12 +1,7 @@
-if $vsftpd_values == undef { $vsftpd_values = hiera_hash('vsftpd', false) }
+# Begin VSFTPd.
 
-if hash_key_equals($vsftpd_values, 'install', 1) {
-  class { 'vsftpd':
-    firewall          => false,
-    write_enable      => true,    
-    local_umask       => "022",
-    template          => "vsftpd/vsftpd.conf.erb"
-  }
+class druphpet_vsftpd ($vsftpd) {
+  create_resources('class', {'vsftpd' => $vsftpd['settings']})
 
   if ! defined(Firewall["21 tcp/ftp"]) {
     firewall { "21 tcp/ftp":

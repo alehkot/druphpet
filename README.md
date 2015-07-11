@@ -2,7 +2,7 @@
 A very fast and Puppet-based Drupal-ready VM suitable for instant and unified configuration of local environments.
 You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in YAML format.
 
-Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet"). 
+Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet").
 
 The VM includes the fastest option available to synchronize folders in Windows - via SMB share. Please find the instructions below on how to map a network drive.
 
@@ -20,9 +20,9 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 ## Included ##
 - [Ubuntu 64-bit Precise 14.04](http://www.ubuntu.com/)
-- [Drush 7.0-alpha7](http://drush.org/en/master/)
-- [Apache 2.4](http://httpd.apache.org/) or [Nginx](http://nginx.org/)
-- [PHP 5.6](http://php.net/) with extensions:
+- [Drush 7.x](http://drush.org/en/master/)
+- [Apache 2.4.x](http://httpd.apache.org/) or [Nginx](http://nginx.org/)
+- [PHP 5.6.x](http://php.net/) with extensions:
   - _(debugger, pecl)_ [XDebug](http://xdebug.org/)
   - _(profiler, tool, pecl)_ [XHProf](https://github.com/phacility/xhprof)
   - _(pecl)_ [SOAP](http://php.net/manual/en/intro.soap.php)
@@ -34,8 +34,8 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - Optionally, old versions of PHP are also available with the following extensions:
 	- _(pecl)_ [APC](http://php.net/manual/en/book.apc.php)
 	- _(pecl)_ [XCache](http://xcache.lighttpd.net/)
-- [Apache Solr 4.10.2](http://lucene.apache.org/solr/)
-- [MySQL 5.5.37](http://www.mysql.com/)
+- [Apache Solr 4.x](http://lucene.apache.org/solr/)
+- [MySQL 5.6.x](http://www.mysql.com/)
 - [dos2unix](http://linuxcommand.org/man_pages/dos2unix1.html)
 - [Percona Toolkit](http://www.percona.com/software/percona-toolkit)
 - [Adminer](http://www.adminer.org/) (or [phpMyAdmin](http://www.phpmyadmin.net/home_page/index.php))
@@ -44,6 +44,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - [ImageMagick](http://www.imagemagick.org/)
 - [Webgrind](https://github.com/jokkedk/webgrind)
 - [Curl](http://curl.haxx.se/)
+- [Varnish](https://www.varnish-cache.org/)
 - [Sendmail](http://www.linuxserverhowto.com/linux-mail-server-sendmail/index.html)
 - [Unzip](http://www.cyberciti.biz/tips/how-can-i-zipping-and-unzipping-files-under-linux.html)
 - [Git](http://git-scm.com/)
@@ -101,9 +102,9 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 **Xdebug**
 
-- Xdebug is configured to automatically connect back to host if _XDEBUG_SESSION_START_ query parameter is set, e.g. if you access http://druphpet.dev/index.php?XDEBUG_SESSION_START=PHPSTORM. 
+- Xdebug is configured to automatically connect back to host if _XDEBUG_SESSION_START_ query parameter is set, e.g. if you access http://druphpet.dev/index.php?XDEBUG_SESSION_START=PHPSTORM.
 - To use Xdebug with [Jetbrains PHPStorm](https://www.jetbrains.com/phpstorm/) please follow the [instructions](http://randyfay.com/content/remote-drupalphp-debugging-xdebug-and-phpstorm).
-- If upon accessing pages of your website _XDEBUG_SESSION_START_ Xdebug ignores breakpoints you set in your IDE, it might be a case of a misconfigured firewall in your host environment. Try disabling the firewall to see if the issue is resolved. 
+- If upon accessing pages of your website _XDEBUG_SESSION_START_ Xdebug ignores breakpoints you set in your IDE, it might be a case of a misconfigured firewall in your host environment. Try disabling the firewall to see if the issue is resolved.
 
 **XHProf**
 
@@ -115,16 +116,16 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 **Memcached**
 
-* host: localhost (from VM)
-* port: 11211
+- host: localhost (from VM)
+- port: 11211
 
 **Phpmyadmin**
 
-- http://phpmyadmin.druphpet.dev
+- http://192.168.9.10/phpmyadmin
 
 **Webgrind**
 
-- http://webgrind.druphpet.dev
+- http://192.168.9.10/webgrind
 
 **RabbitMQ**
 
@@ -144,7 +145,8 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
 
 **Varnish**
 
-- port: 8080
+- Varnish proxifies all requests from port 8080 to port 80, e.g. you can access http://192.168.9.10:8080/webgrind.
+- You can edit its config file in '/etc/varnish/default.vcl' file.
 
 ## Minimum requirements ##
 * Git

@@ -1,3 +1,5 @@
-# Set line endings for shell scripts, to ensure windows users don't
-# convert to CRLF (breaking the scripts from running on the VM).
-*.sh text eol=lf
+# Autodetect text files
+* text=auto
+
+# Force the following filetypes to have unix eols, so Windows does not break them
+*.* text eol=lf

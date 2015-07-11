@@ -1,28 +1,18 @@
-# Begin New Relic
+# Begin New Relic.
 
-if $newrelic_values == undef {
-  $newrelic_values = hiera('newrelic', false)
-}
-
-if has_key($newrelic_values, 'install') and $newrelic_values['install'] == 1 {
-
-  #class { 'nrsysmond':
-   # license_key => $newrelic_values['license_key'],
-  #}
-
+class druphpet_relic($relic, $apache, $nginx) {
   newrelic::server {
     'drupal':
-      newrelic_license_key => $newrelic_values['license_key'],
+      newrelic_license_key => $relic['settings']['license_key'],
   }
 
   newrelic::php {
     'drupal':
-      newrelic_license_key      => $newrelic_values['license_key'],
-      newrelic_php_conf_appname => $newrelic_values['application_name'];
+      newrelic_license_key      => $relic['settings']['license_key'],
+      newrelic_php_conf_appname => $relic['settings']['application_name']
   }
 
-  # Restart Apache
-  if is_hash($apache_values) {
+  if array_true($apache, 'install') {
     exec { 'httpd-restart':
       command => 'service apache2 restart',
       require => [
@@ -30,12 +20,11 @@ if has_key($newrelic_values, 'install') and $newrelic_values['install'] == 1 {
         Package['newrelic-php5'],
       ]
     }
-  } elsif is_hash($nginx_values) {
+  }
+
+  if array_true($nginx, 'install') {
     exec { 'nginx-restart':
       command => 'service nginx restart',
     }
   }
-  #class { 'newrelic_php':
-   # license_key => $newrelic_values['license_key'],
-  #}
 }

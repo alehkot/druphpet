@@ -1,6 +1,8 @@
-if [ -f /etc/bash_completion ]; then
-    source /etc/bash_completion
-fi
+[ -r /etc/bashrc ] && source /etc/bashrc
+[ -r /etc/bash_completion ] && source /etc/bash_completion
+[ -r ~/.git-completion.bash ] && source ~/.git-completion.bash
+[ -r ~/.git-prompt.sh ] && source ~/.git-prompt.sh
+[ -r /usr/local/rvm/scripts/rvm ] && source /usr/local/rvm/scripts/rvm
 
 __has_parent_dir () {
     # Utility function so we can test for things like .git/.hg without firing up a
@@ -50,5 +52,3 @@ alias rm='rm -i'
 alias mv='mv -iv'
 alias grep='grep --color=auto -in'
 alias ..='cd ..'
-
-source /usr/local/rvm/scripts/rvm

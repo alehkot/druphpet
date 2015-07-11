@@ -1,11 +1,15 @@
-# Begin Webgrind
+# Begin Webgrind.
 
-if $webgrind_values == undef {
-  $webgrind_values = hiera('webgrind', false)
-}
+class druphpet_webgrind($webgrind, $apache, $nginx) {
+  if array_true($apache, 'install') {
+    create_resources('class', { 'webgrind' => $webgrind['settings']})
 
-if has_key($webgrind_values, 'install') and $webgrind_values['install'] == 1 {
-  class { 'webgrind':
-    domain => $webgrind_values['settings']['domain'],
+    file { '/var/www/html/webgrind':
+      ensure => link,
+      target => '/usr/share/php/webgrind/source',
+      require => Class['webgrind']
+    }
+  } else {
+
   }
 }

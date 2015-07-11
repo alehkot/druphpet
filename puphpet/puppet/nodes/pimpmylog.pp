@@ -1,19 +1,9 @@
 # Begin PimpMyLog
 
-if $pimpmylog_values == undef {
-  $pimpmylog_values = hiera('pimpmylog', false)
-}
+class druphpet_pimpmylog ($pimpmylog, $apache) {
+  create_resources('class', { 'pimpmylog' => $pimpmylog['settings'] })
 
-if $apache_values == undef {
-  $apache_values = hiera('apache', false)
-}
-
-if has_key($pimpmylog_values, 'install') and $pimpmylog_values['install'] == 1 {
-  class { 'pimpmylog':
-    webroot_location => '/var/www/default'
-  }
-
-  if ($apache_values['install'] == 1) {
+  if ($apache['install'] == 1) {
     file { '/var/log/apache2':
       ensure => directory,
       recurse => true,

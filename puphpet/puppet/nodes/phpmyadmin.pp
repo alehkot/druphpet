@@ -1,9 +1,17 @@
-if $phpmyadmin_values == undef { $phpmyadmin_values = hiera_hash('phpmyadmin', false) }
+# Begin PHPMyAdmin.
 
-if hash_key_equals($phpmyadmin_values, 'install', 1) {
-  class { 'phpmyadmin':
-    ensure     => present,
-    vhost_name => $phpmyadmin_values['settings']['domain'],
-    vhost_port => '80',
+class druphpet_phpmyadmin($phpmyadmin, $apache, $nginx) {
+  if array_true($apache, 'install') {
+    $settings = merge({ ensure => present }, $phpmyadmin['settings'])
+
+    create_resources('class', {'phpmyadmin' => $settings})
+
+    file { '/var/www/html/phpmyadmin':
+      ensure => link,
+      target => '/usr/share/phpMyAdmin/current',
+      require => Class['phpmyadmin']
+    }
+  } else {
+    fail('Phpmyadmin requires either Apache to be installed.')
   }
 }

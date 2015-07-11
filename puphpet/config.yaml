@@ -1,11 +1,11 @@
----
-vagrantfile-local:
+vagrantfile:
+    target: local
     vm:
         box: puphpet/ubuntu1404-x64
         box_url: puphpet/ubuntu1404-x64
         hostname: ''
         memory: '1024'
-        cpus: '2'
+        cpus: '1'
         chosen_provider: virtualbox
         # Normally, you can switch sync_modules to false,
         # after the first successful provision
@@ -26,8 +26,7 @@ vagrantfile-local:
             virtualbox:
                 modifyvm:
                     natdnshostresolver1: on
-                setextradata:
-                    VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
+                showgui: '0'
             vmware:
                 numvcpus: 1
             parallels:
@@ -42,12 +41,14 @@ vagrantfile-local:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            wRT5TsSy6sE4:
-                owner: www-data
-                group: www-data
+            vflsf_blay3dgm7kvv:
                 source: ./
                 target: /var/www
                 sync_type: default
+                smb:
+                    smb_host: ''
+                    smb_username: ''
+                    smb_password: ''
                 rsync:
                     args:
                         - '--verbose'
@@ -55,7 +56,10 @@ vagrantfile-local:
                         - '-z'
                     exclude:
                         - .vagrant/
-                    auto: 'false'
+                        - .git/
+                    auto: 'true'
+                owner: www-data
+                group: www-data
         usable_port_range:
             start: 10200
             stop: 10500
@@ -90,10 +94,6 @@ server:
         - htop
         - dos2unix
         - percona-toolkit
-    dot_files:
-        -
-            bash_aliases: null
-    _prevent_empty: ''
 users_groups:
     install: '1'
     groups: {  }
@@ -113,12 +113,24 @@ cron:
 firewall:
     install: '1'
     rules:
-      xdebug:
-        port:
-          - '9000'
-        proto: tcp
-        action: accept
-        priority: '9000'
+        xdebug:
+            port:
+                - '9000'
+            proto: tcp
+            action: accept
+            priority: '9000'
+        mysql:
+            port:
+                - '3306'
+            proto: tcp
+            action: accept
+            priority: '3306'
+        varnish:
+            port:
+                - '8080'
+            proto: tcp
+            action: accept
+            priority: '8080'
 apache:
     install: '1'
     settings:
@@ -132,19 +144,30 @@ apache:
         - rewrite
         - headers
         - expires
+        - deflate
+        - vhost_alias
+        - proxy_fcgi
+        - pagespeed
     vhosts:
-        0M1pWVWI2bhY:
+        av_j01pniakhgdj:
             servername: druphpet.dev
             serveraliases:
                 - www.druphpet.dev
-            docroot: /var/www/druphpet
+            docroot: /var/www/druphpet/docroot
             port: '80'
             setenv:
                 - 'APP_ENV dev'
+            custom_fragment: ''
+            ssl: '0'
+            ssl_cert: ''
+            ssl_key: ''
+            ssl_chain: ''
+            ssl_certs_dir: ''
+            ssl_protocol: ''
+            ssl_cipher: ''
             directories:
-                kmrv3px17sho:
-                    provider: directory
-                    path: /var/www/druphpet
+                avd_2kzvto1rr3qf:
+                    path: /var/www/druphpet/docroot
                     options:
                         - Indexes
                         - FollowSymlinks
@@ -152,16 +175,15 @@ apache:
                     allow_override:
                         - All
                     require:
-                        - all
-                        - granted
+                        - 'all granted'
                     custom_fragment: ''
-            engine: php
-            custom_fragment: ''
-            ssl_cert: '/usr/local/apache2/conf/ssl.crt/server.crt'
-            ssl_key: '/usr/local/apache2/conf/ssl.key/server.key'
-            ssl_chain: '/usr/local/apache2/conf/ssl.crt/ca.crt'
-            ssl_certs_dir: '/usr/local/apache2/conf/ssl.crt/'
-    mod_pagespeed: '0'
+                    files_match:
+                        avdfm_5om9y80pgnw0:
+                            path: \.php$
+                            sethandler: 'proxy:fcgi://127.0.0.1:9000'
+                            custom_fragment: ''
+                            provider: filesmatch
+                    provider: directory
 nginx:
     install: '0'
     settings:
@@ -170,8 +192,7 @@ nginx:
         proxy_buffers: '4 256k'
     upstreams: {  }
     vhosts:
-        h48blbvrwu5z:
-            proxy: ''
+        nxv_6h2t43nubewk:
             server_name: druphpet.dev
             server_aliases:
                 - www.druphpet.dev
@@ -182,22 +203,31 @@ nginx:
                 - index.htm
                 - index.php
             client_max_body_size: 1m
+            ssl: '0'
+            ssl_cert: ''
+            ssl_key: ''
+            ssl_port: '443'
+            ssl_protocols: ''
+            ssl_ciphers: ''
+            rewrite_to_https: '1'
+            spdy: '1'
             locations:
-                yfnydgbhj3sq:
+                nxvl_pkdto6gf8e8w:
                     location: /
+                    autoindex: off
                     try_files:
                         - $uri
                         - $uri/
-                        - index.php
+                        - /index.php$is_args$args
                     fastcgi: ''
                     fastcgi_index: ''
                     fastcgi_split_path: ''
-                bpu7g2copt2z:
+                nxvl_jn35142cj5bt:
                     location: '~ \.php$'
+                    autoindex: off
                     try_files:
                         - $uri
                         - $uri/
-                        - index.php
                         - /index.php$is_args$args
                     fastcgi: '127.0.0.1:9000'
                     fastcgi_index: index.php
@@ -205,14 +235,11 @@ nginx:
                     fast_cgi_params_extra:
                         - 'SCRIPT_FILENAME $request_filename'
                         - 'APP_ENV dev'
-            ssl_cert: ''
-            ssl_key: ''
-            ssl_port: '443'
+    proxies: {  }
 php:
     install: '1'
-    version: '56'
-    composer: '1'
-    composer_home: ''
+    settings:
+        version: '56'
     modules:
         php:
             - cli
@@ -236,13 +263,15 @@ php:
     ini:
         display_errors: On
         error_reporting: '-1'
-        session.save_path: '/var/lib/php5/sessions'
+        session.save_path: '/var/lib/php/session'
         memory_limit: '512M'
         upload_max_filesize: '128M'
         post_max_size: '128M'
         max_execution_time: '300'
-        realpath_cache_size: '128K'
+        realpath_cache_size: '16M'
         realpath_cache_ttl: '3600'
+        ignore_repeated_errors: On
+        ignore_repeated_source: On
         opcache.memory_consumption: '128'
         opcache.interned_strings_buffer: '8'
         opcache.max_accelerated_files: '10000'
@@ -263,19 +292,47 @@ php:
         mbstring.http_input: 'pass'
         mbstring.http_output: 'pass'
         date.timezone: 'UTC'
-    mod_php: '1'
+    fpm_ini:
+        error_log: /var/log/php-fpm.log
+    fpm_pools:
+        phpfp_p22rcyc7u17a:
+            ini:
+                prefix: www
+                listen: '127.0.0.1:9000'
+                security.limit_extensions: .php
+                user: www-user
+                group: www-data
+    composer: '1'
+    composer_home: ''
+blackfire:
+    install: '0'
+    settings:
+        server_id: 'abcd'
+        server_token: '1234'
+        agent:
+            http_proxy: ''
+            https_proxy: ''
+            log_file: stderr
+            log_level: '1'
+        php:
+            agent_timeout: '0.25'
+            log_file: ''
+            log_level: '1'
 hhvm:
     install: '0'
     nightly: 0
     composer: '1'
     composer_home: ''
-    settings:
-        host: 127.0.0.1
-        port: '9000'
-    ini:
+    settings: {  }
+    server_ini:
+        hhvm.server.host: 127.0.0.1
+        hhvm.server.port: '9000'
+        hhvm.log.use_log_file: '1'
+        hhvm.log.file: /var/log/hhvm/error.log
+    php_ini:
         display_errors: On
         error_reporting: '-1'
-    timezone: null
+        date.timezone: UTC
 xdebug:
     install: '1'
     settings:
@@ -334,21 +391,23 @@ mysql:
                 'bind-address': '0.0.0.0'
                 'max_allowed_packet': '128M'
                 'wait_timeout': '600'
-                'query_cache_type': '0'
+                'query_cache_type': '1'
+                'query_cache_size': '128M'
+                'query_cache_limit': '2M'
                 'innodb_flush_log_at_trx_commit': '2'
                 'innodb_lock_wait_timeout': '40'
     adminer: 0
     users:
-        Jbm67TYdOcYk:
-            name: druphpet
+        mysqlnu_mkcfai4qijhr:
+            name: druphpet@%
             password: 'druphpet'
     databases:
-        7fbvia6kvJyy:
+        mysqlnd_f8m6lov5u7qi:
             name: druphpet
             sql: ''
     grants:
-        jIuf8vNQ40xJ:
-            user: druphpet
+        mysqlng_xhk61p1s3fbw:
+            user: druphpet@%
             table: '*.*'
             privileges:
                 - ALL
@@ -373,22 +432,8 @@ postgresql:
             privilege:
                 - ALL
             db: druphpet
-            role: druphpet
+            role: postgres
     adminer: '1'
-mariadb:
-    install: '0'
-    root_password: 'druphpet'
-    adminer: '1'
-    databases:
-        FpcnrjijrBDO:
-            grant:
-                - ALL
-            name: druphpet
-            host: localhost
-            user: druphpet
-            password: druphpet
-            sql_file: ''
-    version: '10.0'
 sqlite:
     install: '0'
     adminer: '0'
@@ -403,9 +448,10 @@ mongodb:
     install: '0'
     settings:
         auth: 1
+        bind_ip: 127.0.0.1
         port: '27017'
     databases:
-        zEH4gB9sPFGo:
+        mongodbnuad_b2o7gqvgaa76:
             name: druphpet
             user: druphpet
             password: druphpet
@@ -438,6 +484,9 @@ rabbitmq:
     install: '0'
     settings:
         port: '5672'
+    users: {  }
+    vhosts: {  }
+    plugins: {  }
 elastic_search:
     install: '0'
     settings:
@@ -445,6 +494,26 @@ elastic_search:
         java_install: true
 samba_server:
     install: '1'
+    settings:
+        server:
+            workgroup: 'Drupal'
+            server_string: 'Drupal VM server'
+            interfaces: 'eth1 lo'
+            security: 'share'
+        share:
+            comment: 'data storage'
+            path : '/var/www'
+            guest_only: true
+            guest_ok: true
+            guest_account: 'guest'
+            browsable: true
+            create_mask: 0777
+            force_create_mask: 0777
+            directory_mask: 0777
+            force_directory_mask: 0777
+            force_group: 'vagrant'
+            force_user: 'vagrant'
+            writable: true
 solr:
     install: '1'
     settings:
@@ -452,22 +521,33 @@ solr:
         port: '8984'
 pimpmylog:
     install: '1'
-varnish:
-    install: '0'
     settings:
-        http_port: 8080
-        storage_size: 0.5G
+        webroot_location: '/var/www/html'
+varnish:
+    install: '1'
+    settings:
+        varnish_listen_port: 8080
+        varnish_storage_size: 0.5G
+        host: '192.168.9.10'
+        host_port: 80
 webgrind:
     install: '1'
     settings:
         domain: 'webgrind.druphpet.dev'
 newrelic:
     install: '0'
-    application_name: 'druphpet'
-    license_key: ''
+    settings:
+        application_name: 'druphpet'
+        license_key: 'updateme'
 vsftpd:
     install: '1'
+    settings:
+        firewall: false
+        write_enable: true
+        local_umask: '022'
+        template: 'vsftpd/vsftpd.conf.erb'
 phpmyadmin:
     install: '1'
     settings:
-        domain: 'phpmyadmin.druphpet.dev'
+        vhost_name: 'phpmyadmin.druphpet.dev'
+        vhost_port: '80'

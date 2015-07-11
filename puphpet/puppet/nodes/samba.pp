@@ -1,38 +1,32 @@
 # Begin Samba
 
-if $samba_server_values == undef {
-  $samba_server_values = hiera('samba_server', false)
-}
+class druphpet_samba($samba) {
+  create_resources('class', {'samba::server' => $samba['settings']['server']})
 
-if hash_key_equals($samba_server_values, 'install', 1) {
-  class {'samba::server':
-    workgroup => 'Drupal',
-    server_string => 'Drupal VM server',
-    interfaces => 'eth1 lo',
-    security => 'share',
-  }
+  $share_settings = $samba['settings']['share']
 
   samba::server::share { 'data':
-    comment => 'data storage',
-    path  => "/var/www",
-    guest_only => true,
-    guest_ok => true,
-    guest_account => 'guest',
-    browsable => true,
-    create_mask => 0777,
-    force_create_mask => 0777,
-    directory_mask => 0777,
-    force_directory_mask => 0777,
-    force_group => 'vagrant',
-    force_user => 'vagrant',
-    writable => true,
+    comment => $share_settings['comment'],
+    path  => $share_settings['path'],
+    guest_only => $share_settings['guest_only'],
+    guest_ok => $share_settings['guest_ok'],
+    guest_account => $share_settings['guest_account'],
+    browsable => $share_settings['browsable'],
+    create_mask => $share_settings['create_mask'],
+    force_create_mask => $share_settings['force_create_mask'],
+    directory_mask => $share_settings['directory_mask'],
+    force_directory_mask => $share_settings['force_directory_mask'],
+    force_group => $share_settings['force_group'],
+    force_user => $share_settings['force_user'],
+    writable => $share_settings['writable']
   }
-  
+
   if ! defined(Firewall["139 tcp/139, 445"]) {
     firewall { "139 tcp/139, 445":
       port   => [193, 445],
       proto  => tcp,
       action => 'accept',
     }
-  }   
+  }
+  #samba::server::share { 'data': 'data'}
 }
