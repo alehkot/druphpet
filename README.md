@@ -2,21 +2,26 @@
 A very fast and Puppet-based Drupal-ready VM suitable for instant and unified configuration of local environments.
 You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in YAML format.
 
-Based on VMs generated using [Puphpet](http://puphpet.com "Puphpet").
+Based on VMs by [Puphpet](http://puphpet.com "Puphpet").
 
 The VM includes the fastest option available to synchronize folders in Windows - via SMB share. Please find the instructions below on how to map a network drive.
 
 ## Install ##
-- Make sure you have the latests versions of VirtualBox and Vagrant installed (see 'minimum requirements' section).
+- Make sure you have the most recent versions of VirtualBox and Vagrant installed (see 'minimum requirements' section).
 - Clone the repository `git clone https://github.com/alehkot/druphpet.git`.
-- Add any number of Apache hosts and databases you want in appropriate sections of druphpet/puphpet/config.yaml file.
+- Add any number of Apache hosts and databases you want in appropriate sections of 'puphpet/config.yaml' file.
 - Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
 	- `192.168.9.10 druphpet.dev`
 	- `192.168.9.10 ...`
 	- `192.168.9.10 [yourhost]`
-- Execute `vagrant up`.
-- In case of any errors during the initial setup, try to run provision the VM once again: `vagrant reload --provision`. It usually resolves any issues.
+- In the folder with Druphpet in your command line execute `vagrant up`.
+- Important! In case of any errors during the initial setup, try to run provision the VM once again: `vagrant reload --provision`. It usually resolves any issues.
 - It is strongly recommended to reboot the VM after successful provisioning using `vagrant reload`.
+
+## Modification ##
+- In case you later decide to add new hosts, PHP packager or install an additional software, then edit 'puphpet/config.yaml' file.
+- Execute `vagrant provision`.
+- Execute `vagrant reload`.
 
 ## Included ##
 - [Ubuntu 64-bit Precise 14.04](http://www.ubuntu.com/)

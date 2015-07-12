@@ -89,6 +89,7 @@ server:
         - mc
         - graphviz
         - memcached
+        - apache2-utils
         - libssh2-1-dev
         - libmemcached-dev
         - htop
