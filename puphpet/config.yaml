@@ -132,6 +132,12 @@ firewall:
             proto: tcp
             action: accept
             priority: '8080'
+        pgsql:
+            port:
+                - '5432'
+            proto: tcp
+            action: accept
+            priority: '5432'
 apache:
     install: '1'
     settings:
@@ -249,6 +255,7 @@ php:
             - curl
             - gd
             - mysqlnd
+            - pgsql
         pear:
             - PHP_CodeSniffer
             - Console_Table
@@ -420,6 +427,8 @@ postgresql:
             version: '9.3'
         server:
             postgres_password: '123'
+            listen_addresses: '*'
+            ip_mask_allow_all_users: '0.0.0.0/0'
     databases:
         iXCAtX74PT5O:
             dbname: druphpet
@@ -433,7 +442,7 @@ postgresql:
             privilege:
                 - ALL
             db: druphpet
-            role: postgres
+            role: druphpet
     adminer: '1'
 sqlite:
     install: '0'

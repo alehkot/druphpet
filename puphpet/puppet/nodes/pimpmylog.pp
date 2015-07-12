@@ -1,6 +1,8 @@
 # Begin PimpMyLog
 
 class druphpet_pimpmylog ($pimpmylog, $apache) {
+  require apache
+
   create_resources('class', { 'pimpmylog' => $pimpmylog['settings'] })
 
   if ($apache['install'] == 1) {
