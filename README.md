@@ -1,6 +1,5 @@
 # Druphpet Virtual Machine #
-A very fast and Puppet-based Drupal-ready VM suitable for instant and unified configuration of local environments.
-You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in YAML format.
+A very fast and Puppet-based Drupal-ready VM suitable for instant and unified configuration of local environments. The ultimate goal of Druphpet is to provide a powerful set of tools out-of-the-box to develop typical enterprise websites with Drupal. You can easily add sites, databases, packages, etc. simply be editing `puphpet/config.yaml` file in YAML format.
 
 Based on VMs by [Puphpet](http://puphpet.com "Puphpet").
 
@@ -82,6 +81,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 ### Some notes
 - Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 - If you want to use **Nginx** HTTP server instead of **Apache** please checkout special ['nginx'](https://github.com/alehkot/druphpet/tree/nginx) branch of the repository. Please note, the following modules of Druphpet haven't been integrated with Nginx yet, hence disabled: Webgrind, Pimpmylog, Phpmyadmin.
+- While it's possible to use older version of PHP and other software (you can simply update Druphpet configs), you can do it at your own risk. In the worst case some software won't be installed and settings and tunings of Druphpet won't be applied. On one hand there is an intention to stay current with Puphpet, on the other hand it's impossible at this moment to backport all Druphpet alterations even to older versions of PHP, which supported by Puphpet. If you need to use PHP 5.4, for example, better use the original [VM](http://puphpet.com "Puphpet").
 
 ## Defaults
 **Hosts**
