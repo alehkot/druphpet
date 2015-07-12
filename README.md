@@ -151,7 +151,7 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
 **Varnish**
 
 - Varnish proxifies all requests from port 8080 to port 80, e.g. you can access http://192.168.9.10:8080/webgrind.
-- You can edit its config file in '/etc/varnish/default.vcl' file.
+- You can edit its config in '/etc/varnish/default.vcl' file.
 
 ## Minimum requirements ##
 * Git
