@@ -23,7 +23,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - It is strongly recommended to reboot the VM after successful provisioning using `vagrant reload`.
 
 ## Modification ##
-- In case you later decide to add new hosts, PHP packager or install an additional software, then edit 'puphpet/config.yaml' file.
+- In case you later decide to add new hosts, PHP packages and/or install an additional software, then edit 'puphpet/config.yaml' file.
 - Execute `vagrant provision`.
 - Execute `vagrant reload`.
 
