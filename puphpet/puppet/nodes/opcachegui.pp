@@ -1,34 +1,28 @@
-# Begin PHPMyAdmin.
+# Begin OPCacheGUI
 
-class druphpet_phpmyadmin($phpmyadmin, $apache, $nginx) {
+class druphpet_opcachegui ($opcachegui, $apache, $nginx) {
   if array_true($apache, 'install') {
     require apache
 
     include ::puphpet::apache::params
     include ::apache::params
 
-    $phpmyadmin_obj = {
-      'vhost_name' => 'phpmyadmin.local',
-      'vhost_port' => 80,
-      ensure       => present
-    }
+    create_resources('class', { 'opcachegui' => {}})
 
-    create_resources('class', {'phpmyadmin' => $phpmyadmin_obj})
-
-    file { $phpmyadmin['webroot_location']:
+    file { $opcachegui['webroot_location']:
       ensure => link,
-      target => '/usr/share/phpMyAdmin/current',
-      require => [Class['phpmyadmin'], Package['httpd']]
+      target => '/usr/share/php/opcachegui/source/public',
+      require => [Class['opcachegui'], Package['httpd']]
     }
 
     $vhost = {
-      'port'         => $phpmyadmin['vhost_port'],
-      'docroot'      => $phpmyadmin['webroot_location'],
-      'servername'   => $phpmyadmin['vhost_name'],
+      'port'         => $opcachegui['vhost_port'],
+      'docroot'      => $opcachegui['webroot_location'],
+      'servername'   => $opcachegui['vhost_name'],
       'directories'  => {
         'webgrind' => {
           'provider'        => 'directory',
-          'path'            => $phpmyadmin['webroot_location'],
+          'path'            => $opcachegui['webroot_location'],
           'options'         => ['Indexes', 'FollowSymlinks', 'MultiViews'],
           'allow_override'  => ['All'],
           'require'         => ['all granted'],
@@ -49,14 +43,13 @@ class druphpet_phpmyadmin($phpmyadmin, $apache, $nginx) {
     $files_match        = template('puphpet/apache/files_match.erb')
     $directories_merged = merge($vhost['directories'], hash_eval($files_match))
 
-    $vhost_name = $phpmyadmin['vhost_name']
-
     $vhost_merged = merge($vhost, {
-     'directories'     => values_no_error($directories_merged),     
+     'directories'     => values_no_error($directories_merged),
      'manage_docroot'  => false
     })
 
-    create_resources(::apache::vhost, { "${vhost_name}" => $vhost_merged })
+    $vhost_name = $opcachegui['vhost_name']
 
+    create_resources(::apache::vhost, { "${vhost_name}" => $vhost_merged })
   }
 }

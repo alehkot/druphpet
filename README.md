@@ -10,9 +10,14 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - Clone the repository `git clone https://github.com/alehkot/druphpet.git`.
 - Add any number of Apache hosts and databases you want in appropriate sections of 'puphpet/config.yaml' file.
 - Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
-	- `192.168.9.10 druphpet.dev`
-	- `192.168.9.10 ...`
-	- `192.168.9.10 [yourhost]`
+	`
+192.168.9.10 druphpet.dev`
+192.168.9.10 phpmyadmin.druphpet.dev`
+192.168.9.10 webgrind.druphpet.dev
+192.168.9.10 opcachegui.druphpet.dev
+192.168.9.10 phpmemcacheadmin.druphpet.dev
+192.168.9.10 pimpmylog.druphpet.dev`
+- Add your hosts `192.168.9.10 [yourhost]`
 - In the folder with Druphpet in your command line execute `vagrant up`.
 - Important! In case of any errors during the initial setup, try to run provision the VM once again: `vagrant reload --provision`. It usually resolves any issues.
 - It is strongly recommended to reboot the VM after successful provisioning using `vagrant reload`.
@@ -39,6 +44,8 @@ The VM includes the fastest option available to synchronize folders in Windows -
 	- _(pecl)_ [APC](http://php.net/manual/en/book.apc.php)
 	- _(pecl)_ [XCache](http://xcache.lighttpd.net/)
 - [Apache Solr 4.x](http://lucene.apache.org/solr/)
+- [OPCacheGUI](https://github.com/PeeHaa/OpCacheGUI)
+- [PHPMemcacheAdmin](https://code.google.com/p/phpmemcacheadmin)
 - [MySQL 5.6.x](http://www.mysql.com/)
 - [dos2unix](http://linuxcommand.org/man_pages/dos2unix1.html)
 - [Percona Toolkit](http://www.percona.com/software/percona-toolkit)
@@ -78,7 +85,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
     - [Nodemon](http://nodemon.io/)
 - [Python](https://www.python.org/)
 
-### Some notes
+### Additional notes
 - Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
 - If you want to use **Nginx** HTTP server instead of **Apache** please checkout special ['nginx'](https://github.com/alehkot/druphpet/tree/nginx) branch of the repository. Please note, the following modules of Druphpet haven't been integrated with Nginx yet, hence disabled: Webgrind, Pimpmylog, Phpmyadmin.
 - While it's possible to use older version of PHP and other software (you can simply update Druphpet configs), you can do it at your own risk. In the worst case some software won't be installed and settings and tunings of Druphpet won't be applied. On one hand there is an intention to stay current with Puphpet, on the other hand it's impossible at this moment to backport all Druphpet alterations even to older versions of PHP, which supported by Puphpet. If you need to use PHP 5.4, for example, better use the original [VM](http://puphpet.com "Puphpet").
@@ -117,7 +124,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 **PimpMyLog**
 
-- http://192.168.9.10/pimpmylog
+- http://pimpmylog.druphpet.dev
 
 **Memcached**
 
@@ -126,11 +133,21 @@ The VM includes the fastest option available to synchronize folders in Windows -
 
 **Phpmyadmin**
 
-- http://192.168.9.10/phpmyadmin
+- http://phpmyadmin.druphpet.dev
 
 **Webgrind**
 
-- http://192.168.9.10/webgrind
+- http://webgrind.druphpet.dev
+
+**OPCacheGUI**
+
+- http://opcachegui.druphpet.dev
+- username: druphpet
+- password: druphpet
+
+**PHPMemcacheAdmin**
+
+- http://phpmemcacheadmin.druphpet.dev
 
 **RabbitMQ**
 

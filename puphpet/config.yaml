@@ -529,21 +529,13 @@ solr:
     settings:
         version: 4.10.2
         port: '8984'
-pimpmylog:
-    install: '1'
-    settings:
-        webroot_location: '/var/www/html'
 varnish:
-    install: '1'
+    install: '0'
     settings:
         varnish_listen_port: 8080
         varnish_storage_size: 0.5G
         host: '192.168.9.10'
         host_port: 80
-webgrind:
-    install: '1'
-    settings:
-        domain: 'webgrind.druphpet.dev'
 newrelic:
     install: '0'
     settings:
@@ -560,4 +552,29 @@ phpmyadmin:
     install: '1'
     settings:
         vhost_name: 'phpmyadmin.druphpet.dev'
+        vhost_port: '80'
+        webroot_location: '/var/www/html/phpmyadmin'
+phpmemcacheadmin:
+    install: '1'
+    settings:
+        webroot_location: '/var/www/html/phpmemcacheadmin'
+        vhost_name: 'phpmemcacheadmin.druphpet.dev'
+        vhost_port: '80'
+opcachegui:
+    install: '1'
+    settings:
+        webroot_location: '/var/www/html/opcachegui'
+        vhost_name: 'opcachegui.druphpet.dev'
+        vhost_port: '80'
+pimpmylog:
+    install: '1'
+    settings:
+        webroot_location: '/var/www/html/pimpmylog'
+        vhost_name: 'pimpmylog.druphpet.dev'
+        vhost_port: '80'
+webgrind:
+    install: '1'
+    settings:
+        webroot_location: '/var/www/html/webgrind'
+        vhost_name: 'webgrind.druphpet.dev'
         vhost_port: '80'

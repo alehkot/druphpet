@@ -39,6 +39,8 @@ $relic          = hiera_hash('newrelic', {})
 $samba          = hiera_hash('samba_server', {})
 $webgrind       = hiera_hash('webgrind', {})
 $varnish        = hiera_hash('varnish', {})
+$memcacheadmin  = hiera_hash('phpmemcacheadmin', {})
+$opcachegui     = hiera_hash('opcachegui', {})
 
 Exec { path => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ] }
 
@@ -232,24 +234,9 @@ if array_true($wpcli, 'install') {
 }
 
 # Druphpet
-if array_true($pimpmylog, 'install') {
-  class { '::druphpet_pimpmylog':
-    pimpmylog => $pimpmylog,
-    apache => $apache
-  }
-}
-
 if array_true($vsftpd, 'install') {
   class { '::druphpet_vsftpd':
     vsftpd => $vsftpd,
-  }
-}
-
-if array_true($phpmyadmin, 'install') {
-  class { '::druphpet_phpmyadmin':
-    phpmyadmin => $phpmyadmin,
-    apache => $apache,
-    nginx => $nginx
   }
 }
 
@@ -267,16 +254,49 @@ if array_true($samba, 'install') {
   }
 }
 
+
+if array_true($varnish, 'install') {
+  class { '::druphpet_varnish':
+    varnish => $varnish
+  }
+}
+
 if array_true($webgrind, 'install') {
   class { '::druphpet_webgrind':
-    webgrind => $webgrind,
+    webgrind => $webgrind['settings'],
     apache => $apache,
     nginx => $nginx
   }
 }
 
-if array_true($varnish, 'install') {
-  class { '::druphpet_varnish':
-    varnish => $varnish
+if array_true($memcacheadmin, 'install') {
+  class { '::druphpet_phpmemcacheadmin':
+    memcacheadmin => $memcacheadmin['settings'],
+    apache => $apache,
+    nginx => $nginx
+  }
+}
+
+if array_true($opcachegui, 'install') {
+  class { '::druphpet_opcachegui':
+    opcachegui => $opcachegui['settings'],
+    apache => $apache,
+    nginx => $nginx
+  }
+}
+
+if array_true($pimpmylog, 'install') {
+  class { '::druphpet_pimpmylog':
+    pimpmylog => $pimpmylog['settings'],
+    apache => $apache,
+    nginx => $nginx
+  }
+}
+
+if array_true($phpmyadmin, 'install') {
+  class { '::druphpet_phpmyadmin':
+    phpmyadmin => $phpmyadmin['settings'],
+    apache => $apache,
+    nginx => $nginx
   }
 }
