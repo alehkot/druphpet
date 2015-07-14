@@ -12,10 +12,15 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
 	`
 192.168.9.10 druphpet.dev
+
 192.168.9.10 phpmyadmin.druphpet.dev
+
 192.168.9.10 webgrind.druphpet.dev
+
 192.168.9.10 opcachegui.druphpet.dev
+
 192.168.9.10 phpmemcacheadmin.druphpet.dev
+
 192.168.9.10 pimpmylog.druphpet.dev`
 - Add your hosts `192.168.9.10 [yourhost]`
 - In the folder with Druphpet in your command line execute `vagrant up`.
