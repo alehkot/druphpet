@@ -11,8 +11,8 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - Add any number of Apache hosts and databases you want in appropriate sections of 'puphpet/config.yaml' file.
 - Edit your hosts file and add entries for the following (on Windows, `C:\Windows\System32\drivers\etc\hosts`):
 	`
-192.168.9.10 druphpet.dev`
-192.168.9.10 phpmyadmin.druphpet.dev`
+192.168.9.10 druphpet.dev
+192.168.9.10 phpmyadmin.druphpet.dev
 192.168.9.10 webgrind.druphpet.dev
 192.168.9.10 opcachegui.druphpet.dev
 192.168.9.10 phpmemcacheadmin.druphpet.dev
