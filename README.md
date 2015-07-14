@@ -44,6 +44,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 	- _(pecl)_ [APC](http://php.net/manual/en/book.apc.php)
 	- _(pecl)_ [XCache](http://xcache.lighttpd.net/)
 - [Apache Solr 4.x](http://lucene.apache.org/solr/)
+- [PostgreSQL 9.3](http://www.postgresql.org/)
 - [OPCacheGUI](https://github.com/PeeHaa/OpCacheGUI)
 - [PHPMemcacheAdmin](https://code.google.com/p/phpmemcacheadmin)
 - [MySQL 5.6.x](http://www.mysql.com/)
@@ -100,7 +101,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 * User: vagrant
 * Pass: vagrant
 
-**Database Credentials**
+**Database Credentials (MySQL, PostgreSQL)**
 
 * Host: 192.168.9.10
 * Name: druphpet
