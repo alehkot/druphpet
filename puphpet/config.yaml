@@ -87,6 +87,7 @@ server:
         - sendmail
         - unzip
         - mc
+        - siege
         - graphviz
         - memcached
         - apache2-utils
