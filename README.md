@@ -61,6 +61,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 - [Sendmail](http://www.linuxserverhowto.com/linux-mail-server-sendmail/index.html)
 - [Unzip](http://www.cyberciti.biz/tips/how-can-i-zipping-and-unzipping-files-under-linux.html)
 - [Git](http://git-scm.com/)
+- [Siege](http://manpages.ubuntu.com/manpages/hardy/man1/siege.1.html)
 - [RabbitMQ](http://www.rabbitmq.com/) or [Beanstalkd](http://kr.github.io/beanstalkd/)
 - [New Relic](http://newrelic.com/)
 - [Graphviz](http://www.graphviz.org/)
