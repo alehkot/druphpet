@@ -184,6 +184,17 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
 - [PowerShell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595 "Download PowerShell 3")
 
 **Known issues**
+
+- If you use Vagrant 1.7.3 on Windows and getting an error regarding 'chown: changing ownership of ???/vagrant???: Not a directory', then patch your Vagrant `environment.rb` file (e.g. directory location `c:\Vagrant\embedded\gems\gems\vagrant-1.7.3\lib\vagrant\util\`) and replace `def windows_unc_path(path)` method with the following:
+```
+        # Converts a given path to UNC format by adding a prefix and converting slashes.
+        # @param [String] path Path to convert to UNC for Windows
+        # @return [String]
+        def windows_unc_path(path)
+          path.gsub('/', '\\')
+        end 
+```
+
 - Integration of some of the modules in Druphpet is still in progress.
 
 - Windows-only, to enable Samba, follow the instuctions in Vagrantfile.
