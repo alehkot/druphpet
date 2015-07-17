@@ -518,12 +518,12 @@ samba_server:
             guest_ok: true
             guest_account: 'guest'
             browsable: true
-            create_mask: 0777
-            force_create_mask: 0777
-            directory_mask: 0777
-            force_directory_mask: 0777
-            force_group: 'vagrant'
-            force_user: 'vagrant'
+            create_mask: '0777'
+            force_create_mask: '0777'
+            directory_mask: '0777'
+            force_directory_mask: '0777'
+            force_group: 'www-data'
+            force_user: 'www-data'
             writable: true
 solr:
     install: '1'
