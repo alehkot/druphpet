@@ -20,7 +20,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 ```
 - Add your hosts, e.g. `192.168.9.10 [yourhost]`
 - In the folder with Druphpet in your command line execute `vagrant up`.
-- Important! In case of any errors during the initial setup, try to run provision the VM once again: `vagrant reload --provision`. It usually resolves any issues. In the worst case, please follow the instructions in [Known issues](#known-issues) sections.
+- Important! In case of any errors during the initial setup, try to run provision the VM once again: `vagrant reload --provision`. It usually resolves any issues. In the worst case, please follow the instructions in [Known issues](#known-issues).
 
 
 ## Modification ##
