@@ -185,6 +185,8 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
 
 **Known issues**
 
+- 
+
 - If you use Vagrant 1.7.3 on Windows and getting an error regarding 'chown: changing ownership of ???/vagrant???: Not a directory', then patch your Vagrant `environment.rb` file (e.g. directory location `c:\Vagrant\embedded\gems\gems\vagrant-1.7.3\lib\vagrant\util\`) and replace `def windows_unc_path(path)` method with the following:
 ```
         # Converts a given path to UNC format by adding a prefix and converting slashes.
@@ -195,7 +197,9 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
         end 
 ```
 
-- Integration of some of the modules in Druphpet is still in progress.
+- If during `vagrant up` or `vagrant reload` you stuck with a looping error like this `Error: Connection timeout. Retrying...`, then delete all files except `insecure_private_key` in folder `puphpet/files/dot` and try again. 
+
+- If during `vagrant up` or `vagrant reload --provision` or `vagrant provision` you get errors like `default: Stderr: ==> default: error: Your local changes to the following files would be overwritten by checkout:`, then delete all folders in `puphpet/puppet/modules` folder except `.gitkeep` file and try again.
 
 - Windows-only, to enable Samba, follow the instuctions in Vagrantfile.
 
