@@ -10,7 +10,7 @@ class puphpet_php (
   }
 
   $version  = $puphpet::php::settings::version
-  $base_ini = $puphpet::php::settings::base_ini
+  $base_ini = $puphpet::php::settings::fpm_ini
   $package  = $puphpet::php::settings::fpm_package
   $service  = $puphpet::php::settings::service
 
@@ -39,6 +39,7 @@ class puphpet_php (
       service             => $service,
       version             => 'present',
       service_autorestart => false,
+      augeas              => true,
       config_file         => $base_ini,
     }
     -> class { 'php::devel': }

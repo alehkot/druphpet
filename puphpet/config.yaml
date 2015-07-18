@@ -407,19 +407,27 @@ mysql:
                 'innodb_lock_wait_timeout': '40'
     adminer: 0
     users:
-        mysqlnu_mkcfai4qijhr:
+        u1:
             name: druphpet@%
             password: 'druphpet'
+        u2:
+            name: druphpet
+            password: 'druphpet'
     databases:
-        mysqlnd_f8m6lov5u7qi:
+        d1:
             name: druphpet
             sql: ''
     grants:
-        mysqlng_xhk61p1s3fbw:
+        g1:
             user: druphpet@%
             table: '*.*'
             privileges:
                 - ALL
+        g2:
+            user: druphpet
+            table: '*.*'
+            privileges:
+                - ALL                
 postgresql:
     install: '0'
     settings:
