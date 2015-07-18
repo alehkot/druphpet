@@ -20,8 +20,8 @@ The VM includes the fastest option available to synchronize folders in Windows -
 ```
 - Add your hosts, e.g. `192.168.9.10 [yourhost]`
 - In the folder with Druphpet in your command line execute `vagrant up`.
-- Important! In case of any errors during the initial setup, try to run provision the VM once again: `vagrant reload --provision`. It usually resolves any issues.
-- It is strongly recommended to reboot the VM after successful provisioning using `vagrant reload`.
+- Important! In case of any errors during the initial setup, try to run provision the VM once again: `vagrant reload --provision`. It usually resolves any issues. In the worst case, please follow the instructions in [Known issues](#known-issues).
+
 
 ## Modification ##
 - In case you later decide to add new hosts, PHP packages and/or install an additional software, then edit 'puphpet/config.yaml' file.
@@ -183,8 +183,20 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
 - [Vagrant](https://dl.bintray.com/mitchellh/vagrant/vagrant_1.5.4.msi "Download Vagrant 1.5.4")
 - [PowerShell 3](http://www.microsoft.com/en-us/download/details.aspx?id=34595 "Download PowerShell 3")
 
-**Known issues**
-- Integration of some of the modules in Druphpet is still in progress.
+## Known issues ##
+- If you use Vagrant 1.7.3 on Windows and get an error regarding `chown: changing ownership of ???/vagrant???: Not a directory`, then patch your Vagrant `environment.rb` file (e.g. directory location `c:\Vagrant\embedded\gems\gems\vagrant-1.7.3\lib\vagrant\util\`) and replace `def windows_unc_path(path)` method with the following:
+```
+        # Converts a given path to UNC format by adding a prefix and converting slashes.
+        # @param [String] path Path to convert to UNC for Windows
+        # @return [String]
+        def windows_unc_path(path)
+          path.gsub('/', '\\')
+        end 
+```
+
+- If during `vagrant up` or `vagrant reload` you stuck with a looping error like this `Error: Connection timeout. Retrying...`, then delete all files except `insecure_private_key` in folder `puphpet/files/dot` and try again. 
+
+- If during `vagrant up` or `vagrant reload --provision` or `vagrant provision` you get errors like `default: Stderr: ==> default: error: Your local changes to the following files would be overwritten by checkout:`, then delete all folders in `puphpet/puppet/modules` folder except `.gitkeep` file and try again.
 
 - Windows-only, to enable Samba, follow the instuctions in Vagrantfile.
 
@@ -210,6 +222,8 @@ On Mac, In the Finder, choose Go > 'Connect to Server.' Type the following netwo
   - PHP: `ssh -R 9000:localhost:9000 vagrant@druphpet.dev`
   - NodeJS: `ssh -L 5858:127.0.0.1:5858 vagrant@druphpet.dev -N`
 
+- It is strongly recommended to reboot the VM after successful provisioning using `vagrant reload`.
+- 
 - In case of a public key warning with the previous commands try to delete your known_hosts file.
 
 - You can change the sync_modules variable to false after the first time your box is provisioned.
