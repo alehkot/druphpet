@@ -32,7 +32,7 @@ The VM includes the fastest option available to synchronize folders in Windows -
 ## Included ##
 - [Ubuntu 64-bit Precise 14.04](http://www.ubuntu.com/)
 - [Drush 7.x](http://drush.org/en/master/)
-- [Apache 2.4.x](http://httpd.apache.org/) or [Nginx](http://nginx.org/)
+- [Apache 2.4.x](http://httpd.apache.org/) 
 - [PHP 5.6.x](http://php.net/) with extensions:
   - _(debugger, pecl)_ [XDebug](http://xdebug.org/)
   - _(profiler, tool, pecl)_ [XHProf](https://github.com/phacility/xhprof)
@@ -42,29 +42,22 @@ The VM includes the fastest option available to synchronize folders in Windows -
   - _(pecl)_ [Memcached](http://php.net/manual/en/intro.memcached.php)
   - _(tool, PEAR)_ [PHP_CodeSniffer](http://pear.php.net/package/PHP_CodeSniffer/redirected)
   - _(PEAR)_ [PHP_Console_Table](http://pear.php.net/package/Console_Table)
-- Optionally, old versions of PHP are also available with the following extensions:
-	- _(pecl)_ [APC](http://php.net/manual/en/book.apc.php)
-	- _(pecl)_ [XCache](http://xcache.lighttpd.net/)
 - [Apache Solr 4.x](http://lucene.apache.org/solr/)
-- [PostgreSQL 9.3](http://www.postgresql.org/)
 - [OPCacheGUI](https://github.com/PeeHaa/OpCacheGUI)
 - [PHPMemcacheAdmin](https://code.google.com/p/phpmemcacheadmin)
 - [MySQL 5.6.x](http://www.mysql.com/)
 - [dos2unix](http://linuxcommand.org/man_pages/dos2unix1.html)
 - [Percona Toolkit](http://www.percona.com/software/percona-toolkit)
-- [Adminer](http://www.adminer.org/) (or [phpMyAdmin](http://www.phpmyadmin.net/home_page/index.php))
+- [phpMyAdmin](http://www.phpmyadmin.net/home_page/index.php)
 - [PimpMyLog](http://pimpmylog.com/)
 - [MailCatcher](http://mailcatcher.me/)
 - [ImageMagick](http://www.imagemagick.org/)
 - [Webgrind](https://github.com/jokkedk/webgrind)
 - [Curl](http://curl.haxx.se/)
-- [Varnish](https://www.varnish-cache.org/)
 - [Sendmail](http://www.linuxserverhowto.com/linux-mail-server-sendmail/index.html)
 - [Unzip](http://www.cyberciti.biz/tips/how-can-i-zipping-and-unzipping-files-under-linux.html)
 - [Git](http://git-scm.com/)
 - [Siege](http://manpages.ubuntu.com/manpages/hardy/man1/siege.1.html)
-- [RabbitMQ](http://www.rabbitmq.com/) or [Beanstalkd](http://kr.github.io/beanstalkd/)
-- [New Relic](http://newrelic.com/)
 - [Graphviz](http://www.graphviz.org/)
 - [Vsftpd](https://security.appspot.com/vsftpd.html)
 - [MC](http://linux.die.net/man/1/mc)
@@ -87,12 +80,17 @@ The VM includes the fastest option available to synchronize folders in Windows -
     - [CSSLint](http://csslint.net/)
     - [ESLint](http://eslint.org/)
     - [Nodemon](http://nodemon.io/)
+    
+## Optional ##
+There are the following modules are also preconfigured, but disabled by default:
+- [PostgreSQL 9.3](http://www.postgresql.org/)
+- [Adminer](http://www.adminer.org/)
+- [Varnish](https://www.varnish-cache.org/)
+- [New Relic](http://newrelic.com/)
+- [RabbitMQ](http://www.rabbitmq.com/) or [Beanstalkd](http://kr.github.io/beanstalkd/)
 - [Python](https://www.python.org/)
-
-### Additional notes
-- Some of the packages are not enabled by default. You can always adjust installed packages and settings in `puphpet/config.yaml` file.
-- If you want to use **Nginx** HTTP server instead of **Apache** please checkout special ['nginx'](https://github.com/alehkot/druphpet/tree/nginx) branch of the repository. Please note, the following modules of Druphpet haven't been integrated with Nginx yet, hence disabled: Webgrind, Pimpmylog, Phpmyadmin.
-- While it's possible to use older version of PHP and other software (you can simply update Druphpet configs), you can do it at your own risk. In the worst case some software won't be installed and settings and tunings of Druphpet won't be applied. On one hand there is an intention to stay current with Puphpet, on the other hand it's impossible at this moment to backport all Druphpet alterations even to older versions of PHP, which supported by Puphpet. If you need to use PHP 5.4, for example, better use the original [VM](http://puphpet.com "Puphpet").
+- [PostgreSQL 9.3](http://www.postgresql.org/)
+You can edit `puphpet/config.yaml` file and execute `vagrant reload --provision` to enable the software. Moreover, using this file you can switch from Apache web server to Nginx (but some exclusive Druphpet features might become unavailable, because they are preconfigured for Apache) and/or install additional software packages and PHP extensions.
 
 ## Defaults
 **Hosts**
