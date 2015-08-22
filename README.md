@@ -90,6 +90,7 @@ There are the following modules are also preconfigured, but disabled by default:
 - [RabbitMQ](http://www.rabbitmq.com/) or [Beanstalkd](http://kr.github.io/beanstalkd/)
 - [Python](https://www.python.org/)
 - [PostgreSQL 9.3](http://www.postgresql.org/)
+
 You can edit `puphpet/config.yaml` file and execute `vagrant reload --provision` to enable the software. Moreover, using this file you can switch from Apache web server to Nginx (but some exclusive Druphpet features might become unavailable, because they are preconfigured for Apache) and/or install additional software packages and PHP extensions.
 
 ## Defaults
