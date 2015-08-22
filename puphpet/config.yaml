@@ -103,7 +103,7 @@ users_groups:
 cron:
     install: '0'
     jobs:
-        crlnxelghgl0:
+        j1:
             monthday: ''
             name: druphpet
             user: root
@@ -157,7 +157,7 @@ apache:
         - proxy_fcgi
         - pagespeed
     vhosts:
-        av_j01pniakhgdj:
+        h1:
             servername: druphpet.dev
             serveraliases:
                 - www.druphpet.dev
@@ -174,7 +174,7 @@ apache:
             ssl_protocol: ''
             ssl_cipher: ''
             directories:
-                avd_2kzvto1rr3qf:
+                d1:
                     path: /var/www/druphpet/docroot
                     options:
                         - Indexes
@@ -200,7 +200,7 @@ nginx:
         proxy_buffers: '4 256k'
     upstreams: {  }
     vhosts:
-        nxv_6h2t43nubewk:
+        h1:
             server_name: druphpet.dev
             server_aliases:
                 - www.druphpet.dev
@@ -439,15 +439,15 @@ postgresql:
             listen_addresses: '*'
             ip_mask_allow_all_users: '0.0.0.0/0'
     databases:
-        iXCAtX74PT5O:
+        d1:
             dbname: druphpet
             owner: druphpet
     users:
-        7FpBU7xCVzlx:
+        u1:
             username: druphpet
             password: druphpet
     grants:
-        l9aYFqlE1rW3:
+        g1:
             privilege:
                 - ALL
             db: druphpet
@@ -470,7 +470,7 @@ mongodb:
         bind_ip: 127.0.0.1
         port: '27017'
     databases:
-        mongodbnuad_b2o7gqvgaa76:
+        d1:
             name: druphpet
             user: druphpet
             password: druphpet
