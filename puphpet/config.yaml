@@ -300,6 +300,7 @@ php:
         error_log: '/var/log/php_errors.log'
         mbstring.http_input: 'pass'
         mbstring.http_output: 'pass'
+        mbstring.func_overload: '0'
         date.timezone: 'UTC'
     fpm_ini:
         error_log: /var/log/php-fpm.log
@@ -530,8 +531,8 @@ samba_server:
             force_create_mask: '0777'
             directory_mask: '0777'
             force_directory_mask: '0777'
-            force_group: 'www-data'
-            force_user: 'www-data'
+            force_group: 'vagrant'
+            force_user: 'vagrant'
             writable: true
 solr:
     install: '1'
